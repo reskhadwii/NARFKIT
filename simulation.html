@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Simulation</title>
+  <link rel="stylesheet" type="text/css" href="global.css">
+  <link rel="stylesheet" type="text/css" href="simulation.css">
+</head>
+<body>
+
+<nav class="navigasi-siswa">
+  <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+  <div class="menu">
+    <a href="dashboardsiswa.html" class="menu-item">DASHBOARD</a>
+    <a href="course.html" class="menu-item">COURSE</a>
+    <a href="#" class="menu-item active">SIMULATION</a>
+    <a href="chatbot.html" class="menu-item">CHATBOT</a>
+  </div>
+  <div class="nav-right">
+    <svg viewBox="0 0 60 60" fill="none"><path d="M7.5 38.75L17.14 30.72C21.23 27.31 23.91 27.66 27.44 31.19L27.46 31.2C31.3 35.05 34.06 34.89 37.89 31.54L52.5 18.75" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M52.5 52.5H23.5C17.9 52.5 15.1 52.5 12.96 51.41C11.08 50.45 9.55 48.92 8.59 47.04C7.5 44.9 7.5 42.1 7.5 36.5V7.5" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 60 60" fill="none"><path d="M22.5 42.5V45C22.5 46.99 23.29 48.9 24.7 50.3C26.1 51.71 28.01 52.5 30 52.5C31.99 52.5 33.9 51.71 35.3 50.3C36.71 48.9 37.5 46.99 37.5 45V42.5M25 12.5C25 11.17 25.53 9.9 26.46 8.96C27.4 8.03 28.67 7.5 30 7.5C31.33 7.5 32.6 8.03 33.54 8.96C34.47 9.9 35 11.17 35 12.5C37.87 13.86 40.32 15.97 42.08 18.61C43.84 21.26 44.85 24.33 45 27.5V35C45.19 36.55 45.74 38.04 46.61 39.35C47.48 40.65 48.64 41.73 50 42.5H10C11.36 41.73 12.52 40.65 13.39 39.35C14.26 38.04 14.81 36.55 15 35V27.5C15.15 24.33 16.16 21.26 17.92 18.61C19.68 15.97 22.13 13.86 25 12.5Z" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
+    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div>
+    <div class="page-title">
+      <span class="title-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
+          <path d="M8.5 2h7"/>
+          <path d="M7 16h10"/>
+        </svg>
+      </span>
+      Simulation Lab
+    </div>
+    <div class="page-subtitle">Eksperimen rangkaian mikrokontroler dan latih model machine learning kamu sendiri</div>
+  </div>
+
+  <div class="panels">
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title-row">
+          <div class="panel-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="panel-title">Wokwi Simulator</div>
+          </div>
+          <span class="panel-badge">Arduino</span>
+        </div>
+        <a href="https://wokwi.com" target="_blank" class="btn-open">
+          ↗ Buka Wokwi
+        </a>
+      </div>
+
+      <div class="panel-controls">
+        <span style="color:rgba(var(--fg-rgb),0.4);font-size:12px;font-weight:700;flex-shrink:0">Template:</span>
+
+        <div class="template-chip active" onclick="loadTemplate(this, '327868576380387922')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+            <path d="M9 18h6"/><path d="M10 22h4"/>
+          </svg>
+          LED Blink
+        </div>
+
+        <div class="template-chip" onclick="loadTemplate(this, '305568657862279762')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+          </svg>
+          Sensor Suhu
+        </div>
+
+        <div class="template-chip" onclick="loadTemplate(this, '344892827712774740')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="3" rx="2"/>
+            <path d="M8 21h8m-4-4v4"/>
+          </svg>
+          LCD Display
+        </div>
+
+        <div class="template-chip" onclick="loadTemplate(this, '323724903260807763')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          Buzzer
+        </div>
+
+        <div class="template-chip" onclick="loadTemplate(this, '379905980105203713')">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="16" height="16" x="4" y="4" rx="2"/>
+            <rect width="6" height="6" x="9" y="9" rx="1"/>
+            <path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>
+          </svg>
+          Servo Motor
+        </div>
+      </div>
+
+      <div class="url-row">
+        <input
+          class="url-input"
+          id="wokwi-input"
+          type="text"
+          placeholder="Paste Project ID atau URL Wokwi kamu..."
+        >
+        <button class="btn-load" onclick="loadCustomProject()">Load ▶</button>
+      </div>
+
+      <div class="panel-body">
+        <iframe
+          id="wokwi-iframe"
+          class="sim-iframe"
+          src="https://wokwi.com/projects/327868576380387922"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title-row">
+          <div class="panel-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
+              <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
+              <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/>
+              <path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
+              <path d="M19.938 10.5a4 4 0 0 1 .585.396"/>
+              <path d="M6 18a4 4 0 0 1-1.967-.516"/>
+              <path d="M19.967 17.484A4 4 0 0 1 18 18"/>
+            </svg>
+          </div>
+          <div>
+            <div class="panel-title">Teachable Machine</div>
+          </div>
+          <span class="panel-badge">Machine Learning</span>
+        </div>
+        <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" class="btn-open">
+          ↗ Buka TM
+        </a>
+      </div>
+
+      <div class="tm-steps">
+        <div class="tm-step" id="step1">
+          <div class="tm-step-num">1</div>
+          <span>Buka Teachable Machine → buat project baru</span>
+        </div>
+        <div class="tm-step" id="step2">
+          <div class="tm-step-num">2</div>
+          <span>Train model kamu dengan data gambar/suara/pose</span>
+        </div>
+        <div class="tm-step" id="step3">
+          <div class="tm-step-num">3</div>
+          <span>Export → pilih "Tensorflow.js" → copy link model</span>
+        </div>
+        <div class="tm-step" id="step4">
+          <div class="tm-step-num">4</div>
+          <span>Paste link model di bawah untuk uji coba langsung!</span>
+        </div>
+      </div>
+
+      <div class="url-row">
+        <input
+          class="url-input"
+          id="tm-input"
+          type="text"
+          placeholder="Paste URL model Teachable Machine kamu..."
+        >
+        <button class="btn-load" onclick="loadTMModel()">Load ▶</button>
+      </div>
+
+      <div class="panel-body" id="tm-body">
+        <div class="placeholder" id="tm-placeholder">
+          <div class="placeholder-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
+              <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
+              <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/>
+              <path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
+              <path d="M19.938 10.5a4 4 0 0 1 .585.396"/>
+              <path d="M6 18a4 4 0 0 1-1.967-.516"/>
+              <path d="M19.967 17.484A4 4 0 0 1 18 18"/>
+            </svg>
+          </div>
+          <div class="placeholder-title">Belum ada model</div>
+          <div class="placeholder-desc">
+            Train model kamu di Teachable Machine dulu, lalu paste URL model-nya di atas untuk langsung dicoba di sini!
+          </div>
+          <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" class="btn-start">
+            Mulai Training
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <iframe
+          id="tm-iframe"
+          class="sim-iframe"
+          style="display:none"
+          allowfullscreen
+          allow="camera; microphone"
+        ></iframe>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
+</footer>
+
+
+<script>
+  // ===== THEME (LIGHT / DARK) BULLETPROOF =====
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.body.classList.add('light-theme');
+    } else {
+      document.body.classList.remove('light-theme');
+    }
+    
+    try { localStorage.setItem('narfkit_theme', theme) } catch (e) { console.warn('LocalStorage error:', e) }
+
+    const moon = document.getElementById('icon-moon');
+    const sun = document.getElementById('icon-sun');
+    if (moon) moon.style.display = theme === 'dark' ? 'block' : 'none';
+    if (sun) sun.style.display = theme === 'light' ? 'block' : 'none';
+  }
+
+  // PENTING: Pastikan HTML selesai loading dulu baru JS jalan
+  document.addEventListener('DOMContentLoaded', () => {
+    let savedTheme = 'dark';
+    try { 
+      savedTheme = localStorage.getItem('narfkit_theme') || 'dark';
+    } catch (e) {}
+    
+    applyTheme(savedTheme);
+
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        // Cek apakah body sekarang punya class light-theme
+        const isLight = document.body.classList.contains('light-theme');
+        applyTheme(isLight ? 'dark' : 'light');
+      });
+    }
+  });
+
+  // ===== WOKWI =====
+  function loadTemplate(chip, projectId) {
+    document.querySelectorAll('.template-chip').forEach(c => c.classList.remove('active'))
+    chip.classList.add('active')
+    document.getElementById('wokwi-iframe').src = `https://wokwi.com/projects/${projectId}`
+    document.getElementById('wokwi-input').value = ''
+  }
+
+  function loadCustomProject() {
+    let input = document.getElementById('wokwi-input').value.trim()
+    if (!input) return
+    const match = input.match(/projects\/(\d+)/)
+    const projectId = match ? match[1] : input
+    if (!/^\d+$/.test(projectId)) {
+      alert('Format salah! Paste URL Wokwi atau Project ID (angka) aja ya.')
+      return
+    }
+    document.querySelectorAll('.template-chip').forEach(c => c.classList.remove('active'))
+    document.getElementById('wokwi-iframe').src = `https://wokwi.com/projects/${projectId}`
+  }
+
+  document.getElementById('wokwi-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loadCustomProject()
+  })
+
+  // ===== TEACHABLE MACHINE =====
+  function loadTMModel() {
+    let input = document.getElementById('tm-input').value.trim()
+    if (!input) return
+    if (!input.endsWith('/')) input += '/'
+    document.getElementById('tm-placeholder').style.display = 'none'
+
+    // Cek tema dari body class
+    const isLight = document.body.classList.contains('light-theme');
+    
+    // Set warna dinamis
+    const bgIframe = isLight ? '#fbf1e7' : '#1a1313';
+    const textIframe = isLight ? '#291b17' : '#fff';
+    const titleIframe = isLight ? '#a84a14' : 'rgba(255,251,151,0.9)';
+
+    const iframe = document.getElementById('tm-iframe')
+    iframe.style.display = 'block'
+    
+    const tmHTML = `
+     <!DOCTYPE html>
+     <html>
+     <head>
+       <meta charset="UTF-8">
+       <style>
+         body { margin:0; background-color:${bgIframe}; color:${textIframe}; font-family:sans-serif; display:flex; flex-direction:column; align-items:center; padding:20px; gap:12px; transition: background-color 0.25s ease, color 0.25s ease; }
+         #webcam-container canvas { border-radius:12px; }
+         #label-container div {
+           background-color: rgba(254,127,66,0.15);
+           border: 1px solid #fe7f42;
+           border-radius: 8px;
+           padding: 6px 14px;
+           margin: 4px 0;
+           font-size: 14px;
+           font-weight: bold;
+           color: ${textIframe};
+         }
+         button {
+           background-color: #fe7f42; color: #fff; border: none;
+           border-radius: 10px; padding: 10px 24px;
+           font-size: 16px; font-weight: bold; cursor: pointer;
+         }
+         h3 { color: ${titleIframe}; margin:0; }
+       </style>
+     </head>
+     <body>
+       <h3>🧠 Teachable Machine Preview</h3>
+       <button onclick="init()">▶ Aktifkan Kamera</button>
+       <div id="webcam-container"></div>
+       <div id="label-container"></div>
+       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"><\/script>
+       <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"><\/script>
+       <script>
+         const URL = "${input}";
+         let model, webcam, labelContainer, maxPredictions;
+         async function init() {
+           const modelURL = URL + "model.json";
+           const metadataURL = URL + "metadata.json";
+           model = await tmImage.load(modelURL, metadataURL);
+           maxPredictions = model.getTotalClasses();
+           webcam = new tmImage.Webcam(300, 300, true);
+           await webcam.setup();
+           await webcam.play();
+           window.requestAnimationFrame(loop);
+           document.getElementById("webcam-container").appendChild(webcam.canvas);
+           labelContainer = document.getElementById("label-container");
+           for (let i = 0; i < maxPredictions; i++) {
+             labelContainer.appendChild(document.createElement("div"));
+           }
+         }
+         async function loop() {
+           webcam.update();
+           await predict();
+           window.requestAnimationFrame(loop);
+         }
+         async function predict() {
+           const prediction = await model.predict(webcam.canvas);
+           for (let i = 0; i < maxPredictions; i++) {
+             const p = prediction[i];
+             labelContainer.childNodes[i].innerHTML = p.className + ": " + (p.probability * 100).toFixed(1) + "%";
+           }
+         }
+       <\/script>
+     </body>
+     </html>`
+    iframe.srcdoc = tmHTML
+    document.querySelectorAll('.tm-step').forEach(s => s.classList.add('done'))
+  }
+
+  document.getElementById('tm-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loadTMModel()
+  })
+</script>
+
+</body>
+</html>

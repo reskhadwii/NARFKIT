@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Chatbot</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="chatbot.css">
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navigasi-siswa">
+  <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+  <div class="menu">
+    <a href="dashboardsiswa.html" class="menu-item">DASHBOARD</a>
+    <a href="course.html" class="menu-item">COURSE</a>
+    <a href="simulation.html" class="menu-item">SIMULATION</a>
+    <a href="#" class="menu-item active">CHATBOT</a>
+  </div>
+  <div class="nav-right">
+    <svg viewBox="0 0 60 60" fill="none"><path d="M7.5 38.75L17.14 30.72C21.23 27.31 23.91 27.66 27.44 31.19L27.46 31.2C31.3 35.05 34.06 34.89 37.89 31.54L52.5 18.75" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M52.5 52.5H23.5C17.9 52.5 15.1 52.5 12.96 51.41C11.08 50.45 9.55 48.92 8.59 47.04C7.5 44.9 7.5 42.1 7.5 36.5V7.5" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 60 60" fill="none"><path d="M22.5 42.5V45C22.5 46.99 23.29 48.9 24.7 50.3C26.1 51.71 28.01 52.5 30 52.5C31.99 52.5 33.9 51.71 35.3 50.3C36.71 48.9 37.5 46.99 37.5 45V42.5M25 12.5C25 11.17 25.53 9.9 26.46 8.96C27.4 8.03 28.67 7.5 30 7.5C31.33 7.5 32.6 8.03 33.54 8.96C34.47 9.9 35 11.17 35 12.5C37.87 13.86 40.32 15.97 42.08 18.61C43.84 21.26 44.85 24.33 45 27.5V35C45.19 36.55 45.74 38.04 46.61 39.35C47.48 40.65 48.64 41.73 50 42.5H10C11.36 41.73 12.52 40.65 13.39 39.35C14.26 38.04 14.81 36.55 15 35V27.5C15.15 24.33 16.16 21.26 17.92 18.61C19.68 15.97 22.13 13.86 25 12.5Z" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
+    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== CHAT ===== -->
+<div class="chat-container">
+
+  <!-- header -->
+  <div class="chat-header">
+    <div class="bot-avatar">
+      <svg width="32" height="40" viewBox="0 0 600 734" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M300 0C263.18 0 233.333 29.8477 233.333 66.6667C233.333 91.3427 246.74 112.888 266.667 124.415V200H100C44.7717 200 0 244.772 0 300V633.333C0 688.563 44.7717 733.333 100 733.333H500C555.23 733.333 600 688.563 600 633.333V300C600 244.772 555.23 200 500 200H333.333V124.415C353.26 112.888 366.667 91.3427 366.667 66.6667C366.667 29.8477 336.82 0 300 0ZM66.6667 300C66.6667 281.591 81.5907 266.667 100 266.667H146.066L194.306 363.147C205.599 385.733 228.683 400 253.933 400H346.067C371.317 400 394.4 385.733 405.693 363.147L453.933 266.667H500C518.41 266.667 533.333 281.591 533.333 300V633.333C533.333 651.743 518.41 666.667 500 666.667H100C81.5907 666.667 66.6667 651.743 66.6667 633.333V300ZM346.067 333.333L379.4 266.667H220.601L253.933 333.333H346.067Z" fill="#FE7F42"/></svg>
+    </div>
+    <div class="bot-info">
+      <div class="bot-name">NARF AI</div>
+      <div class="bot-status">
+        <div class="status-dot"></div>
+        Online • Siap membantumu belajar
+      </div>
+    </div>
+    <div class="bot-mode">Socratic Mode</div>
+  </div>
+
+  <!-- messages -->
+  <div class="chat-messages" id="chat-messages">
+    <div class="bubble-row bot">
+      <div class="bubble-avatar bot">
+        <svg width="20" height="24" viewBox="0 0 600 734" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M300 0C263.18 0 233.333 29.8477 233.333 66.6667C233.333 91.3427 246.74 112.888 266.667 124.415V200H100C44.7717 200 0 244.772 0 300V633.333C0 688.563 44.7717 733.333 100 733.333H500C555.23 733.333 600 688.563 600 633.333V300C600 244.772 555.23 200 500 200H333.333V124.415C353.26 112.888 366.667 91.3427 366.667 66.6667C366.667 29.8477 336.82 0 300 0ZM66.6667 300C66.6667 281.591 81.5907 266.667 100 266.667H146.066L194.306 363.147C205.599 385.733 228.683 400 253.933 400H346.067C371.317 400 394.4 385.733 405.693 363.147L453.933 266.667H500C518.41 266.667 533.333 281.591 533.333 300V633.333C533.333 651.743 518.41 666.667 500 666.667H100C81.5907 666.667 66.6667 651.743 66.6667 633.333V300ZM346.067 333.333L379.4 266.667H220.601L253.933 333.333H346.067Z" fill="#FE7F42"/></svg>
+      </div>
+      <div>
+        <div class="bubble bot">
+          Halo! Aku NARF AI, asisten belajar IoT dan Arduino kamu 🚀<br><br>
+          Aku gak akan langsung kasih jawaban — tapi aku akan bantu kamu <strong>nemuin jawabannya sendiri</strong> lewat pertanyaan-pertanyaan seru!<br><br>
+          Mau mulai dari topik mana?
+        </div>
+        <div class="topic-chips">
+          <div class="chip" onclick="kirimTopik('Arduino & Mikrokontroler')">⚡ Arduino</div>
+          <div class="chip" onclick="kirimTopik('Sensor & Aktuator')">📡 Sensor</div>
+          <div class="chip" onclick="kirimTopik('Pemrograman C++')">💻 C++</div>
+          <div class="chip" onclick="kirimTopik('IoT & Konektivitas')">🌐 IoT</div>
+          <div class="chip" onclick="kirimTopik('Rangkaian Listrik')">🔌 Rangkaian</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- input -->
+  <div class="chat-input-area">
+    <textarea
+      class="chat-input"
+      id="chat-input"
+      placeholder="Tulis pertanyaanmu di sini..."
+      rows="1"
+      onkeydown="handleKeyDown(event)"
+      oninput="autoResize(this)"
+    ></textarea>
+    <button class="send-btn" id="send-btn" onclick="kirimPesan()" title="Kirim">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="chat-footer">© 2026 NARFKIT. All rights reserved.</div>
+</div>
+
+
+<script>
+  // jangan lupa pindahin sebelum deploy
+  const GROQ_API_KEY = ''
+
+  const BOT_SVG = `<svg width="20" height="24" viewBox="0 0 600 734" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M300 0C263.18 0 233.333 29.8477 233.333 66.6667C233.333 91.3427 246.74 112.888 266.667 124.415V200H100C44.7717 200 0 244.772 0 300V633.333C0 688.563 44.7717 733.333 100 733.333H500C555.23 733.333 600 688.563 600 633.333V300C600 244.772 555.23 200 500 200H333.333V124.415C353.26 112.888 366.667 91.3427 366.667 66.6667C366.667 29.8477 336.82 0 300 0ZM66.6667 300C66.6667 281.591 81.5907 266.667 100 266.667H146.066L194.306 363.147C205.599 385.733 228.683 400 253.933 400H346.067C371.317 400 394.4 385.733 405.693 363.147L453.933 266.667H500C518.41 266.667 533.333 281.591 533.333 300V633.333C533.333 651.743 518.41 666.667 500 666.667H100C81.5907 666.667 66.6667 651.743 66.6667 633.333V300ZM346.067 333.333L379.4 266.667H220.601L253.933 333.333H346.067Z" fill="#FE7F42"/></svg>`
+
+  const SYSTEM_PROMPT = `Kamu adalah NARF AI, asisten belajar IoT dan Arduino yang menggunakan metode Socratic.
+
+ATURAN UTAMA:
+1. JANGAN pernah langsung memberikan jawaban. Selalu pandu siswa dengan pertanyaan. Jika siswa sudah benar-benar ingin tau atau frustasi bisa jelaskan saja.
+2. Mulai dari pertanyaan sederhana yang memancing rasa ingin tahu.
+3. Kalau siswa salah, jangan bilang "salah", tanya balik: "Coba pikirkan lagi, kalau X terjadi, apa yang akan berubah?"
+4. Puji usaha siswa, bukan jawabannya.
+5. Gunakan analogi sehari-hari untuk menjelaskan konsep teknis.
+6. Bahasa: casual, ramah, semangat. campuran Indonesia dan sedikit Inggris untuk istilah teknis.
+7. Topik: Arduino, IoT, C++, sensor, aktuator, rangkaian listrik, mikrokontroler, technopreneur.
+8. Kalau siswa nanya di luar topik, redirect dengan gentle ke topik IoT/Arduino/Kewirausahaan/Technopreneur.
+9. Maksimal 3-4 kalimat per respons + 1 pertanyaan pemandu.
+10. Gunakan emoji secukupnya`
+
+  let conversationHistory = []
+  let isLoading = false
+
+  // =====================================================
+  // THEME (LIGHT / DARK) — sinkron dengan dashboard, course & simulation
+  // =====================================================
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme)
+    localStorage.setItem('narfkit_theme', theme)
+    document.getElementById('icon-moon').style.display = theme === 'dark' ? 'block' : 'none'
+    document.getElementById('icon-sun').style.display = theme === 'light' ? 'block' : 'none'
+  }
+  applyTheme(localStorage.getItem('narfkit_theme') || 'dark')
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark'
+    applyTheme(current === 'dark' ? 'light' : 'dark')
+  })
+
+  window.onload = function() {
+  if (GROQ_API_KEY === 'GROQ_API_KEY_NARFKIT') {
+    document.getElementById('api-warning').classList.add('show')
+  }
+}
+
+  function autoResize(el) {
+    el.style.height = 'auto'
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px'
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      kirimPesan()
+    }
+  }
+
+  function kirimTopik(topik) {
+    document.getElementById('chat-input').value = `Aku mau belajar tentang ${topik}`
+    kirimPesan()
+  }
+
+  function kirimPesan() {
+    const input = document.getElementById('chat-input')
+    const pesan = input.value.trim()
+    if (!pesan || isLoading) return
+
+    tambahBubble('user', pesan)
+    conversationHistory.push({ role: 'user', content: pesan })
+    input.value = ''
+    input.style.height = 'auto'
+
+    const typingEl = tampilkanTyping()
+    callGroq(typingEl)
+  }
+
+  function tambahBubble(role, teks) {
+    const container = document.getElementById('chat-messages')
+    const row = document.createElement('div')
+    row.className = `bubble-row ${role}`
+
+    const avatar = document.createElement('div')
+    avatar.className = `bubble-avatar ${role}`
+    if (role === 'bot') {
+      avatar.innerHTML = BOT_SVG
+    } else {
+      avatar.textContent = 'S'
+    }
+
+    const bubble = document.createElement('div')
+    bubble.className = `bubble ${role}`
+    bubble.innerHTML = teks.replace(/\n/g, '<br>')
+
+    row.appendChild(avatar)
+    row.appendChild(bubble)
+    container.appendChild(row)
+    container.scrollTop = container.scrollHeight
+    return row
+  }
+
+  function tampilkanTyping() {
+    const container = document.getElementById('chat-messages')
+    const row = document.createElement('div')
+    row.className = 'bubble-row bot'
+    row.id = 'typing-indicator'
+
+    const avatar = document.createElement('div')
+    avatar.className = 'bubble-avatar bot'
+    avatar.innerHTML = BOT_SVG
+
+    const bubble = document.createElement('div')
+    bubble.className = 'bubble bot typing'
+    bubble.innerHTML = `
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    `
+
+    row.appendChild(avatar)
+    row.appendChild(bubble)
+    container.appendChild(row)
+    container.scrollTop = container.scrollHeight
+
+    isLoading = true
+    document.getElementById('send-btn').disabled = true
+    return row
+  }
+
+  async function callGroq(typingElement) {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...conversationHistory
+          ],
+          max_tokens: 500,
+          temperature: 0.7
+        })
+      })
+
+      const data = await response.json()
+      typingElement.remove()
+
+      if (data.choices && data.choices[0]) {
+        const balasan = data.choices[0].message.content
+        conversationHistory.push({ role: 'assistant', content: balasan })
+        tambahBubble('bot', balasan)
+      } else {
+        tambahBubble('bot', 'Ups, ada error nih. Coba lagi ya!')
+        console.error('Groq error:', data)
+      }
+
+    } catch (err) {
+      typingElement.remove()
+      tambahBubble('bot', 'Koneksi bermasalah. Pastikan API key sudah benar ya!')
+      console.error(err)
+    } finally {
+      isLoading = false
+      document.getElementById('send-btn').disabled = false
+      document.getElementById('chat-input').focus()
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ===== THEME VARIABLES ===== */
+:root {
+  --bg-primary: #1a1313;
+  --fg-rgb: 255,255,255;
+  --fg-solid: #ffffff;
+  --highlight-rgb: 255,251,151;
+  --highlight-solid: #fff6b5;
+  --muted-rose: #dda39e;
+  --muted-rose-rgb: 221,163,158;
+  --border-color: #7a4b47;
+  --border-rgb: 122,75,71;
+  --card-rgb: 188,189,190;
+}
+
+[data-theme="light"] {
+  --bg-primary: #fbf1e7;
+  --fg-rgb: 41,27,23;
+  --fg-solid: #291b17;
+  --highlight-rgb: 168,74,20;
+  --highlight-solid: #a84a14;
+  --muted-rose: #a85c53;
+  --muted-rose-rgb: 168,92,83;
+  --border-color: #e3c2b8;
+  --border-rgb: 227,194,184;
+  --card-rgb: 122,75,71;
+}
+
+body, .navigasi-siswa, .soal-card, .stat-card, .aktivitas-belajar,
+.kursus-card, .hasil-card, .opsi-item, .esai-input, .thumbnail,
+.thumbnail-placeholder, .btn-next-soal, .btn-masuk-dashboard, .btn-lanjut {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
+.theme-toggle {
+  background: transparent; border: 1.5px solid var(--border-color); border-radius: 50%;
+  width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: border-color 0.2s, transform 0.2s; flex-shrink: 0;
+}
+.theme-toggle:hover { transform: scale(1.1); border-color: #fe7f42; }
+.theme-toggle svg { width: 20px; height: 20px; }
+
+body {
+  background: var(--bg-primary);
+  font-family: "Montserrat", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== NAVBAR ===== */
+.navigasi-siswa {
+  border-radius: 0 0 20px 20px;
+  border: 3px solid var(--border-color);
+  padding: 10px 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 80px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-primary);
+}
+.narfkit { display: flex; flex-direction: row; gap: 4px; align-items: center; }
+.narf { color: #fe7f42; font-size: 28px; font-weight: 700; }
+.kit  { color: var(--highlight-solid); font-size: 28px; font-weight: 700; }
+.menu { display: flex; flex-direction: row; gap: 6px; align-items: center; }
+.menu-item {
+  padding: 10px 14px; cursor: pointer;
+  position: relative; color: var(--muted-rose);
+  font-size: 17px; font-weight: 700;
+  transition: color 0.2s; text-decoration: none;
+}
+.menu-item:hover { color: var(--fg-solid); }
+.menu-item.active { color: var(--fg-solid); }
+.menu-item.active::after {
+  content: ''; position: absolute;
+  bottom: -6px; left: 10px; right: 10px;
+  height: 4px; background: var(--fg-solid); border-radius: 10px;
+}
+.nav-right { display: flex; gap: 12px; align-items: center; }
+.nav-right svg { width: 38px; height: 38px; cursor: pointer; transition: transform 0.2s; }
+.nav-right svg:hover { transform: scale(1.1); }
+
+/* ===== SCREEN SYSTEM ===== */
+.screen { display: none; flex: 1; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* Footer */
+.footer { display: flex; justify-content: space-between; align-items: center; padding: 16px 30px; margin-top: auto; }
+.copyright { color: rgba(var(--fg-rgb),0.5); font-size: 13px; font-weight: 700; }
+.chat-icon { width: 48px; height: 48px; cursor: pointer; transition: transform 0.2s; }
+.chat-icon:hover { transform: scale(1.1); }

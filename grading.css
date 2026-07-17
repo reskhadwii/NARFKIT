@@ -1,0 +1,476 @@
+/* ===== GRADING PAGE SPECIFIC STYLES ===== */
+
+/* Tab Navigasi */
+.grading-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.tab-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-color);
+  color: rgba(var(--fg-rgb), 0.6);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn:hover {
+  border-color: var(--muted-rose);
+  color: var(--fg-solid);
+}
+.tab-btn.active {
+  background: rgba(254, 127, 66, 0.15);
+  border-color: #fe7f42;
+  color: #fe7f42;
+}
+
+/* Layout Kiri Kanan */
+.grading-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Kolom Kiri (Antrean) */
+.antrean-panel {
+  padding: 20px 16px;
+  max-height: 700px;
+  overflow-y: auto;
+}
+.antrean-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(var(--border-rgb), 0.05);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.2s;
+}
+.antrean-item:hover {
+  background: rgba(var(--border-rgb), 0.15);
+}
+.antrean-item.active {
+  background: rgba(254, 127, 66, 0.08);
+  border-color: rgba(254, 127, 66, 0.4);
+}
+.antrean-avatar {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(var(--border-rgb), 0.2);
+  color: var(--fg-solid);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.antrean-avatar svg {
+  opacity: 0.8;
+}
+.antrean-item.active .antrean-avatar {
+  background: #fe7f42;
+  color: #fff;
+}
+.antrean-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.antrean-nama {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--fg-solid);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.antrean-meta {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(var(--fg-rgb), 0.45);
+}
+
+/* Kolom Kanan (Detail Penilaian) */
+.detail-panel {
+  padding: 24px;
+}
+.detail-header-grading {
+  border-bottom: 1.5px solid rgba(var(--border-rgb), 0.3);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+.detail-judul { font-size: 24px; font-weight: 700; color: rgba(var(--highlight-rgb),0.9); }
+.detail-sub { font-size: 13.5px; font-weight: 700; color: rgba(var(--fg-rgb),0.5); margin-top: 4px; }
+
+/* Komponen Soal & Jawaban (Esai) */
+.soal-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(var(--fg-rgb), 0.4);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.soal-box, .jawaban-box {
+  margin-bottom: 20px;
+}
+.soal-teks {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--fg-solid);
+  line-height: 1.5;
+}
+.jawaban-teks {
+  background: rgba(var(--border-rgb), 0.08);
+  border-left: 4px solid var(--fg-solid);
+  padding: 16px;
+  border-radius: 0 12px 12px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(var(--fg-rgb), 0.9);
+  line-height: 1.5;
+}
+
+/* Kotak Rekomendasi AI (Esai) */
+.ai-suggestion-box {
+  background: rgba(254, 127, 66, 0.06);
+  border: 1.5px solid rgba(254, 127, 66, 0.3);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 28px;
+}
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.ai-header span {
+  font-size: 12px;
+  font-weight: 800;
+  color: #fe7f42;
+  letter-spacing: 1px;
+}
+.ai-score-badge {
+  background: #fe7f42;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 15px;
+}
+.ai-reasoning {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(var(--fg-rgb), 0.8);
+}
+
+/* Kotak Lampiran Proyek (Dengan SVG Ikon) */
+.lampiran-section { margin-bottom: 24px; }
+.lampiran-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lampiran-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(var(--border-rgb), 0.08);
+  border: 1.5px solid rgba(var(--border-rgb), 0.4);
+  padding: 14px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.lampiran-card:hover {
+  background: rgba(var(--border-rgb), 0.15);
+  border-color: var(--fg-solid);
+}
+.lampiran-card .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--fg-rgb), 0.7);
+  transition: color 0.2s;
+}
+.lampiran-card:hover .icon {
+  color: #fe7f42;
+}
+.lampiran-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lampiran-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fg-solid);
+}
+.lampiran-type {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(var(--fg-rgb), 0.5);
+}
+
+.manual-grading-notice {
+  background: rgba(var(--highlight-rgb), 0.1);
+  border-left: 4px solid rgba(var(--highlight-rgb), 0.8);
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(var(--highlight-rgb), 0.9);
+  margin-bottom: 24px;
+  line-height: 1.4;
+}
+
+/* Input Penilaian Umum (Esai) */
+.grading-action-box {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.input-group label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(var(--fg-rgb), 0.4);
+}
+.score-input {
+  width: 120px;
+  height: 60px;
+  background: rgba(var(--border-rgb), 0.1);
+  border: 2px solid rgba(var(--border-rgb), 0.5);
+  border-radius: 12px;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--fg-solid);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.score-input:focus { border-color: #fe7f42; }
+.feedback-input {
+  width: 100%;
+  height: 60px;
+  background: rgba(var(--border-rgb), 0.1);
+  border: 1.5px solid rgba(var(--border-rgb), 0.5);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--fg-solid);
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.feedback-input:focus { border-color: var(--muted-rose); }
+
+/* Tombol Submit Nilai */
+.btn-upload-nilai {
+  width: 100%;
+  background: #fe7f42;
+  color: #fff;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.btn-upload-nilai:hover {
+  background: #e06c33;
+  transform: translateY(-2px);
+}
+
+/* ===== READ-ONLY BMC & SWOT (GRADING VIEW) ===== */
+
+.bmc-grid-read { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 12px; 
+}
+.bmc-block-read { 
+  background: rgba(var(--card-rgb),0.04); 
+  border: 1px solid var(--border-color); 
+  border-radius: 12px; 
+  padding: 14px; 
+}
+.bmc-block-read label { 
+  display: block; 
+  font-size: 11px; 
+  color: var(--highlight-solid); 
+  font-weight: 800; 
+  margin-bottom: 6px; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
+}
+.bmc-block-read p { 
+  font-size: 13px; 
+  color: var(--fg-solid); 
+  line-height: 1.5; 
+  font-weight: 500;
+}
+
+.swot-grid-read { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 12px; 
+}
+.swot-block-read { 
+  border-radius: 12px; 
+  padding: 16px; 
+  border: 1px solid; 
+}
+.swot-block-read label { 
+  display: block; 
+  font-size: 12px; 
+  font-weight: 800; 
+  margin-bottom: 8px; 
+  text-transform: uppercase; 
+  letter-spacing: 0.5px; 
+}
+.swot-block-read p {
+  font-size: 13.5px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+.swot-block-read.strength { border-color: rgba(77,218,144,0.4); background: rgba(77,218,144,0.04); }
+.swot-block-read.strength label { color: #4dda90; }
+.swot-block-read.strength p { color: rgba(var(--fg-rgb), 0.9); }
+
+.swot-block-read.weakness { border-color: rgba(224,112,112,0.4); background: rgba(224,112,112,0.04); }
+.swot-block-read.weakness label { color: #e07070; }
+.swot-block-read.weakness p { color: rgba(var(--fg-rgb), 0.9); }
+
+.swot-block-read.opportunity { border-color: rgba(254,127,66,0.4); background: rgba(254,127,66,0.04); }
+.swot-block-read.opportunity label { color: #fe7f42; }
+.swot-block-read.opportunity p { color: rgba(var(--fg-rgb), 0.9); }
+
+.swot-block-read.threat { border-color: rgba(var(--muted-rose-rgb),0.4); background: rgba(var(--muted-rose-rgb),0.04); }
+.swot-block-read.threat label { color: var(--muted-rose); }
+.swot-block-read.threat p { color: rgba(var(--fg-rgb), 0.9); }
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .bmc-grid-read, .swot-grid-read { grid-template-columns: 1fr; }
+  .lampiran-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ===== GRADING KELOMPOK (PROYEK) ===== */
+.group-grading-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(var(--border-rgb), 0.04);
+  border: 1.5px solid rgba(var(--border-rgb), 0.3);
+  border-radius: 16px;
+  padding: 16px;
+}
+.group-member-grade {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(var(--card-rgb), 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(var(--border-rgb), 0.2);
+}
+.member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 180px; 
+  flex-shrink: 0;
+}
+.member-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--fg-solid);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.feedback-input-mini {
+  flex: 1;
+  height: 42px;
+  background: rgba(var(--border-rgb), 0.1);
+  border: 1.5px solid rgba(var(--border-rgb), 0.4);
+  border-radius: 10px;
+  padding: 0 14px;
+  color: var(--fg-solid);
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.feedback-input-mini:focus {
+  border-color: var(--muted-rose);
+}
+.score-input-mini {
+  width: 70px;
+  height: 42px;
+  flex-shrink: 0;
+  background: rgba(var(--border-rgb), 0.1);
+  border: 2px solid rgba(var(--border-rgb), 0.5);
+  border-radius: 10px;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgba(var(--highlight-rgb), 0.9);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.score-input-mini:focus {
+  border-color: #fe7f42;
+}
+.score-input-mini.empty {
+  border-style: dashed;
+  color: var(--fg-solid);
+}
+
+/* Responsif */
+@media (max-width: 900px) {
+  .grading-layout { grid-template-columns: 1fr; }
+  .grading-action-box { flex-direction: column; }
+  .score-input { width: 100%; }
+}
+@media (max-width: 600px) {
+  .group-member-grade {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .member-info {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .score-input-mini {
+    width: 100%;
+  }
+}

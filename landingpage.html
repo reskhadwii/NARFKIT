@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ══════════════════════════════════════════
+       PAGE SYSTEM — satu <div> visible sekaligus
+    ══════════════════════════════════════════ */
+    .page {
+      display: none;
+      min-height: 100vh;
+    }
+    .page.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════
+       LANDING PAGE
+    ══════════════════════════ */
+    #page-landing {
+      background: #1a1313;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    .navigation {
+      border-radius: 0px 0px 20px 20px;
+      border: 3px solid #7a4b47;
+      border-top: none;
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      align-self: stretch;
+      flex-shrink: 0;
+    }
+
+    .narfkit {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .narf {
+      color: #fe7f42;
+      font-family: "Montserrat", sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    .kit {
+      color: #fff6b5;
+      font-family: "Montserrat", sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .sign-up { display: flex; gap: 10px; align-items: center; }
+    .frame-14 { display: flex; gap: 10px; align-items: center; }
+
+    .frame-12 {
+      border: 3px solid #7a4b47;
+      border-radius: 4px;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .frame-12:hover { background: rgba(122,75,71,0.2); }
+
+    .nav-masuk {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .frame-13 {
+      background: #7a4b47;
+      border-radius: 4px;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .frame-13:hover { background: #9a5f5a; }
+
+    .nav-daftar {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .lp-body {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .heading {
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .frame-3, .frame-4 {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mulai-eksplorasi-dunia {
+      color: rgba(255,251,151,0.9);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+    }
+
+    .iot {
+      color: #fe7f42;
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+    }
+
+    .kata-kata {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .belajar-mikrokontroler-dan-io-t-menyenangkan {
+      color: #fff;
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      max-width: 600px;
+    }
+
+    .lp-button {
+      padding: 10px;
+      flex-shrink: 0;
+      width: 305px;
+      height: 66px;
+      position: relative;
+      cursor: pointer;
+    }
+    .lp-button .rectangle-8 {
+      background: #1a1313;
+      border-radius: 10px;
+      border: 1px solid #dda39e;
+      width: 305px;
+      height: 66px;
+      position: absolute;
+      left: 0; top: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .lp-button:hover .rectangle-8 {
+      background: rgba(221,163,158,0.1);
+      border-color: #fe7f42;
+    }
+    .mulai-belajar {
+      color: rgba(255,251,151,0.9);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      position: absolute;
+      left: 0; right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .footer {
+      padding: 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+    ._2026-narfkit-all-rights-reserved {
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* ══════════════════════════
+       HALAMAN LOGIN
+    ══════════════════════════ */
+    #page-login {
+      background: #1a1313;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .login-heading {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .selamat-datang-kembali {
+      color: rgba(255,251,151,0.9);
+      font-family: "Montserrat", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .container-login {
+      background: rgba(183,180,180,0.2);
+      border-radius: 20px;
+      width: 420px;
+      padding: 24px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      position: relative;
+    }
+    .label-text {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .input-field {
+      border-radius: 10px;
+      border: 2px solid #dda39e;
+      width: 100%;
+      height: 48px;
+      background: transparent;
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 0 14px;
+      outline: none;
+    }
+    .input-field::placeholder {
+      color: rgba(221,163,158,0.5);
+      font-size: 14px;
+      font-weight: 400;
+    }
+    .input-field:focus { border-color: #fe7f42; }
+
+    .password-wrapper { position: relative; width: 100%; }
+    .password-wrapper .input-field { padding-right: 48px; }
+    .toggle-pw {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px; height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* feedback login */
+    .login-feedback {
+      font-family: "Montserrat", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fe7f42;
+      text-align: center;
+      min-height: 18px;
+    }
+    .login-feedback.success { color: #fff6b5; }
+
+    .belum-punya-akun {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    .teks-biasa {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .teks-link {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .teks-link:hover { color: rgba(255,251,151,0.9); }
+
+    .btn-masuk-container {
+      margin-top: 12px;
+      width: 200px;
+      height: 46px;
+      position: relative;
+      cursor: pointer;
+    }
+    .btn-bg {
+      background: #1a1313;
+      border-radius: 10px;
+      border: 1px solid #dda39e;
+      width: 100%; height: 100%;
+      position: absolute;
+      left: 0; top: 0;
+      transition: background 0.2s;
+    }
+    .btn-masuk-container:hover .btn-bg { background: rgba(254,127,66,0.15); }
+    .teks-tombol {
+      color: rgba(255,251,151,0.9);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* ══════════════════════════
+       HALAMAN DAFTAR
+    ══════════════════════════ */
+    #page-daftar {
+      background: #1a1313;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Shared regist */
+    .regist-siswa, .regist-guru {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px 10px;
+    }
+    .regist-siswa.active, .regist-guru.active { display: flex; }
+
+    .regist-heading {
+      padding: 4px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+    }
+    .mulai-petualangan-belajarmu,
+    .selamat-datang-pahlawan-edukasi {
+      color: rgba(255,251,151,0.9);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .pilihan-guru-siswa {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-peran {
+      border-radius: 8px;
+      border: 1px solid #dda39e;
+      width: 120px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-peran-text {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    /* aktif per peran */
+    .regist-guru .btn-guru  { background: #fe7f42; }
+    .regist-guru .btn-siswa { background: rgba(254,127,66,0); }
+    .regist-siswa .btn-guru { background: rgba(254,127,66,0); }
+    .regist-siswa .btn-siswa{ background: #fe7f42; }
+
+    .container-regist {
+      padding: 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      background: rgba(183,180,180,0.2);
+      border-radius: 20px;
+      width: 420px;
+    }
+
+    .frame-15, .frame-20, .frame-16, .frame-19 {
+      padding: 2px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+    }
+    .frame-19 { gap: 8px; }
+
+    .nama-lengkap, .nisn, .nip-nuptk, .regist-email, .regist-password {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .checkbox-row input[type="checkbox"] {
+      accent-color: #fe7f42;
+      width: 16px; height: 16px;
+      cursor: pointer;
+    }
+    .checkbox-row label {
+      color: rgba(221,163,158,0.7);
+      font-family: "Montserrat", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* feedback daftar */
+    .daftar-feedback {
+      font-family: "Montserrat", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fe7f42;
+      text-align: center;
+      min-height: 18px;
+      width: 100%;
+    }
+    .daftar-feedback.success { color: #fff6b5; }
+
+    .sudah-punya-akun {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      margin-top: 4px;
+    }
+    .sudah-punya-akun2 {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .link-masuk {
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .link-masuk:hover { color: rgba(255,251,151,0.9); }
+
+    .frame-2 {
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+      justify-content: center;
+    }
+    .group-5 {
+      flex-shrink: 0;
+      width: 200px;
+      height: 46px;
+      position: relative;
+      cursor: pointer;
+    }
+    .group-5 .rectangle-8 {
+      background: #1a1313;
+      border-radius: 10px;
+      border: 1px solid #dda39e;
+      width: 200px;
+      height: 46px;
+      position: absolute;
+      left: 0; top: 0;
+      transition: background 0.2s;
+    }
+    .group-5:hover .rectangle-8 { background: rgba(254,127,66,0.15); }
+    .daftar-label {
+      color: rgba(255,251,151,0.9);
+      text-align: center;
+      font-family: "Montserrat", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════
+       PAGE 1: LANDING
+  ══════════════════════════════ -->
+  <div class="page active" id="page-landing">
+
+    <div class="navigation">
+      <div class="narfkit">
+        <div class="narf">NARF</div>
+        <div class="kit">KIT</div>
+      </div>
+      <div class="sign-up">
+        <div class="frame-14">
+          <div class="frame-12" onclick="showPage('page-login')">
+            <div class="nav-masuk">MASUK</div>
+          </div>
+          <div class="frame-13" onclick="showPage('page-daftar')">
+            <div class="nav-daftar">DAFTAR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-body">
+      <div class="heading">
+        <div class="frame-3">
+          <div class="mulai-eksplorasi-dunia">MULAI EKSPLORASI DUNIA</div>
+        </div>
+        <div class="frame-4">
+          <div class="iot">IOT</div>
+        </div>
+      </div>
+      <div class="kata-kata">
+        <div class="belajar-mikrokontroler-dan-io-t-menyenangkan">
+          Belajar mikrokontroler dan IoT menyenangkan untuk menjadi technopreneur sejati
+        </div>
+      </div>
+      <div class="lp-button" onclick="showPage('page-daftar')">
+        <div class="rectangle-8"></div>
+        <div class="mulai-belajar">MULAI BELAJAR</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="_2026-narfkit-all-rights-reserved">
+        © 2026 NARFKIT. All rights reserved.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       PAGE 2: LOGIN
+  ══════════════════════════════ -->
+  <div class="page" id="page-login">
+
+    <div class="login-heading">
+      <div class="selamat-datang-kembali">Selamat Datang Kembali!</div>
+    </div>
+
+    <div class="container-login">
+
+      <div class="input-group">
+        <div class="label-text">NISN/NIP/NUPTK</div>
+        <input class="input-field" type="text" id="login-id" placeholder="Masukkan ID">
+      </div>
+
+      <div class="input-group">
+        <div class="label-text">Email</div>
+        <input class="input-field" type="email" id="login-email" placeholder="Gunakan akun belajar.id">
+      </div>
+
+      <div class="input-group">
+        <div class="label-text">Password</div>
+        <div class="password-wrapper">
+          <input class="input-field" type="password" id="login-password" placeholder="Masukkan password">
+          <button class="toggle-pw" onclick="togglePassword('login-password', this)" type="button">👁</button>
+        </div>
+      </div>
+
+      <div class="login-feedback" id="login-feedback"></div>
+
+    </div>
+
+    <div class="belum-punya-akun">
+      <div class="teks-biasa">belum punya akun?</div>
+      <div class="teks-link" onclick="showPage('page-daftar')">daftar</div>
+    </div>
+
+    <div class="btn-masuk-container" onclick="prosesMasuk()">
+      <div class="btn-bg"></div>
+      <div class="teks-tombol">MASUK</div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════
+       PAGE 3: DAFTAR
+  ══════════════════════════════ -->
+  <div class="page" id="page-daftar">
+
+    <!-- SISWA FORM -->
+    <div class="regist-siswa active" id="form-siswa">
+      <div class="regist-heading">
+        <div class="mulai-petualangan-belajarmu">Mulai Petualangan Belajarmu!</div>
+      </div>
+
+      <div class="pilihan-guru-siswa">
+        <div class="btn-peran btn-guru" onclick="switchPeran('guru')">
+          <div class="btn-peran-text">GURU</div>
+        </div>
+        <div class="btn-peran btn-siswa" onclick="switchPeran('siswa')">
+          <div class="btn-peran-text">SISWA</div>
+        </div>
+      </div>
+
+      <div class="container-regist">
+        <div class="frame-15">
+          <div class="nama-lengkap">Nama Lengkap</div>
+          <input class="input-field" type="text" id="siswa-nama" placeholder="Masukkan nama lengkap">
+        </div>
+        <div class="frame-20">
+          <div class="nisn">NISN</div>
+          <input class="input-field" type="text" id="siswa-nisn" placeholder="Masukkan NISN" maxlength="10">
+        </div>
+        <div class="frame-16">
+          <div class="regist-email">Email</div>
+          <input class="input-field" type="email" id="siswa-email" placeholder="Masukkan email">
+          <div class="checkbox-row">
+            <input type="checkbox" id="belajarid-siswa" onchange="pakeBelajarId('siswa-email', this)">
+            <label for="belajarid-siswa">Gunakan akun belajar.id</label>
+          </div>
+        </div>
+        <div class="frame-19">
+          <div class="regist-password">Password</div>
+          <div class="password-wrapper">
+            <input class="input-field" type="password" id="siswa-password" placeholder="Buat password">
+            <button class="toggle-pw" onclick="togglePassword('siswa-password', this)" type="button">👁</button>
+          </div>
+        </div>
+        <div class="daftar-feedback" id="siswa-feedback"></div>
+      </div>
+
+      <div class="sudah-punya-akun">
+        <div class="sudah-punya-akun2">sudah punya akun?</div>
+        <div class="link-masuk" onclick="showPage('page-login')">masuk</div>
+      </div>
+
+      <div class="frame-2">
+        <div class="group-5" onclick="prosesDaftar('siswa')">
+          <div class="rectangle-8"></div>
+          <div class="daftar-label">DAFTAR</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GURU FORM -->
+    <div class="regist-guru" id="form-guru">
+      <div class="regist-heading">
+        <div class="selamat-datang-pahlawan-edukasi">Selamat Datang Pahlawan Edukasi!</div>
+      </div>
+
+      <div class="pilihan-guru-siswa">
+        <div class="btn-peran btn-guru" onclick="switchPeran('guru')">
+          <div class="btn-peran-text">GURU</div>
+        </div>
+        <div class="btn-peran btn-siswa" onclick="switchPeran('siswa')">
+          <div class="btn-peran-text">SISWA</div>
+        </div>
+      </div>
+
+      <div class="container-regist">
+        <div class="frame-15">
+          <div class="nama-lengkap">Nama Lengkap</div>
+          <input class="input-field" type="text" id="guru-nama" placeholder="Masukkan nama lengkap">
+        </div>
+        <div class="frame-20">
+          <div class="nip-nuptk">NIP/NUPTK</div>
+          <input class="input-field" type="text" id="guru-nip" placeholder="Masukkan NIP atau NUPTK">
+        </div>
+        <div class="frame-16">
+          <div class="regist-email">Email</div>
+          <input class="input-field" type="email" id="guru-email" placeholder="Masukkan email">
+          <div class="checkbox-row">
+            <input type="checkbox" id="belajarid-guru" onchange="pakeBelajarId('guru-email', this)">
+            <label for="belajarid-guru">Gunakan akun belajar.id</label>
+          </div>
+        </div>
+        <div class="frame-19">
+          <div class="regist-password">Password</div>
+          <div class="password-wrapper">
+            <input class="input-field" type="password" id="guru-password" placeholder="Buat password">
+            <button class="toggle-pw" onclick="togglePassword('guru-password', this)" type="button">👁</button>
+          </div>
+        </div>
+        <div class="daftar-feedback" id="guru-feedback"></div>
+      </div>
+
+      <div class="sudah-punya-akun">
+        <div class="sudah-punya-akun2">sudah punya akun?</div>
+        <div class="link-masuk" onclick="showPage('page-login')">masuk</div>
+      </div>
+
+      <div class="frame-2">
+        <div class="group-5" onclick="prosesDaftar('guru')">
+          <div class="rectangle-8"></div>
+          <div class="daftar-label">DAFTAR</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end page-daftar -->
+
+
+  <script>
+    /* ══════════════════════════
+       IN-MEMORY USER STORE
+    ══════════════════════════ */
+    const users = []; // { peran, nama, id, email, password }
+
+    /* ══════════════════════════
+       PAGE NAVIGATION
+    ══════════════════════════ */
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    /* ══════════════════════════
+       TOGGLE PASSWORD VISIBILITY
+    ══════════════════════════ */
+    function togglePassword(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<s>👁</s>';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = '👁';
+      }
+    }
+
+    /* ══════════════════════════
+       SWITCH GURU / SISWA
+    ══════════════════════════ */
+    function switchPeran(peran) {
+      document.getElementById('form-siswa').classList.toggle('active', peran === 'siswa');
+      document.getElementById('form-guru').classList.toggle('active', peran === 'guru');
+    }
+
+    /* ══════════════════════════
+       GUNAKAN BELAJAR.ID
+    ══════════════════════════ */
+    function pakeBelajarId(inputId, checkbox) {
+      const input = document.getElementById(inputId);
+      if (checkbox.checked) {
+        input.placeholder = 'username@belajar.id';
+        input.value = '@belajar.id';
+      } else {
+        input.placeholder = 'Masukkan email';
+        input.value = '';
+      }
+    }
+
+    /* ══════════════════════════
+       VALIDASI HELPER
+    ══════════════════════════ */
+    function setFeedback(id, msg, isSuccess = false) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = (id.includes('login') ? 'login-feedback' : 'daftar-feedback') + (isSuccess ? ' success' : '');
+    }
+
+    /* ══════════════════════════
+       PROSES DAFTAR
+    ══════════════════════════ */
+    function prosesDaftar(peran) {
+      const prefix   = peran === 'siswa' ? 'siswa' : 'guru';
+      const fbId     = prefix + '-feedback';
+      const nama     = document.getElementById(prefix + '-nama').value.trim();
+      const idNum    = document.getElementById(peran === 'siswa' ? 'siswa-nisn' : 'guru-nip').value.trim();
+      const email    = document.getElementById(prefix + '-email').value.trim();
+      const password = document.getElementById(prefix + '-password').value;
+
+      // Validasi kosong
+      if (!nama || !idNum || !email || !password) {
+        setFeedback(fbId, 'Semua kolom wajib diisi.'); return;
+      }
+
+      // Validasi NISN (10 digit angka)
+      if (peran === 'siswa' && !/^\d{10}$/.test(idNum)) {
+        setFeedback(fbId, 'NISN harus 10 digit angka.'); return;
+      }
+
+      // Validasi email
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setFeedback(fbId, 'Format email tidak valid.'); return;
+      }
+
+      // Password minimal 6 karakter
+      if (password.length < 6) {
+        setFeedback(fbId, 'Password minimal 6 karakter.'); return;
+      }
+
+      // Email sudah terdaftar?
+      if (users.find(u => u.email === email)) {
+        setFeedback(fbId, 'Email sudah terdaftar.'); return;
+      }
+
+      // Simpan
+      users.push({ peran, nama, idNum, email, password });
+      setFeedback(fbId, `Akun berhasil dibuat, ${nama}! Silakan masuk.`, true);
+
+      // Pindah ke login setelah 1.5 detik
+      setTimeout(() => {
+        document.getElementById(prefix + '-nama').value = '';
+        document.getElementById(peran === 'siswa' ? 'siswa-nisn' : 'guru-nip').value = '';
+        document.getElementById(prefix + '-email').value = '';
+        document.getElementById(prefix + '-password').value = '';
+        document.getElementById(fbId).textContent = '';
+        document.getElementById('login-email').value = email;
+        showPage('page-login');
+      }, 1500);
+    }
+
+    /* ══════════════════════════
+       PROSES MASUK
+    ══════════════════════════ */
+    function prosesMasuk() {
+      const idInput    = document.getElementById('login-id').value.trim();
+      const email      = document.getElementById('login-email').value.trim();
+      const password   = document.getElementById('login-password').value;
+      const fbId       = 'login-feedback';
+
+      if (!email || !password) {
+        setFeedback(fbId, 'Email dan password wajib diisi.'); return;
+      }
+
+      const user = users.find(u => u.email === email && u.password === password);
+      if (!user) {
+        setFeedback(fbId, 'Email atau password salah.'); return;
+      }
+
+      setFeedback(fbId, `Selamat datang, ${user.nama}!`, true);
+
+      // Nanti: arahkan ke dashboard sesuai peran
+      setTimeout(() => {
+        window.location.href = user.peran === 'siswa'
+          ? 'dashboardsiswa.html' : 'dashboardguru.html';
+      }, 1500);
+    }
+
+    /* Escape key tidak dipakai di sini (bukan modal), tapi tetap bersih */
+  </script>
+
+</body>
+</html>

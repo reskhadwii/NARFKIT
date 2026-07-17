@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Monitoring</title>
+  <link rel="stylesheet" type="text/css" href="global.css">
+  <link rel="stylesheet" type="text/css" href="styleguru.css">
+  <link rel="stylesheet" type="text/css" href="monitoring.css">
+</head>
+<body>
+
+<nav class="navigasi-siswa">
+  <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+  <div class="menu">
+    <a href="dashboardguru.html" class="menu-item">DASHBOARD</a>
+    <a href="class.html" class="menu-item">CLASS</a>
+    <a href="grading.html" class="menu-item">GRADING</a>
+    <a href="#" class="menu-item active">MONITORING</a>
+  </div>
+  <div class="nav-right">
+    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
+    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="main-content">
+    
+    <!-- Header -->
+    <div class="kata-kata">
+      <div class="sapaan">
+        <span class="halo">Monitoring Siswa</span>
+      </div>
+      <div class="subtitle">Pantau jurnal refleksi, berikan feedback, dan telusuri riwayat AI siswa.</div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-item">
+        <span class="filter-label">Pilih Kelas</span>
+        <select class="filter-select">
+          <option>XII Teknik Mekatronika A</option>
+          <option>XII Teknik Mekatronika B</option>
+          <option>XII Teknik Mekatronika C</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <span class="filter-label">Pilih Modul</span>
+        <select class="filter-select">
+          <option>Pemrograman Dasar: Modul 1</option>
+          <option>Internet of Things: Modul 2</option>
+          <option>Machine Learning: Modul 3</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <span class="filter-label">Pilih Siswa</span>
+        <select class="filter-select">
+          <option>Chen Junming</option>
+          <option>Zhang Guiyuan</option>
+          <option>Yang Bowen</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Split View Grid -->
+    <div class="monitoring-grid">
+      
+      <!-- Panel Kiri: Jurnal & Evaluasi -->
+      <div class="panel panel-kiri">
+        <div class="section-label">JURNAL REFLEKSI SISWA</div>
+        <div class="jurnal-box">
+          "Saya masih sering kebalik antara penggunaan sensor proximity sama limit switch waktu nulis kode programnya. Kadang bingung juga nentuin nilai delay yang pas supaya mesin nggak error."
+        </div>
+
+        <div class="ai-feedback-box">
+          <span>Analisis AI</span>
+          Siswa memahami fungsi dasar komponen, namun mengalami miskonsepsi pada logika percabangan (if-else) yang terkait pembacaan sensor fisik. Disarankan untuk memandu siswa membedakan input digital sesaat vs berkelanjutan.
+        </div>
+
+        <div class="section-label">BERIKAN FEEDBACK KE SISWA</div>
+        <textarea class="textarea-guru" placeholder="Tulis masukan, motivasi, atau koreksi di sini. Feedback ini akan muncul di modul siswa."></textarea>
+        <button class="btn-submit">Kirim ke Siswa</button>
+      </div>
+
+      <!-- Panel Kanan: Riwayat Chat AI -->
+       <!-- Panel Kanan: Riwayat Chat AI -->
+      <div class="panel panel-kanan">
+        
+        <!-- Header & Filter Waktu -->
+        <div class="chat-header">
+          <div class="section-label">RIWAYAT PROMPT AI</div>
+          <select class="filter-select-mini">
+            <option>Hari Ini</option>
+            <option>Kemarin</option>
+            <option>7 Hari Terakhir</option>
+            <option>Bulan Ini</option>
+          </select>
+        </div>
+      
+        <div class="chat-box">
+          
+          <div class="bubble-wrap siswa">
+            <div class="bubble">Gimana cara baca sensor proximity di C++ Arduino?</div>
+            <div class="waktu">09:12</div>
+          </div>
+          
+          <div class="bubble-wrap ai">
+            <div class="bubble">Untuk membaca sensor proximity digital, kamu bisa menggunakan fungsi digitalRead()...</div>
+            <div class="waktu">09:12</div>
+          </div>
+      
+          <!-- Pembatas Waktu -->
+          <div class="chat-divider">
+            <span class="chat-divider-text">KEMARIN</span>
+          </div>
+      
+          <div class="bubble-wrap siswa">
+            <div class="bubble">Kenapa ya relay aku bunyi cetak-cetek terus padahal kodenya bener?</div>
+            <div class="waktu">15:30</div>
+          </div>
+      
+        </div>
+      </div>
+</main>
+
+<footer class="footer">
+  <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
+</footer>
+
+<script>
+  // ===== DUMMY DATA MONITORING =====
+  // Data Jurnal terikat pada Nama Siswa -> Modul
+  const dataJurnal = {
+    "Chen Junming": {
+      "Modul 1: Pemrograman Dasar": {
+        jurnal: "Saya masih sering kebalik antara penggunaan sensor proximity sama limit switch waktu nulis kode programnya. Kadang bingung nentuin delay yang pas.",
+        ai: "Siswa memahami fungsi dasar komponen, namun mengalami miskonsepsi pada logika percabangan. Disarankan memandu siswa membedakan input digital sesaat vs berkelanjutan."
+      },
+      "Modul 2: Internet of Things": {
+        jurnal: "Konfigurasi WiFi di modul ESP8266 agak susah, sering timeout dan disconnect sendiri kalau datanya terlalu banyak.",
+        ai: "Siswa kesulitan pada aspek jaringan dasar dan manajemen memori (buffer). Arahkan untuk mengecek baud rate dan penggunaan delay() di dalam loop."
+      }
+    },
+    "Yang Bowen": {
+      "Modul 1: Pemrograman Dasar": {
+        jurnal: "Sintaks perulangan for dan while masih membingungkan, kapan harus pakai yang mana?",
+        ai: "Siswa belum menguasai konsep iterasi. Berikan analogi sederhana tentang aktivitas yang berulang dengan batas pasti vs batas kondisi."
+      }
+    }
+  };
+
+  // Data Chat terikat pada Nama Siswa -> Waktu
+  const dataChat = {
+    "Chen Junming": {
+      "Hari Ini": [
+        { sender: "siswa", time: "09:12", text: "Gimana cara baca sensor proximity di C++ Arduino?" },
+        { sender: "ai", time: "09:12", text: "Untuk membaca sensor proximity digital, kamu bisa menggunakan fungsi <code>digitalRead(pinSensor)</code>. Jika hasilnya HIGH, artinya ada objek." },
+        { sender: "siswa", time: "09:15", text: "Kalau limit switch sama aja bacanya pakai digitalRead?" },
+        { sender: "ai", time: "09:16", text: "Betul sekali! Keduanya memberikan sinyal digital (HIGH/LOW)." }
+      ],
+      "Kemarin": [
+        { sender: "siswa", time: "15:30", text: "Kenapa ya relay aku bunyi cetak-cetek terus padahal kodenya bener?" },
+        { sender: "ai", time: "15:31", text: "Itu kemungkinan besar karena efek <strong>Floating Pin</strong>! Tambahkan pinMode(pin, INPUT_PULLUP);" }
+      ]
+    },
+    "Yang Bowen": {
+      "Hari Ini": [
+        { sender: "siswa", time: "10:05", text: "Tolong cek logika ladder diagram ini, bener nggak buat saklar tukar?" },
+        { sender: "ai", time: "10:06", text: "Secara logika sudah benar, namun pastikan penguncian (latching) diletakkan paralel dengan tombol start." }
+      ]
+    }
+  };
+
+  // ===== LOGIKA RENDER TAMPILAN =====
+  
+  // Tangkap elemen dari DOM
+  const selectSiswa = document.getElementById('filter-siswa');
+  const selectModul = document.getElementById('filter-modul');
+  const selectWaktu = document.getElementById('filter-waktu-chat');
+  
+  const boxJurnal = document.getElementById('tempat-jurnal');
+  const boxAi = document.getElementById('tempat-ai-feedback');
+  const boxChat = document.getElementById('tempat-chat');
+  const inputFeedback = document.getElementById('input-feedback-guru');
+  const btnKirim = document.getElementById('btn-kirim-feedback');
+
+  // Fungsi Update Panel Kiri (Jurnal)
+  function renderJurnal() {
+    const siswa = selectSiswa.value;
+    const modul = selectModul.value;
+
+    // Cek apakah data tersedia
+    if (dataJurnal[siswa] && dataJurnal[siswa][modul]) {
+      boxJurnal.innerHTML = `"${dataJurnal[siswa][modul].jurnal}"`;
+      boxAi.innerHTML = `<span>Analisis AI</span>${dataJurnal[siswa][modul].ai}`;
+    } else {
+      boxJurnal.innerHTML = `<span style="color:rgba(var(--fg-rgb), 0.4)">Siswa belum mengumpulkan jurnal untuk modul ini.</span>`;
+      boxAi.innerHTML = `<span>Analisis AI</span>Tidak ada data untuk dianalisis.`;
+    }
+  }
+
+  // Fungsi Update Panel Kanan (Chat)
+  function renderChat() {
+    const siswa = selectSiswa.value;
+    const waktu = selectWaktu.value;
+
+    if (dataChat[siswa] && dataChat[siswa][waktu]) {
+      const chats = dataChat[siswa][waktu];
+      
+      // Map data array ke elemen HTML
+      boxChat.innerHTML = chats.map(chat => `
+        <div class="bubble-wrap ${chat.sender}">
+          <div class="bubble">${chat.text}</div>
+          <div class="waktu">${chat.time}</div>
+        </div>
+      `).join('');
+      
+    } else {
+      boxChat.innerHTML = `<div style="text-align:center; padding:40px; color:rgba(var(--fg-rgb), 0.4); font-size:13px; font-weight:700;">Tidak ada riwayat obrolan di waktu ini.</div>`;
+    }
+  }
+
+  // ===== EVENT LISTENERS =====
+
+  // Saat nama siswa diganti, update jurnal dan chat sekaligus
+  selectSiswa.addEventListener('change', () => {
+    renderJurnal();
+    renderChat();
+  });
+
+  // Saat modul diganti, update jurnal saja
+  selectModul.addEventListener('change', renderJurnal);
+
+  // Saat waktu chat diganti, update chat saja
+  selectWaktu.addEventListener('change', renderChat);
+
+  // Aksi Tombol Kirim Feedback
+  btnKirim.addEventListener('click', () => {
+    const isiFeedback = inputFeedback.value.trim();
+    if (isiFeedback === "") {
+      alert("Feedback tidak boleh kosong!");
+      return;
+    }
+    
+    // Simulasi pengiriman data
+    alert(`Feedback berhasil dikirim ke modul siswa: ${selectSiswa.value}`);
+    
+    // Kosongkan textarea setelah kirim
+    inputFeedback.value = "";
+  });
+
+  // Render pertama kali saat halaman dimuat
+  renderJurnal();
+  renderChat();
+
+  // Toggle tema terang/gelap
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+      iconMoon.style.display = 'none';
+      iconSun.style.display = 'block';
+    } else {
+      root.removeAttribute('data-theme');
+      iconMoon.style.display = 'block';
+      iconSun.style.display = 'none';
+    }
+  }
+
+  const saved = localStorage.getItem('narfkit-theme') || 'dark';
+  applyTheme(saved);
+
+  toggleBtn.addEventListener('click', () => {
+    const isLight = root.getAttribute('data-theme') === 'light';
+    const next = isLight ? 'dark' : 'light';
+    localStorage.setItem('narfkit-theme', next);
+    applyTheme(next);
+  });
+</script>
+</body>
+</html>

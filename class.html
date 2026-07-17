@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Class</title>
+  <link rel="stylesheet" type="text/css" href="global.css">
+  <link rel="stylesheet" type="text/css" href="styleguru.css">
+  <link rel="stylesheet" type="text/css" href="class.css">
+</head>
+
+<body>
+    <nav class="navigasi-siswa">
+        <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+        <div class="menu">
+            <a href="dashboardguru.html" class="menu-item">DASHBOARD</a>
+            <a href="class.html" class="menu-item active">CLASS</a>
+            <a href="grading.html" class="menu-item">GRADING</a>
+            <a href="monitoring.html" class="menu-item">MONITORING</a>
+        </div>
+        <div class="nav-right">
+            <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
+            <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
+                <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+
+         <div class="kata-kata">
+            <div class="sapaan">
+                <span class="halo">Manajemen Kelas</span>
+            </div>
+            <div class="subtitle">Pantau aktivitas siswa</div>
+        </div>
+
+      <!-- ===== SCREEN 1: SEMUA KELAS ===== -->
+      <div class="screen active" id="screen-kelas-list">
+
+        <div class="ringkasan">
+            <div class="ringkasan-grid">
+                <a class="ringkasan-card urgent" href="monitoring.html">
+                    <div class="ringkasan-angka">90</div>
+                    <div class="ringkasan-label">Total Siswa</div>
+                </a>
+               <a class="ringkasan-card urgent" href="monitoring.html">
+                 <div class="ringkasan-angka">60</div>
+                 <div class="ringkasan-label">Aktif Minggu Ini</div>
+               </a>
+               <a class="ringkasan-card urgent" href="monitoring.html">
+                 <div class="ringkasan-angka">8</div>
+                 <div class="ringkasan-label">Tidak Aktif Lebih dari 7 Hari</div>
+               </a>
+            </div>
+        </div>
+
+        <hr class="pembatas">
+
+        <!-- Kelas -->
+        <div class="kelas">
+          <div class="section-label">SEMUA KELAS</div>
+          <div class="kelas-grid">
+
+              <a class="kelas-card" href="class.html?kelas=A">
+               <div class="kelas-icon">
+                  <svg width="197" height="197" viewBox="0 0 197 197" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M123.125 114.917C101.209 114.917 57.4585 125.834 57.4585 147.75V164.167H188.792V147.75C188.792 125.834 145.041 114.917 123.125 114.917ZM123.125 98.5002C131.833 98.5002 140.184 95.0409 146.342 88.8835C152.499 82.7261 155.958 74.3748 155.958 65.6668C155.958 56.9589 152.499 48.6076 146.342 42.4502C140.184 36.2927 131.833 32.8335 123.125 32.8335C114.417 32.8335 106.066 36.2927 99.9085 42.4502C93.751 48.6076 90.2918 56.9589 90.2918 65.6668C90.2918 74.3748 93.751 82.7261 99.9085 88.8835C106.066 95.0409 114.417 98.5002 123.125 98.5002ZM41.0418 109.007L61.1522 121.237L55.8168 98.1718L73.8752 82.7402L50.1531 80.6881L41.0418 59.0181L31.7664 80.6881L8.2085 82.7402L26.1027 98.1718L20.521 121.237L41.0418 109.007Z" fill="currentColor"/>
+                  </svg>
+               </div>
+               <div class="kelas-judul">XII Teknik Mekatronika A</div>
+               <div class="kelas-meta"><span class="kelas-isi">30 siswa</span></div>
+              </a>
+
+              <a class="kelas-card" href="class.html?kelas=B">
+               <div class="kelas-icon">
+                <svg width="197" height="197" viewBox="0 0 197 197" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M123.125 114.917C101.209 114.917 57.4585 125.834 57.4585 147.75V164.167H188.792V147.75C188.792 125.834 145.041 114.917 123.125 114.917ZM123.125 98.5002C131.833 98.5002 140.184 95.0409 146.342 88.8835C152.499 82.7261 155.958 74.3748 155.958 65.6668C155.958 56.9589 152.499 48.6076 146.342 42.4502C140.184 36.2927 131.833 32.8335 123.125 32.8335C114.417 32.8335 106.066 36.2927 99.9085 42.4502C93.751 48.6076 90.2918 56.9589 90.2918 65.6668C90.2918 74.3748 93.751 82.7261 99.9085 88.8835C106.066 95.0409 114.417 98.5002 123.125 98.5002ZM41.0418 109.007L61.1522 121.237L55.8168 98.1718L73.8752 82.7402L50.1531 80.6881L41.0418 59.0181L31.7664 80.6881L8.2085 82.7402L26.1027 98.1718L20.521 121.237L41.0418 109.007Z" fill="currentColor"/>
+                  </svg>
+               </div>
+               <div class="kelas-judul">XII Teknik Mekatronika B</div>
+               <div class="kelas-meta"><span class="kelas-isi">30 siswa</span></div>
+              </a>
+
+              <a class="kelas-card" href="class.html?kelas=C">
+               <div class="kelas-icon">
+                <svg width="197" height="197" viewBox="0 0 197 197" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M123.125 114.917C101.209 114.917 57.4585 125.834 57.4585 147.75V164.167H188.792V147.75C188.792 125.834 145.041 114.917 123.125 114.917ZM123.125 98.5002C131.833 98.5002 140.184 95.0409 146.342 88.8835C152.499 82.7261 155.958 74.3748 155.958 65.6668C155.958 56.9589 152.499 48.6076 146.342 42.4502C140.184 36.2927 131.833 32.8335 123.125 32.8335C114.417 32.8335 106.066 36.2927 99.9085 42.4502C93.751 48.6076 90.2918 56.9589 90.2918 65.6668C90.2918 74.3748 93.751 82.7261 99.9085 88.8835C106.066 95.0409 114.417 98.5002 123.125 98.5002ZM41.0418 109.007L61.1522 121.237L55.8168 98.1718L73.8752 82.7402L50.1531 80.6881L41.0418 59.0181L31.7664 80.6881L8.2085 82.7402L26.1027 98.1718L20.521 121.237L41.0418 109.007Z" fill="currentColor"/>
+                  </svg>
+               </div>
+               <div class="kelas-judul">XII Teknik Mekatronika C</div>
+               <div class="kelas-meta"><span class="kelas-isi">30 siswa</span></div>
+              </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ===== SCREEN 2: DETAIL KELAS (DAFTAR SISWA) ===== -->
+      <div class="screen" id="screen-kelas-detail">
+
+        <a class="btn-back" href="class.html">&#8592; Kembali ke Semua Kelas</a>
+
+        <div class="detail-header">
+          <div>
+            <div class="detail-judul" id="detail-judul-kelas">XII Teknik Mekatronika A</div>
+            <div class="detail-sub" id="detail-sub-kelas">30 siswa</div>
+          </div>
+          <div class="search-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="search-input" id="search-siswa" placeholder="Cari nama siswa...">
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table class="siswa-table">
+            <thead>
+              <tr>
+                <th>Nama Siswa</th>
+                <th>Kelompok</th>
+                <th>Modul Aktif</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Total XP</th>
+                <th>XP Modul</th>
+                <th>Perlu Dinilai</th>
+                <th>Project</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="siswa-tbody">
+              <!-- diisi via JS -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
+        <svg class="chat-icon" viewBox="0 0 80 80" fill="none" onclick="window.location.href='chatbot.html'"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 73.33C58.41 73.33 73.33 58.41 73.33 40C73.33 21.59 58.41 6.67 40 6.67C21.59 6.67 6.67 21.59 6.67 40C6.67 45.33 7.92 50.37 10.14 54.84C10.74 56.03 10.93 57.39 10.59 58.67L8.61 66.09C8.41 66.82 8.41 67.6 8.61 68.33C8.8 69.07 9.19 69.74 9.73 70.27C10.27 70.81 10.93 71.2 11.67 71.39C12.4 71.59 13.18 71.59 13.91 71.4L21.33 69.41C22.62 69.08 23.98 69.24 25.16 69.85C29.77 72.15 34.85 73.34 40 73.33ZM26.67 44.17C26 44.17 25.37 44.43 24.9 44.9C24.43 45.37 24.17 46 24.17 46.67C24.17 47.33 24.43 47.97 24.9 48.43C25.37 48.9 26 49.17 26.67 49.17H45C45.66 49.17 46.3 48.9 46.77 48.43C47.24 47.97 47.5 47.33 47.5 46.67C47.5 46 47.24 45.37 46.77 44.9C46.3 44.43 45.66 44.17 45 44.17H26.67ZM24.17 35C24.17 34.34 24.43 33.7 24.9 33.23C25.37 32.76 26 32.5 26.67 32.5H53.33C54 32.5 54.63 32.76 55.1 33.23C55.57 33.7 55.83 34.34 55.83 35C55.83 35.66 55.57 36.3 55.1 36.77C54.63 37.24 54 37.5 53.33 37.5H26.67C26 37.5 25.37 37.24 24.9 36.77C24.43 36.3 24.17 35.66 24.17 35Z" fill="#DDA39E"/></svg>
+    </footer>
+
+<script>
+  // ===== THEME TOGGLE =====
+  const root = document.documentElement;
+  const toggleBtn = document.getElementById('theme-toggle');
+  const iconMoon = document.getElementById('icon-moon');
+  const iconSun = document.getElementById('icon-sun');
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+      iconMoon.style.display = 'none';
+      iconSun.style.display = 'block';
+    } else {
+      root.removeAttribute('data-theme');
+      iconMoon.style.display = 'block';
+      iconSun.style.display = 'none';
+    }
+  }
+  const savedTheme = localStorage.getItem('narfkit-theme') || 'dark';
+  applyTheme(savedTheme);
+  toggleBtn.addEventListener('click', () => {
+    const isLight = root.getAttribute('data-theme') === 'light';
+    const next = isLight ? 'dark' : 'light';
+    localStorage.setItem('narfkit-theme', next);
+    applyTheme(next);
+  });
+
+  // ===== DATA DUMMY SISWA PER KELAS =====
+  const kelasData = {
+    A: {
+      nama: 'XII Teknik Mekatronika A',
+      siswa: [
+        { nama: 'Zhang Guiyuan', kelompok: '1', modul: 'Pemrograman', progress: 82, status: 'online', totalXp: 2480, xpModul: 340, perluDinilai: 2, project: 'selesai' },
+        { nama: 'Chen Sihan', kelompok: '1', modul: 'Pemrograman', progress: 65, status: 'online', totalXp: 1920, xpModul: 210, perluDinilai: 0, project: 'proses' },
+        { nama: 'Nie Weichen', kelompok: '1', modul: 'Internet of Things', progress: 40, status: 'offline', totalXp: 1450, xpModul: 90, perluDinilai: 1, project: 'belum' },
+        { nama: 'Wang Lujie', kelompok: '1', modul: 'Pemrograman', progress: 55, status: 'offline', totalXp: 1680, xpModul: 150, perluDinilai: 0, project: 'proses' },
+        { nama: 'Yang Hanbo', kelompok: '2', modul: 'Internet of Things', progress: 28, status: 'offline', totalXp: 980, xpModul: 60, perluDinilai: 1, project: 'belum' },
+        { nama: 'Li Yudong', kelompok: '2', modul: 'Pemrograman', progress: 90, status: 'online', totalXp: 2210, xpModul: 300, perluDinilai: 0, project: 'selesai' }
+      ]
+    },
+    B: {
+      nama: 'XII Teknik Mekatronika B',
+      siswa: [
+        { nama: 'Liu Xin', kelompok: '2', modul: 'Internet of Things', progress: 70, status: 'online', totalXp: 2145, xpModul: 260, perluDinilai: 1, project: 'proses' },
+        { nama: 'Zhang Zhenyuan', kelompok: '2', modul: 'Pemrograman', progress: 48, status: 'offline', totalXp: 1340, xpModul: 120, perluDinilai: 0, project: 'belum' },
+        { nama: 'Song Yaxuan', kelompok: '3', modul: 'Machine Learning', progress: 35, status: 'online', totalXp: 1580, xpModul: 100, perluDinilai: 2, project: 'proses' },
+        { nama: 'Chen Junming', kelompok: '3', modul: 'Internet of Things', progress: 60, status: 'offline', totalXp: 1750, xpModul: 180, perluDinilai: 0, project: 'selesai' },
+        { nama: 'Ao Ziyi', kelompok: '3', modul: 'Pemrograman', progress: 22, status: 'offline', totalXp: 890, xpModul: 45, perluDinilai: 1, project: 'belum' }
+      ]
+    },
+    C: {
+      nama: 'XII Teknik Mekatronika C',
+      siswa: [
+        { nama: 'Chen Yiheng', kelompok: '3', modul: 'Machine Learning', progress: 88, status: 'online', totalXp: 2310, xpModul: 310, perluDinilai: 0, project: 'selesai' },
+        { nama: 'He Qiu', kelompok: '4', modul: 'Kewirausahaan', progress: 50, status: 'online', totalXp: 1610, xpModul: 140, perluDinilai: 1, project: 'proses' },
+        { nama: 'Huangyang Tiantian', kelompok: '4', modul: 'Pemrograman', progress: 33, status: 'offline', totalXp: 1120, xpModul: 80, perluDinilai: 1, project: 'belum' },
+        { nama: 'Xia Zhiguang', kelompok: '4', modul: 'Machine Learning', progress: 76, status: 'offline', totalXp: 1980, xpModul: 220, perluDinilai: 0, project: 'proses' },
+        { nama: 'Zhou Xinyu', kelompok: '4', modul: 'Kewirausahaan', progress: 44, status: 'online', totalXp: 1390, xpModul: 110, perluDinilai: 2, project: 'belum' },
+        { nama: 'Song Yuqi', kelompok: '5', modul: 'Pemrograman', progress: 95, status: 'online', totalXp: 2560, xpModul: 350, perluDinilai: 0, project: 'selesai' }
+      ]
+    }
+  };
+
+  function getInisial(nama) {
+    return nama.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  }
+
+  function projectBadge(status) {
+    if (status === 'selesai') return '<span class="project-status project-selesai">Selesai</span>';
+    if (status === 'proses') return '<span class="project-status project-proses">Proses</span>';
+    return '<span class="project-belum">Belum Submit</span>';
+  }
+
+  function perluDinilaiBadge(n) {
+    if (n > 0) return `<span class="perlu-badge">${n}</span>`;
+    return '<span class="perlu-kosong">—</span>';
+  }
+
+function renderTabel(kelasKode, keyword = '') {
+    const kelas = kelasData[kelasKode];
+    if (!kelas) return;
+
+    document.getElementById('detail-judul-kelas').textContent = kelas.nama;
+    document.getElementById('detail-sub-kelas').textContent = kelas.siswa.length + ' siswa';
+
+    const filtered = kelas.siswa.filter(s => s.nama.toLowerCase().includes(keyword.toLowerCase()));
+    const tbody = document.getElementById('siswa-tbody');
+
+    if (filtered.length === 0) {
+      // Ubah colspan menjadi 10 karena sekarang ada 10 kolom
+      tbody.innerHTML = `<tr><td colspan="10"><div class="tabel-kosong">Siswa tidak ditemukan.</div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(s => `
+      <tr>
+        <td>
+          <div class="siswa-nama-cell">
+            <div class="siswa-avatar">${getInisial(s.nama)}</div>
+            <span>${s.nama}</span>
+          </div>
+        </td>
+        <td>
+          <span class="siswa-kelompok">${s.kelompok}</span>
+        </td>
+        <td class="siswa-modul">${s.modul}</td>
+        <td>
+          <div class="mini-progress-wrap">
+            <span class="mini-progress-persen">${s.progress}%</span>
+            <div class="mini-progress-bar"><div class="mini-progress-fill" style="width:${s.progress}%"></div></div>
+          </div>
+        </td>
+        <td>
+          <span class="status-wrap ${s.status === 'online' ? 'status-online' : 'status-offline'}">
+            <span class="status-dot"></span>${s.status === 'online' ? 'Online' : 'Tidak Aktif'}
+          </span>
+        </td>
+        <td class="xp-total">${s.totalXp.toLocaleString('id-ID')}</td>
+        <td class="xp-modul">${s.xpModul}</td>
+        <td>${perluDinilaiBadge(s.perluDinilai)}</td>
+        <td>${projectBadge(s.project)}</td>
+        <td><a class="btn-aksi" href="profil-siswa.html?nama=${encodeURIComponent(s.nama)}">Lihat Profil</a></td>
+      </tr>
+    `).join('');
+  }
+
+  // ===== ROUTING SEDERHANA BERDASARKAN ?kelas= =====
+  const params = new URLSearchParams(window.location.search);
+  const kelasParam = params.get('kelas');
+
+  if (kelasParam && kelasData[kelasParam]) {
+    document.getElementById('screen-kelas-list').classList.remove('active');
+    document.getElementById('screen-kelas-detail').classList.add('active');
+    renderTabel(kelasParam);
+
+    document.getElementById('search-siswa').addEventListener('input', (e) => {
+      renderTabel(kelasParam, e.target.value);
+    });
+  }
+</script>
+</body>
+</html>
