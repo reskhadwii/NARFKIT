@@ -29,18 +29,30 @@
 </nav>
 
 <main class="main-content">
-  <div>
-    <div class="page-title">
-      <span class="title-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
-          <path d="M8.5 2h7"/>
-          <path d="M7 16h10"/>
-        </svg>
-      </span>
-      Simulation Lab
+  <div class="page-head">
+    <div>
+      <div class="page-title">
+        <span class="title-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
+            <path d="M8.5 2h7"/>
+            <path d="M7 16h10"/>
+          </svg>
+        </span>
+        Simulation Lab
+      </div>
+      <div class="page-subtitle">Eksperimen rangkaian mikrokontroler langsung dari browser</div>
     </div>
-    <div class="page-subtitle">Eksperimen rangkaian mikrokontroler dan latih model machine learning kamu sendiri</div>
+    <div class="sim-tabs">
+      <a href="#" class="template-chip active">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        Wokwi Simulator
+      </a>
+      <a href="teachablemachine.html" class="template-chip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+        Teachable Machine
+      </a>
+    </div>
   </div>
 
   <div class="panels">
@@ -128,98 +140,6 @@
       </div>
     </div>
 
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title-row">
-          <div class="panel-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
-              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
-              <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
-              <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/>
-              <path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
-              <path d="M19.938 10.5a4 4 0 0 1 .585.396"/>
-              <path d="M6 18a4 4 0 0 1-1.967-.516"/>
-              <path d="M19.967 17.484A4 4 0 0 1 18 18"/>
-            </svg>
-          </div>
-          <div>
-            <div class="panel-title">Teachable Machine</div>
-          </div>
-          <span class="panel-badge">Machine Learning</span>
-        </div>
-        <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" class="btn-open">
-          ↗ Buka TM
-        </a>
-      </div>
-
-      <div class="tm-steps">
-        <div class="tm-step" id="step1">
-          <div class="tm-step-num">1</div>
-          <span>Buka Teachable Machine → buat project baru</span>
-        </div>
-        <div class="tm-step" id="step2">
-          <div class="tm-step-num">2</div>
-          <span>Train model kamu dengan data gambar/suara/pose</span>
-        </div>
-        <div class="tm-step" id="step3">
-          <div class="tm-step-num">3</div>
-          <span>Export → pilih "Tensorflow.js" → copy link model</span>
-        </div>
-        <div class="tm-step" id="step4">
-          <div class="tm-step-num">4</div>
-          <span>Paste link model di bawah untuk uji coba langsung!</span>
-        </div>
-      </div>
-
-      <div class="url-row">
-        <input
-          class="url-input"
-          id="tm-input"
-          type="text"
-          placeholder="Paste URL model Teachable Machine kamu..."
-        >
-        <button class="btn-load" onclick="loadTMModel()">Load ▶</button>
-      </div>
-
-      <div class="panel-body" id="tm-body">
-        <div class="placeholder" id="tm-placeholder">
-          <div class="placeholder-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
-              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
-              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
-              <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
-              <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/>
-              <path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
-              <path d="M19.938 10.5a4 4 0 0 1 .585.396"/>
-              <path d="M6 18a4 4 0 0 1-1.967-.516"/>
-              <path d="M19.967 17.484A4 4 0 0 1 18 18"/>
-            </svg>
-          </div>
-          <div class="placeholder-title">Belum ada model</div>
-          <div class="placeholder-desc">
-            Train model kamu di Teachable Machine dulu, lalu paste URL model-nya di atas untuk langsung dicoba di sini!
-          </div>
-          <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" class="btn-start">
-            Mulai Training
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-
-        <iframe
-          id="tm-iframe"
-          class="sim-iframe"
-          style="display:none"
-          allowfullscreen
-          allow="camera; microphone"
-        ></iframe>
-      </div>
-    </div>
-
   </div>
 </main>
 
@@ -287,98 +207,6 @@
 
   document.getElementById('wokwi-input').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') loadCustomProject()
-  })
-
-  // ===== TEACHABLE MACHINE =====
-  function loadTMModel() {
-    let input = document.getElementById('tm-input').value.trim()
-    if (!input) return
-    if (!input.endsWith('/')) input += '/'
-    document.getElementById('tm-placeholder').style.display = 'none'
-
-    // Cek tema dari body class
-    const isLight = document.body.classList.contains('light-theme');
-    
-    // Set warna dinamis
-    const bgIframe = isLight ? '#fbf1e7' : '#1a1313';
-    const textIframe = isLight ? '#291b17' : '#fff';
-    const titleIframe = isLight ? '#a84a14' : 'rgba(255,251,151,0.9)';
-
-    const iframe = document.getElementById('tm-iframe')
-    iframe.style.display = 'block'
-    
-    const tmHTML = `
-     <!DOCTYPE html>
-     <html>
-     <head>
-       <meta charset="UTF-8">
-       <style>
-         body { margin:0; background-color:${bgIframe}; color:${textIframe}; font-family:sans-serif; display:flex; flex-direction:column; align-items:center; padding:20px; gap:12px; transition: background-color 0.25s ease, color 0.25s ease; }
-         #webcam-container canvas { border-radius:12px; }
-         #label-container div {
-           background-color: rgba(254,127,66,0.15);
-           border: 1px solid #fe7f42;
-           border-radius: 8px;
-           padding: 6px 14px;
-           margin: 4px 0;
-           font-size: 14px;
-           font-weight: bold;
-           color: ${textIframe};
-         }
-         button {
-           background-color: #fe7f42; color: #fff; border: none;
-           border-radius: 10px; padding: 10px 24px;
-           font-size: 16px; font-weight: bold; cursor: pointer;
-         }
-         h3 { color: ${titleIframe}; margin:0; }
-       </style>
-     </head>
-     <body>
-       <h3>🧠 Teachable Machine Preview</h3>
-       <button onclick="init()">▶ Aktifkan Kamera</button>
-       <div id="webcam-container"></div>
-       <div id="label-container"></div>
-       <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"><\/script>
-       <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"><\/script>
-       <script>
-         const URL = "${input}";
-         let model, webcam, labelContainer, maxPredictions;
-         async function init() {
-           const modelURL = URL + "model.json";
-           const metadataURL = URL + "metadata.json";
-           model = await tmImage.load(modelURL, metadataURL);
-           maxPredictions = model.getTotalClasses();
-           webcam = new tmImage.Webcam(300, 300, true);
-           await webcam.setup();
-           await webcam.play();
-           window.requestAnimationFrame(loop);
-           document.getElementById("webcam-container").appendChild(webcam.canvas);
-           labelContainer = document.getElementById("label-container");
-           for (let i = 0; i < maxPredictions; i++) {
-             labelContainer.appendChild(document.createElement("div"));
-           }
-         }
-         async function loop() {
-           webcam.update();
-           await predict();
-           window.requestAnimationFrame(loop);
-         }
-         async function predict() {
-           const prediction = await model.predict(webcam.canvas);
-           for (let i = 0; i < maxPredictions; i++) {
-             const p = prediction[i];
-             labelContainer.childNodes[i].innerHTML = p.className + ": " + (p.probability * 100).toFixed(1) + "%";
-           }
-         }
-       <\/script>
-     </body>
-     </html>`
-    iframe.srcdoc = tmHTML
-    document.querySelectorAll('.tm-step').forEach(s => s.classList.add('done'))
-  }
-
-  document.getElementById('tm-input').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') loadTMModel()
   })
 </script>
 

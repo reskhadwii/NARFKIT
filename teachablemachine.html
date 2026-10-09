@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Teachable Machine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="global.css">
+  <link rel="stylesheet" type="text/css" href="teachablemachine.css">
+</head>
+<body>
+
+<nav class="navigasi-siswa">
+  <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+  <div class="menu">
+    <a href="dashboardsiswa.html" class="menu-item">DASHBOARD</a>
+    <a href="course.html" class="menu-item">COURSE</a>
+    <a href="simulation.html" class="menu-item active">SIMULATION</a>
+    <a href="chatbot.html" class="menu-item">CHATBOT</a>
+  </div>
+  <div class="nav-right">
+    <svg viewBox="0 0 60 60" fill="none"><path d="M7.5 38.75L17.14 30.72C21.23 27.31 23.91 27.66 27.44 31.19L27.46 31.2C31.3 35.05 34.06 34.89 37.89 31.54L52.5 18.75" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M52.5 52.5H23.5C17.9 52.5 15.1 52.5 12.96 51.41C11.08 50.45 9.55 48.92 8.59 47.04C7.5 44.9 7.5 42.1 7.5 36.5V7.5" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 60 60" fill="none"><path d="M22.5 42.5V45C22.5 46.99 23.29 48.9 24.7 50.3C26.1 51.71 28.01 52.5 30 52.5C31.99 52.5 33.9 51.71 35.3 50.3C36.71 48.9 37.5 46.99 37.5 45V42.5M25 12.5C25 11.17 25.53 9.9 26.46 8.96C27.4 8.03 28.67 7.5 30 7.5C31.33 7.5 32.6 8.03 33.54 8.96C34.47 9.9 35 11.17 35 12.5C37.87 13.86 40.32 15.97 42.08 18.61C43.84 21.26 44.85 24.33 45 27.5V35C45.19 36.55 45.74 38.04 46.61 39.35C47.48 40.65 48.64 41.73 50 42.5H10C11.36 41.73 12.52 40.65 13.39 39.35C14.26 38.04 14.81 36.55 15 35V27.5C15.15 24.33 16.16 21.26 17.92 18.61C19.68 15.97 22.13 13.86 25 12.5Z" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
+    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
+      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div class="page-head">
+    <div>
+      <div class="page-title">
+        <span class="title-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+            <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+            <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
+          </svg>
+        </span>
+        Teachable Machine
+      </div>
+      <div class="page-subtitle">Latih model di Teachable Machine, lalu uji coba langsung di sini</div>
+    </div>
+    <div class="sim-tabs">
+      <a href="simulation.html" class="template-chip">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        Wokwi Simulator
+      </a>
+      <a href="#" class="template-chip active">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+        Teachable Machine
+      </a>
+    </div>
+  </div>
+
+  <div class="tm-layout">
+
+    <!-- ===== PANDUAN & LOAD MODEL ===== -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title-row">
+          <div class="panel-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
+            </svg>
+          </div>
+          <div class="panel-title">Hubungkan Model</div>
+          <span class="panel-badge">Image Model</span>
+        </div>
+        <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" class="btn-open">↗ Buka TM</a>
+      </div>
+
+      <div class="panel-section">
+        <div class="tm-steps">
+          <div class="tm-step">
+            <div class="tm-step-num">1</div>
+            <span>Buka <b>Teachable Machine</b> → pilih <b>Image Project</b> → <b>Standard image model</b></span>
+          </div>
+          <div class="tm-step">
+            <div class="tm-step-num">2</div>
+            <span>Beri nama tiap kelas, kumpulkan sampel gambar lewat webcam/upload, lalu klik <b>Train Model</b></span>
+          </div>
+          <div class="tm-step">
+            <div class="tm-step-num">3</div>
+            <span>Klik <b>Export Model</b> → tab <b>Tensorflow.js</b> → <b>Upload my model</b> → copy link yang muncul</span>
+          </div>
+          <div class="tm-step" id="step-load">
+            <div class="tm-step-num">4</div>
+            <span>Paste link model di bawah, lalu klik <b>Load</b> untuk mulai uji coba!</span>
+          </div>
+        </div>
+        <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" class="btn-primary">
+          Mulai Training di Teachable Machine
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-label">Link Model Teachable Machine</div>
+        <div class="url-row">
+          <input class="url-input" id="tm-input" type="text" placeholder="https://teachablemachine.withgoogle.com/models/xxxx/">
+          <button class="btn-load" id="btn-load">Load ▶</button>
+        </div>
+        <div class="load-msg" id="load-msg">Belum ada model yang dimuat.</div>
+      </div>
+    </div>
+
+    <!-- ===== PREVIEW ===== -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title-row">
+          <div class="panel-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div class="panel-title">Uji Coba Model</div>
+        </div>
+        <span class="panel-badge" id="preview-badge">Off</span>
+      </div>
+
+      <div class="panel-section">
+        <div class="source-row">
+          <span class="section-label">Sumber Kamera:</span>
+          <button class="template-chip active" data-source="webcam">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+            Webcam Laptop
+          </button>
+          <button class="template-chip" data-source="esp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg>
+            ESP32-CAM
+          </button>
+        </div>
+
+        <div class="esp-config" id="esp-config">
+          <div class="url-row">
+            <input class="url-input" id="esp-ip" type="text" placeholder="IP ESP32-CAM, contoh: 192.168.1.20">
+            <select class="url-input esp-mode" id="esp-mode" title="Mode pengambilan gambar">
+              <option value="stream">Stream (:81/stream)</option>
+              <option value="capture">Snapshot (/capture)</option>
+            </select>
+          </div>
+          <div class="load-msg" id="esp-msg">
+            Pastikan laptop & ESP32-CAM terhubung ke WiFi yang sama. IP bisa dilihat di Serial Monitor Arduino saat ESP32-CAM menyala.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="preview-grid">
+          <div>
+            <div class="preview-frame" id="preview-frame">
+              <img id="preview-img" alt="Gambar uji">
+              <div class="placeholder" id="preview-placeholder">
+                <div class="placeholder-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>
+                  </svg>
+                </div>
+                <div class="placeholder-title" id="preview-title">Belum ada model</div>
+                <div class="placeholder-desc" id="preview-desc">Load model Teachable Machine kamu dulu, lalu uji pakai webcam, ESP32-CAM, atau upload gambar.</div>
+              </div>
+            </div>
+            <div class="preview-actions">
+              <button class="btn-primary" id="btn-cam" disabled>▶ Mulai Kamera</button>
+              <label class="btn-open" id="btn-upload" aria-disabled="true">
+                Upload Gambar
+                <input type="file" id="preview-file" accept="image/*" hidden disabled>
+              </label>
+            </div>
+          </div>
+
+          <div class="predictions" id="predictions">
+            <div class="top-result">
+              <div class="top-result-label">Prediksi Teratas</div>
+              <div class="top-result-value" id="top-result">-</div>
+            </div>
+            <div id="pred-rows">
+              <div class="pred-empty">Hasil prediksi tiap kelas akan muncul di sini.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
+</footer>
+
+<!-- versi library mengikuti snippet export resmi Teachable Machine -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+<script>
+// =====================================================
+// THEME
+// =====================================================
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme)
+  try { localStorage.setItem('narfkit_theme', theme) } catch (e) {}
+  document.getElementById('icon-moon').style.display = theme === 'dark' ? 'block' : 'none'
+  document.getElementById('icon-sun').style.display = theme === 'light' ? 'block' : 'none'
+}
+let savedTheme = 'dark'
+try { savedTheme = localStorage.getItem('narfkit_theme') || 'dark' } catch (e) {}
+applyTheme(savedTheme)
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark'
+  applyTheme(current === 'dark' ? 'light' : 'dark')
+})
+
+// =====================================================
+// TEACHABLE MACHINE
+// =====================================================
+const BAR_COLORS = ['#fe7f42', '#dda39e', '#e8b04a', '#c9705f', '#f2a65a', '#a85c53', '#d98c6a', '#b8864b']
+const $ = (id) => document.getElementById(id)
+
+let model = null
+let labels = []
+
+function setLoadMsg(text, type) {
+  const msg = $('load-msg')
+  msg.textContent = text
+  msg.className = 'load-msg' + (type ? ' ' + type : '')
+}
+
+// terima link model TM, pastikan diakhiri "/"
+function normalizeModelUrl(input) {
+  let url = input.trim().replace(/(model|metadata)\.json$/, '')
+  if (!/^https?:\/\//.test(url)) return null
+  if (!url.endsWith('/')) url += '/'
+  return url
+}
+
+async function loadModel() {
+  const url = normalizeModelUrl($('tm-input').value)
+  if (!url) {
+    setLoadMsg('Link tidak valid. Contoh: https://teachablemachine.withgoogle.com/models/xxxx/', 'error')
+    return
+  }
+  const btn = $('btn-load')
+  btn.disabled = true
+  btn.textContent = 'Memuat...'
+  setLoadMsg('Sedang memuat model...')
+
+  try {
+    const loaded = await tmImage.load(url + 'model.json', url + 'metadata.json')
+    if (cameraOn) stopCamera()
+    if (model) model.dispose()
+    model = loaded
+    labels = model.getClassLabels()
+    setLoadMsg(`Model berhasil dimuat: ${labels.length} kelas (${labels.join(', ')}).`, 'ok')
+    $('step-load').classList.add('done')
+    document.querySelectorAll('.tm-step').forEach(s => s.classList.add('done'))
+    setupPredictionRows()
+    enablePreview()
+  } catch (err) {
+    console.error(err)
+    setLoadMsg('Gagal memuat model. Pastikan link benar dan model sudah di-upload (Export → Upload my model).', 'error')
+  } finally {
+    btn.disabled = false
+    btn.textContent = 'Load ▶'
+  }
+}
+
+function enablePreview() {
+  $('btn-cam').disabled = false
+  $('preview-file').disabled = false
+  $('btn-upload').removeAttribute('aria-disabled')
+  $('preview-title').textContent = 'Model siap diuji!'
+  $('preview-desc').textContent = 'Pilih sumber kamera lalu klik "Mulai Kamera", atau upload gambar.'
+}
+
+function setupPredictionRows() {
+  const box = $('pred-rows')
+  box.innerHTML = ''
+  box.className = 'predictions'
+  labels.forEach((label, i) => {
+    const row = document.createElement('div')
+    row.className = 'pred-row'
+    row.innerHTML = `
+      <div class="pred-top"><span class="pred-name"></span><span class="pred-pct">0%</span></div>
+      <div class="pred-bar"><div class="pred-fill"></div></div>`
+    row.querySelector('.pred-name').textContent = label
+    row.querySelector('.pred-fill').style.background = BAR_COLORS[i % BAR_COLORS.length]
+    box.appendChild(row)
+  })
+  $('top-result').textContent = '-'
+}
+
+async function predict(source) {
+  if (!model) return
+  const prediction = await model.predict(source)
+  const rows = $('pred-rows').querySelectorAll('.pred-row')
+  let best = 0
+  prediction.forEach((p, i) => {
+    if (p.probability > prediction[best].probability) best = i
+    const pct = (p.probability * 100).toFixed(0) + '%'
+    rows[i].querySelector('.pred-fill').style.width = pct
+    rows[i].querySelector('.pred-pct').textContent = pct
+  })
+  rows.forEach((row, i) => row.classList.toggle('top', i === best))
+  $('top-result').textContent = prediction[best].className
+}
+
+// =====================================================
+// KAMERA (Webcam laptop / ESP32-CAM)
+// =====================================================
+const ESP_IP_KEY = 'narfkit_espcam_ip'
+let cameraSource = 'webcam'
+let cameraOn = false
+let loopId = 0          // naik tiap start/stop supaya loop lama berhenti
+let webcam = null
+let espImg = null
+const espCanvas = document.createElement('canvas')
+espCanvas.width = espCanvas.height = 400
+
+function setEspMsg(text, type) {
+  const msg = $('esp-msg')
+  msg.textContent = text
+  msg.className = 'load-msg' + (type ? ' ' + type : '')
+}
+
+// "192.168.1.20" → stream http://192.168.1.20:81/stream & capture http://192.168.1.20/capture
+// link lengkap dengan path (mis. http://ip:81/stream) dipakai apa adanya
+function espUrls(input) {
+  let s = input.trim().replace(/\/+$/, '')
+  if (!s) return null
+  if (!/^https?:\/\//i.test(s)) s = 'http://' + s
+  let u
+  try { u = new URL(s) } catch (e) { return null }
+  if (u.pathname && u.pathname !== '/') return { stream: u.href, capture: u.href }
+  const base = `${u.protocol}//${u.hostname}`
+  return {
+    stream: `${base}:${u.port || 81}/stream`,
+    capture: `${base}${u.port && u.port !== '81' ? ':' + u.port : ''}/capture`
+  }
+}
+
+// muat gambar dari ESP32-CAM; stream MJPEG tidak selalu memicu onload, jadi cek naturalWidth
+function loadEspImage(url, timeoutMs, useCors = true) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    if (useCors) img.crossOrigin = 'anonymous'
+    const started = Date.now()
+    const timer = setInterval(() => {
+      if (img.naturalWidth > 0) { clearInterval(timer); resolve(img) }
+      else if (Date.now() - started > timeoutMs) { clearInterval(timer); img.src = ''; reject(new Error('timeout')) }
+    }, 50)
+    img.onerror = () => { clearInterval(timer); reject(new Error('error')) }
+    img.src = url
+  })
+}
+
+function drawEspFrame(img) {
+  const ctx = espCanvas.getContext('2d')
+  const w = img.naturalWidth, h = img.naturalHeight, size = Math.min(w, h)
+  ctx.drawImage(img, (w - size) / 2, (h - size) / 2, size, size, 0, 0, espCanvas.width, espCanvas.height)
+}
+
+function espErrorMessage(err) {
+  if (err && (err.name === 'SecurityError' || /tainted|cross-origin/i.test(err.message))) {
+    return 'ESP32-CAM terhubung, tapi browser memblokir aksesnya (CORS). Tambahkan header "Access-Control-Allow-Origin: *" di sketch ESP32-CAM (contoh CameraWebServer sudah memilikinya).'
+  }
+  return 'Koneksi ke ESP32-CAM terputus. Cek apakah ESP32-CAM masih menyala & satu WiFi dengan laptop.'
+}
+
+async function cameraLoop(id) {
+  const mode = $('esp-mode').value
+  const urls = espUrls($('esp-ip').value)
+  try {
+    while (cameraOn && id === loopId) {
+      if (cameraSource === 'webcam') {
+        webcam.update()
+        await predict(webcam.canvas)
+      } else {
+        if (mode === 'capture') {
+          const sep = urls.capture.includes('?') ? '&' : '?'
+          espImg = await loadEspImage(`${urls.capture}${sep}_t=${Date.now()}`, 5000)
+        }
+        if (id !== loopId) break
+        drawEspFrame(espImg)
+        await predict(espCanvas)
+      }
+      await new Promise(requestAnimationFrame)
+    }
+  } catch (err) {
+    if (id !== loopId) return
+    console.error(err)
+    stopCamera()
+    setEspMsg(espErrorMessage(err), 'error')
+  }
+}
+
+function showCameraView(canvas, badge) {
+  canvas.classList.add('show')
+  $('preview-img').classList.remove('show')
+  $('preview-frame').prepend(canvas)
+  $('preview-placeholder').classList.add('hide')
+  $('preview-badge').textContent = badge
+  $('btn-cam').textContent = '■ Stop'
+}
+
+async function startWebcam() {
+  webcam = new tmImage.Webcam(400, 400, true)
+  try {
+    await webcam.setup()
+    await webcam.play()
+  } catch (err) {
+    console.error(err)
+    webcam = null
+    alert('Webcam tidak bisa diakses. Pastikan kamu memberi izin kamera dan membuka halaman lewat localhost/https.')
+    return false
+  }
+  showCameraView(webcam.canvas, 'Live · Webcam')
+  return true
+}
+
+async function startEsp() {
+  const urls = espUrls($('esp-ip').value)
+  if (!urls) {
+    setEspMsg('Masukkan IP ESP32-CAM dulu, contoh: 192.168.1.20', 'error')
+    $('esp-ip').focus()
+    return false
+  }
+  try { localStorage.setItem(ESP_IP_KEY, $('esp-ip').value.trim()) } catch (e) {}
+
+  const mode = $('esp-mode').value
+  const url = mode === 'stream' ? urls.stream : urls.capture
+  if (location.protocol === 'https:' && url.startsWith('http:')) {
+    setEspMsg('Halaman ini dibuka lewat https, jadi browser memblokir ESP32-CAM (http). Buka NARFKIT lewat http/localhost.', 'error')
+    return false
+  }
+  setEspMsg(`Menghubungkan ke ${url} ...`)
+  try {
+    espImg = await loadEspImage(url, 8000)
+  } catch (err) {
+    // cek ulang tanpa CORS: kalau berhasil, ESP32-CAM terjangkau tapi tidak mengirim header CORS
+    const plain = await loadEspImage(url, 4000, false).catch(() => null)
+    if (plain) {
+      plain.src = ''
+      setEspMsg(espErrorMessage({ name: 'SecurityError' }), 'error')
+      return false
+    }
+    setEspMsg(`Tidak bisa terhubung ke ${url}. Cek IP, pastikan ESP32-CAM menyala, satu WiFi dengan laptop, dan tidak sedang dibuka di tab lain.`, 'error')
+    return false
+  }
+  setEspMsg(`Terhubung ke ESP32-CAM (${url}).`, 'ok')
+  showCameraView(espCanvas, 'Live · ESP32-CAM')
+  return true
+}
+
+async function startCamera() {
+  const btn = $('btn-cam')
+  btn.disabled = true
+  const ok = cameraSource === 'webcam' ? await startWebcam() : await startEsp()
+  btn.disabled = false
+  if (!ok) return
+  cameraOn = true
+  cameraLoop(++loopId)
+}
+
+function stopCamera() {
+  cameraOn = false
+  loopId++
+  if (webcam) {
+    webcam.stop()
+    webcam.canvas.remove()
+    webcam = null
+  }
+  if (espImg) {
+    espImg.src = ''   // tutup koneksi stream ke ESP32-CAM
+    espImg = null
+    if ($('esp-msg').classList.contains('ok')) setEspMsg('Kamera ESP32-CAM dihentikan.')
+  }
+  espCanvas.remove()
+  $('preview-placeholder').classList.remove('hide')
+  $('preview-badge').textContent = 'Off'
+  $('btn-cam').textContent = '▶ Mulai Kamera'
+}
+
+function toggleCamera() {
+  if (cameraOn) stopCamera()
+  else startCamera()
+}
+
+function selectSource(source) {
+  if (source === cameraSource) return
+  if (cameraOn) stopCamera()
+  cameraSource = source
+  document.querySelectorAll('[data-source]').forEach(c => c.classList.toggle('active', c.dataset.source === source))
+  $('esp-config').classList.toggle('show', source === 'esp')
+}
+
+function predictFromFile(file) {
+  if (!file) return
+  if (cameraOn) stopCamera()
+  const img = $('preview-img')
+  const url = URL.createObjectURL(file)
+  img.onload = async () => {
+    img.classList.add('show')
+    $('preview-placeholder').classList.add('hide')
+    $('preview-badge').textContent = 'Gambar'
+    await predict(img)
+    URL.revokeObjectURL(url)
+  }
+  img.src = url
+}
+
+$('btn-load').addEventListener('click', loadModel)
+$('tm-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadModel() })
+$('btn-cam').addEventListener('click', toggleCamera)
+document.querySelectorAll('[data-source]').forEach(chip => {
+  chip.addEventListener('click', () => selectSource(chip.dataset.source))
+})
+$('esp-ip').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !$('btn-cam').disabled && !cameraOn) startCamera() })
+try { $('esp-ip').value = localStorage.getItem(ESP_IP_KEY) || '' } catch (e) {}
+$('preview-file').addEventListener('change', (e) => {
+  predictFromFile(e.target.files[0])
+  e.target.value = ''
+})
+</script>
+
+</body>
+</html>
