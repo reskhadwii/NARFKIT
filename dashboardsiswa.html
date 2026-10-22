@@ -372,17 +372,36 @@ function acak(arr, seed) {
   return a
 }
 
-/* Non-kognitif dulu, lalu kognitif. Urutan soal diacak per siswa.
-   Opsi hanya diacak untuk soal kognitif (opsi gaya belajar & motivasi dinilai berdasarkan nomor opsi, jangan diacak). */
+const URUTAN_NONKOG_DULU = true   // ubah ke false kalau mau soal teknis dikerjakan lebih dulu
+const BAGIAN_NONKOG = [
+  { dim: 'gaya',             nama: 'Gaya belajar' },
+  { dim: 'wirausaha_alasan', nama: 'Motivasi berwirausaha' },
+  { dim: 'technopreneur',    nama: 'Sikap technopreneur' },
+  { dim: 'motivasi_belajar', nama: 'Motivasi belajar IoT' }
+]
+
 function susunSoal(soal, seed) {
   const non = soal.filter(q => q.kategori === 'nonkognitif')
   const kog = soal.filter(q => q.kategori !== 'nonkognitif')
+
+  // tiap kuesioner = satu blok (urutan blok tetap), soal diacak di dalam blok
+  const dikenal = BAGIAN_NONKOG.map(b => b.dim)
+  const blok = BAGIAN_NONKOG.map(b => acak(non.filter(q => q.dimensi === b.dim), seed + ':' + b.dim))
+  const lain = non.filter(q => !dikenal.includes(q.dimensi))
+  const nonUrut = [].concat(...blok, acak(lain, seed + ':lain'))
+
   const kogAcak = acak(kog, seed + ':kog').map(q => {
     if (q.tipe_soal !== 'pg') return q
-    const idx = (q.opsi_jawaban || []).map((_, i) => i)          // nomor opsi asli
+    const idx = (q.opsi_jawaban || []).map((_, i) => i)
     return Object.assign({}, q, { _urutOpsi: acak(idx, seed + ':opsi:' + q.id) })
   })
-  return acak(non, seed + ':non').concat(kogAcak)
+  return URUTAN_NONKOG_DULU ? nonUrut.concat(kogAcak) : kogAcak.concat(nonUrut)
+}
+
+function namaBagian(soal) {
+  if (soal.kategori !== 'nonkognitif') return 'Soal teknis'
+  const b = BAGIAN_NONKOG.find(x => x.dim === soal.dimensi)
+  return (b ? b.nama : 'Profil belajar') + ' (tidak dinilai)'
 }
 
 async function mulaiTes(mode) {
@@ -390,7 +409,7 @@ async function mulaiTes(mode) {
   const as = await Narf.query(sb.from('asesmen').select('id').eq('tipe', 'pretest').order('id').limit(1))
   if (!as.length) throw new Error('Soal belum tersedia. Hubungi gurumu.')
   let q = sb.from('soal')
-    .select('id,pertanyaan,tipe_soal,opsi_jawaban,poin,konteks,hint,urutan,kategori')
+    .select('id,pertanyaan,tipe_soal,opsi_jawaban,poin,konteks,hint,urutan,kategori,dimensi')
     .eq('asesmen_id', as[0].id).order('urutan')
   if (mode === 'post') q = q.eq('tipe_soal', 'pg').eq('kategori', 'kognitif')
   const dariDb = await Narf.query(q)
@@ -409,14 +428,16 @@ function renderSoal(idx) {
   const soal = soalList[idx]
   const total = soalList.length
   $('asesmen-fill').style.width = Math.round((idx / total) * 100) + '%'
+  $('prog-label').textContent = `Soal ${idx + 1} dari ${total}` + (modeTes === 'pre' ? ' · ' + namaBagian(soal) : '')
 
   const isPg = soal.tipe_soal === 'pg'
   const nonkog = soal.kategori === 'nonkognitif'
-  const bagian = modeTes === 'pre' ? (nonkog ? ' · Bagian 1: Profil belajar (tidak dinilai)' : ' · Bagian 2: Soal teknis') : ''
-  $('prog-label').textContent = `Soal ${idx + 1} dari ${total}` + bagian
+  const multi = isPg && soal.dimensi === 'wirausaha_alasan'
 
   const tipeEl = $('soal-tipe-label')
-  tipeEl.textContent = nonkog ? 'PROFIL BELAJAR · TIDAK ADA JAWABAN BENAR/SALAH' : (isPg ? 'PILIHAN GANDA' : 'ESAI SINGKAT')
+  tipeEl.textContent = multi ? 'PILIH SEMUA YANG SESUAI · TIDAK ADA JAWABAN BENAR/SALAH'
+    : nonkog ? 'PROFIL BELAJAR · TIDAK ADA JAWABAN BENAR/SALAH'
+    : (isPg ? 'PILIHAN GANDA' : 'ESAI SINGKAT')
   tipeEl.className = 'soal-tipe-label ' + (nonkog ? 'label-kognitif' : (isPg ? 'label-pg' : 'label-esai'))
 
   $('soal-teks').textContent = soal.pertanyaan
@@ -435,32 +456,76 @@ function renderSoal(idx) {
   btnNext.disabled = true
 
   if (isPg) {
+    const huruf = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     const list = document.createElement('div')
     list.className = 'opsi-list'
-    const huruf = ['A', 'B', 'C', 'D', 'E']
-    // urutan tampil: acak untuk kognitif, apa adanya untuk non-kognitif
-    const urutOpsi = soal._urutOpsi || (soal.opsi_jawaban || []).map((_, i) => i)
-    urutOpsi.forEach((idxAsli, posisi) => {
-      const teks = soal.opsi_jawaban[idxAsli]
-      const item = document.createElement('div')
-      item.className = 'opsi-item'
-      item.tabIndex = 0
-      item.setAttribute('role', 'button')
-      const h = document.createElement('div'); h.className = 'opsi-huruf'; h.textContent = huruf[posisi]
-      const t = document.createElement('div'); t.className = 'opsi-teks'; t.textContent = teks
-      item.append(h, t)
-      const pilih = () => {
-        list.querySelectorAll('.opsi-item').forEach(el => el.classList.remove('selected'))
-        item.classList.add('selected')
-        jawabanSiswa[soal.id] = String(idxAsli)      // simpan NOMOR ASLI, bukan posisi di layar
-        btnNext.disabled = false
+
+    if (multi) {
+      // ---- PILIH BANYAK ----
+      if (soal.hint) {
+        const hint = document.createElement('div')
+        hint.className = 'esai-hint'
+        hint.textContent = soal.hint
+        area.appendChild(hint)
       }
-      item.addEventListener('click', pilih)
-      item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pilih() } })
-      if (jawabanSiswa[soal.id] === String(idxAsli)) { item.classList.add('selected'); btnNext.disabled = false }
-      list.appendChild(item)
-    })
-    area.appendChild(list)
+      const eksklusif = (soal.opsi_jawaban || []).length - 1       // "Saya tidak minat berwirausaha"
+      const terpilih = new Set(String(jawabanSiswa[soal.id] || '').split(',').filter(x => x !== '').map(Number))
+      const items = []
+      const simpan = () => {
+        items.forEach((el, i) => el.classList.toggle('selected', terpilih.has(i)))
+        if (terpilih.size) jawabanSiswa[soal.id] = [...terpilih].sort((a, b) => a - b).join(',')
+        else delete jawabanSiswa[soal.id]
+        btnNext.disabled = terpilih.size === 0
+      }
+      ;(soal.opsi_jawaban || []).forEach((teks, i) => {
+        const item = document.createElement('div')
+        item.className = 'opsi-item'
+        item.tabIndex = 0
+        item.setAttribute('role', 'checkbox')
+        const h = document.createElement('div'); h.className = 'opsi-huruf'; h.textContent = huruf[i]
+        const t = document.createElement('div'); t.className = 'opsi-teks'; t.textContent = teks
+        item.append(h, t)
+        const toggle = () => {
+          if (terpilih.has(i)) terpilih.delete(i)
+          else {
+            if (i === eksklusif) terpilih.clear()
+            else terpilih.delete(eksklusif)
+            terpilih.add(i)
+          }
+          simpan()
+        }
+        item.addEventListener('click', toggle)
+        item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle() } })
+        items.push(item)
+        list.appendChild(item)
+      })
+      area.appendChild(list)
+      simpan()
+    } else {
+      // ---- PILIHAN TUNGGAL (kognitif, gaya belajar, Likert) ----
+      const urutOpsi = soal._urutOpsi || (soal.opsi_jawaban || []).map((_, i) => i)
+      urutOpsi.forEach((idxAsli, posisi) => {
+        const teks = soal.opsi_jawaban[idxAsli]
+        const item = document.createElement('div')
+        item.className = 'opsi-item'
+        item.tabIndex = 0
+        item.setAttribute('role', 'button')
+        const h = document.createElement('div'); h.className = 'opsi-huruf'; h.textContent = huruf[posisi]
+        const t = document.createElement('div'); t.className = 'opsi-teks'; t.textContent = teks
+        item.append(h, t)
+        const pilih = () => {
+          list.querySelectorAll('.opsi-item').forEach(el => el.classList.remove('selected'))
+          item.classList.add('selected')
+          jawabanSiswa[soal.id] = String(idxAsli)      // simpan NOMOR ASLI, bukan posisi di layar
+          btnNext.disabled = false
+        }
+        item.addEventListener('click', pilih)
+        item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pilih() } })
+        if (jawabanSiswa[soal.id] === String(idxAsli)) { item.classList.add('selected'); btnNext.disabled = false }
+        list.appendChild(item)
+      })
+      area.appendChild(list)
+    }
   } else {
     const wrap = document.createElement('div')
     wrap.className = 'esai-wrap'
@@ -640,9 +705,12 @@ async function muatFeedback() {
 let riwayat = [], filterRiwayat = 'semua'
 const HURUF = ['A', 'B', 'C', 'D', 'E']
 function teksOpsi(r, idx) {
-  const i = Number(idx)
-  if (!Number.isInteger(i) || !r.opsi_jawaban || r.opsi_jawaban[i] === undefined) return '-'
-  return HURUF[i] + '. ' + r.opsi_jawaban[i]
+  const daftar = String(idx ?? '').split(',').filter(x => x !== '')
+  const hasil = daftar.map(s => {
+    const i = Number(s)
+    return Number.isInteger(i) && r.opsi_jawaban && r.opsi_jawaban[i] !== undefined ? HURUF[i] + '. ' + r.opsi_jawaban[i] : null
+  }).filter(Boolean)
+  return hasil.length ? hasil.join('\n') : '-'
 }
 function blok(label, teks, pre) {
   const w = document.createElement('div')
