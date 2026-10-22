@@ -357,7 +357,7 @@ body {
 .btn-simpan-project:hover { background: rgba(254,127,66,0.1); }
 .save-status { text-align: center; font-size: 12px; color: #4dda90; margin-top: 12px; min-height: 16px; font-weight: 700; }
 
-.warning-box { background: rgba(224,112,112,0.1); border: 1.5px solid #e07070; color: #e07070; padding: 16px; border-radius: 12px; margin-bottom: 24px; text-align: center; font-weight: bold; display: none; }
+.warning-box { background: rgba(224,112,112,0.1); border: 1.5px solid #e07070; color: #e07070; padding: 16px; border-radius: 12px; margin-bottom: 24px; text-align: center; font-weight: bold; }
 
 /* Styling untuk Input Link Submission */
 .submission-row.input-mode {
@@ -368,7 +368,7 @@ body {
 
 .input-link-submit {
   width: 100%;
-  background: rgba(var(--bg-primary), 0.5);
+  background: rgba(var(--border-rgb), 0.1);
   border: 1.5px solid rgba(var(--border-rgb), 0.5);
   border-radius: 8px;
   padding: 12px 16px;
@@ -387,3 +387,71 @@ body {
 .input-link-submit::placeholder {
   color: rgba(var(--fg-rgb), 0.4);
 }
+/* ===== TAMBAHAN: materi (video/pdf/teks), modul kecil, kelompok ===== */
+[hidden] { display: none !important; }
+.materi-teks-container.tampil { display: block; }
+.materi-teks-container code { background: rgba(var(--border-rgb),0.25); padding: 1px 6px; border-radius: 4px; font-family: "Courier New", monospace; }
+.materi-teks-container li { margin-bottom: 6px; }
+
+.modul-card small { display: block; margin-top: 4px; font-size: 11.5px; font-weight: 700; color: rgba(var(--fg-rgb),0.55); }
+.modul-card.selesai { border-color: rgba(77,218,144,0.6); }
+.modul-card.selesai svg { color: #4dda90; }
+.modul-card:focus-visible, .item-modul:focus-visible, .item-materi:focus-visible { outline: 2px solid #fe7f42; outline-offset: 2px; }
+
+.materi-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.badge-tipe-materi { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; background: rgba(254,127,66,0.12); border: 1px solid rgba(254,127,66,0.3); color: #fe7f42; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+.badge-tipe-materi svg { width: 14px; height: 14px; }
+.judul-materi-kecil { font-size: 17px; font-weight: 700; color: var(--fg-solid); }
+.urutan-materi { margin-left: auto; font-size: 12px; font-weight: 700; color: rgba(var(--fg-rgb),0.5); }
+
+.materi-viewer { margin-bottom: 16px; }
+.viewer-frame, .viewer-video { width: 100%; border-radius: 16px; border: 1.5px solid var(--border-color); background: #000; display: block; }
+.viewer-frame.rasio-169, .viewer-video { aspect-ratio: 16 / 9; }
+.viewer-frame.rasio-pdf { height: 70vh; min-height: 420px; background: #fff; }
+.link-buka-tab { display: inline-block; margin-top: 8px; font-size: 12.5px; font-weight: 700; color: #fe7f42; text-decoration: none; }
+.link-buka-tab:hover { text-decoration: underline; }
+.materi-aksi { margin-bottom: 24px; }
+.catatan-materi { font-size: 13px; font-weight: 700; color: rgba(var(--fg-rgb),0.55); background: rgba(var(--border-rgb),0.1); border-radius: 12px; padding: 12px 16px; margin-bottom: 24px; }
+
+.sub-materi { margin: 4px 0 10px 14px; padding-left: 10px; border-left: 2px solid var(--border-color); display: flex; flex-direction: column; gap: 2px; }
+.item-materi { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 12.5px; font-weight: 700; color: rgba(var(--fg-rgb),0.75); }
+.item-materi:hover { background: rgba(254,127,66,0.1); }
+.item-materi.active { color: #fe7f42; background: rgba(254,127,66,0.12); }
+.item-materi .icon-list, .item-materi .icon-list svg { width: 15px; height: 15px; }
+.item-materi .icon-list { display: inline-flex; }
+.item-materi .nama-materi { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-materi .centang { color: #4dda90; font-size: 13px; }
+.item-modul .icon-list { display: inline-flex; width: 18px; height: 18px; flex-shrink: 0; }
+.item-modul .icon-list svg { width: 18px; height: 18px; }
+
+.feedback-guru { background: rgba(77,218,144,0.1); border: 1px solid rgba(77,218,144,0.4); color: var(--fg-solid); padding: 12px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 14px; }
+.hasil-kuis { background: rgba(254,127,66,0.1); border: 1px solid rgba(254,127,66,0.35); color: var(--fg-solid); padding: 12px 14px; border-radius: 10px; font-size: 13.5px; font-weight: 700; margin: 12px 0; }
+.soal-konteks-kode { background: rgba(var(--border-rgb),0.15); border-left: 3px solid var(--border-color); border-radius: 0 10px 10px 0; padding: 12px 16px; margin-bottom: 14px; font-family: "Courier New", monospace; font-size: 13px; white-space: pre-wrap; color: rgba(var(--fg-rgb),0.8); }
+
+.info-kelompok { background: rgba(var(--card-rgb),0.04); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 16px 20px; margin-bottom: 24px; }
+.info-kelompok.peringatan { background: rgba(224,112,112,0.1); border-color: #e07070; color: #e07070; font-weight: 700; font-size: 14px; }
+.kel-nama { font-weight: 700; font-size: 15px; color: var(--highlight-solid); margin-bottom: 10px; }
+.kel-anggota { display: flex; flex-wrap: wrap; gap: 8px; }
+.kel-chip { padding: 5px 12px; border-radius: 20px; background: rgba(var(--border-rgb),0.15); font-size: 12.5px; font-weight: 700; color: var(--fg-solid); }
+.kel-chip.perwakilan { background: rgba(254,127,66,0.15); border: 1px solid rgba(254,127,66,0.4); color: #fe7f42; }
+.status-proyek { border-radius: 12px; padding: 12px 16px; margin-bottom: 14px; font-size: 13.5px; font-weight: 700; }
+.status-proyek.info { background: rgba(var(--border-rgb),0.12); color: rgba(var(--fg-rgb),0.75); }
+.status-proyek.dikirim { background: rgba(254,127,66,0.12); border: 1px solid rgba(254,127,66,0.4); color: var(--fg-solid); }
+.status-proyek.dinilai { background: rgba(77,218,144,0.12); border: 1px solid rgba(77,218,144,0.5); color: var(--fg-solid); }
+.bmc-block textarea:disabled, .swot-block textarea:disabled, .input-link-submit:disabled { opacity: .7; cursor: not-allowed; }
+.btn-simpan-project:disabled { opacity: .5; cursor: not-allowed; }
+.btn-buka-simulasi { text-decoration: none; }
+
+@media (max-width: 900px) {
+  body { height: auto; min-height: 100vh; overflow: auto; }
+  .view { padding: 20px 16px; overflow: visible; }
+  .belajar-layout { flex-direction: column-reverse; height: auto; }
+  .main-materi { padding-right: 0; overflow: visible; }
+  .sidebar-modul { height: auto; max-height: 320px; }
+  .bmc-grid, .swot-grid, .alat-bahan-list { grid-template-columns: 1fr; }
+  .viewer-frame.rasio-pdf { height: 60vh; min-height: 320px; }
+}
+
+/* Project bebas: isian rancangan */
+#sec-rancangan .input-link-submit { background: transparent; border: none; padding: 0; width: 100%; }
+#sec-rancangan .input-link-submit:disabled { opacity: .7; cursor: not-allowed; }

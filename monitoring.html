@@ -4,9 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NARF KIT - Monitoring</title>
+  <script src="global.js"></script>
   <link rel="stylesheet" type="text/css" href="global.css">
   <link rel="stylesheet" type="text/css" href="styleguru.css">
   <link rel="stylesheet" type="text/css" href="monitoring.css">
+  <style>
+    [hidden] { display: none !important; }
+    .kosong-mon { text-align:center; padding:40px 16px; color:rgba(var(--fg-rgb),0.4); font-size:13px; font-weight:700; }
+    .jurnal-box { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .pesan-simpan { font-size:13px; font-weight:700; margin-top:10px; min-height:18px; }
+    .pesan-simpan.ok { color:#4dda90; } .pesan-simpan.err { color:#e07070; }
+    .bubble { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .bubble.md { white-space: normal; }
+    .bubble pre { overflow-x:auto; }
+    .btn-ai-kecil { background: transparent; border: 1.5px solid #fe7f42; color: #fe7f42; border-radius: 10px; padding: 7px 14px; font: 700 12px "Montserrat", sans-serif; cursor: pointer; margin: 6px 0; transition: background .2s, color .2s; }
+    .btn-ai-kecil:hover:not(:disabled) { background: #fe7f42; color: #1a1313; }
+    .btn-ai-kecil:disabled { opacity: .45; cursor: not-allowed; }
+    .ringkasan-chat { margin: 0 0 10px; padding: 12px 14px; border: 1.5px solid #fe7f42; border-radius: 12px; background: rgba(254,127,66,0.08); font-size: 13px; font-weight: 700; line-height: 1.55; white-space: pre-wrap; }
+    .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
+  </style>
 </head>
 <body>
 
@@ -19,10 +35,10 @@
     <a href="#" class="menu-item active">MONITORING</a>
   </div>
   <div class="nav-right">
-    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
-    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
-      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    <button class="nav-icon-btn" id="nav-profil" type="button" aria-label="Akun"><svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg></button>
+    <button class="theme-toggle" data-theme-toggle title="Ganti tema" type="button" aria-label="Ganti tema">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
     </button>
   </div>
 </nav>
@@ -39,250 +55,225 @@
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-      <div class="filter-item">
-        <span class="filter-label">Pilih Kelas</span>
-        <select class="filter-select">
-          <option>XII Teknik Mekatronika A</option>
-          <option>XII Teknik Mekatronika B</option>
-          <option>XII Teknik Mekatronika C</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <span class="filter-label">Pilih Modul</span>
-        <select class="filter-select">
-          <option>Pemrograman Dasar: Modul 1</option>
-          <option>Internet of Things: Modul 2</option>
-          <option>Machine Learning: Modul 3</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <span class="filter-label">Pilih Siswa</span>
-        <select class="filter-select">
-          <option>Chen Junming</option>
-          <option>Zhang Guiyuan</option>
-          <option>Yang Bowen</option>
-        </select>
-      </div>
+      <div class="filter-item"><label class="filter-label" for="filter-kelas">Pilih Kelas</label>
+        <select class="filter-select" id="filter-kelas"></select></div>
+      <div class="filter-item"><label class="filter-label" for="filter-modul">Pilih Modul</label>
+        <select class="filter-select" id="filter-modul"></select></div>
+      <div class="filter-item"><label class="filter-label" for="filter-siswa">Pilih Siswa</label>
+        <select class="filter-select" id="filter-siswa"></select></div>
     </div>
 
-    <!-- Split View Grid -->
     <div class="monitoring-grid">
-      
-      <!-- Panel Kiri: Jurnal & Evaluasi -->
       <div class="panel panel-kiri">
         <div class="section-label">JURNAL REFLEKSI SISWA</div>
-        <div class="jurnal-box">
-          "Saya masih sering kebalik antara penggunaan sensor proximity sama limit switch waktu nulis kode programnya. Kadang bingung juga nentuin nilai delay yang pas supaya mesin nggak error."
-        </div>
+        <div class="jurnal-box" id="tempat-jurnal"><span class="kosong-mon">Memuat...</span></div>
 
-        <div class="ai-feedback-box">
-          <span>Analisis AI</span>
-          Siswa memahami fungsi dasar komponen, namun mengalami miskonsepsi pada logika percabangan (if-else) yang terkait pembacaan sensor fisik. Disarankan untuk memandu siswa membedakan input digital sesaat vs berkelanjutan.
+        <button class="btn-ai-kecil" id="btn-ai-jurnal" type="button" disabled>Analisis jurnal dengan NARF AI</button>
+        <div class="ai-feedback-box" id="box-ai" hidden>
+          <span>Analisis AI</span><div id="tempat-ai-feedback"></div>
         </div>
 
         <div class="section-label">BERIKAN FEEDBACK KE SISWA</div>
-        <textarea class="textarea-guru" placeholder="Tulis masukan, motivasi, atau koreksi di sini. Feedback ini akan muncul di modul siswa."></textarea>
-        <button class="btn-submit">Kirim ke Siswa</button>
+        <textarea class="textarea-guru" id="input-feedback-guru" maxlength="1000" aria-label="Feedback untuk siswa" placeholder="Tulis masukan, motivasi, atau koreksi di sini. Feedback ini akan muncul di modul siswa dan masuk ke notifikasinya."></textarea>
+        <button class="btn-submit" id="btn-kirim-feedback" type="button" disabled>Kirim ke Siswa</button>
+        <div class="pesan-simpan" id="pesan-feedback" role="status"></div>
       </div>
 
-      <!-- Panel Kanan: Riwayat Chat AI -->
-       <!-- Panel Kanan: Riwayat Chat AI -->
       <div class="panel panel-kanan">
-        
-        <!-- Header & Filter Waktu -->
         <div class="chat-header">
           <div class="section-label">RIWAYAT PROMPT AI</div>
-          <select class="filter-select-mini">
-            <option>Hari Ini</option>
-            <option>Kemarin</option>
-            <option>7 Hari Terakhir</option>
-            <option>Bulan Ini</option>
+          <button class="btn-ai-kecil" id="btn-ringkas" type="button" disabled>Ringkas dengan NARF AI</button>
+          <select class="filter-select-mini" id="filter-waktu-chat" aria-label="Filter waktu chat">
+            <option value="hari">Hari Ini</option>
+            <option value="kemarin">Kemarin</option>
+            <option value="minggu">7 Hari Terakhir</option>
+            <option value="bulan">Bulan Ini</option>
+            <option value="semua">Semua</option>
           </select>
         </div>
-      
-        <div class="chat-box">
-          
-          <div class="bubble-wrap siswa">
-            <div class="bubble">Gimana cara baca sensor proximity di C++ Arduino?</div>
-            <div class="waktu">09:12</div>
-          </div>
-          
-          <div class="bubble-wrap ai">
-            <div class="bubble">Untuk membaca sensor proximity digital, kamu bisa menggunakan fungsi digitalRead()...</div>
-            <div class="waktu">09:12</div>
-          </div>
-      
-          <!-- Pembatas Waktu -->
-          <div class="chat-divider">
-            <span class="chat-divider-text">KEMARIN</span>
-          </div>
-      
-          <div class="bubble-wrap siswa">
-            <div class="bubble">Kenapa ya relay aku bunyi cetak-cetek terus padahal kodenya bener?</div>
-            <div class="waktu">15:30</div>
-          </div>
-      
-        </div>
+        <div class="ringkasan-chat" id="ringkasan-chat" hidden></div>
+        <div class="chat-box" id="tempat-chat"><div class="kosong-mon">Pilih siswa.</div></div>
       </div>
+    </div>
 </main>
 
 <footer class="footer">
   <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="siswa-nav.js"></script>
 <script>
-  // ===== DUMMY DATA MONITORING =====
-  // Data Jurnal terikat pada Nama Siswa -> Modul
-  const dataJurnal = {
-    "Chen Junming": {
-      "Modul 1: Pemrograman Dasar": {
-        jurnal: "Saya masih sering kebalik antara penggunaan sensor proximity sama limit switch waktu nulis kode programnya. Kadang bingung nentuin delay yang pas.",
-        ai: "Siswa memahami fungsi dasar komponen, namun mengalami miskonsepsi pada logika percabangan. Disarankan memandu siswa membedakan input digital sesaat vs berkelanjutan."
-      },
-      "Modul 2: Internet of Things": {
-        jurnal: "Konfigurasi WiFi di modul ESP8266 agak susah, sering timeout dan disconnect sendiri kalau datanya terlalu banyak.",
-        ai: "Siswa kesulitan pada aspek jaringan dasar dan manajemen memori (buffer). Arahkan untuk mengecek baud rate dan penggunaan delay() di dalam loop."
-      }
-    },
-    "Yang Bowen": {
-      "Modul 1: Pemrograman Dasar": {
-        jurnal: "Sintaks perulangan for dan while masih membingungkan, kapan harus pakai yang mana?",
-        ai: "Siswa belum menguasai konsep iterasi. Berikan analogi sederhana tentang aktivitas yang berulang dengan batas pasti vs batas kondisi."
-      }
+const $ = id => document.getElementById(id)
+const esc = Narf.esc
+const qs = new URLSearchParams(location.search)
+let jurnalAktif = null
+let seq = 0 // cegah balapan respons saat filter cepat diganti
+
+function opsi(sel, items, kosongTeks) {
+  sel.innerHTML = ''
+  if (!items.length) { const o = document.createElement('option'); o.value = ''; o.textContent = kosongTeks; sel.appendChild(o); return }
+  items.forEach(i => { const o = document.createElement('option'); o.value = i.v; o.textContent = i.t; sel.appendChild(o) })
+}
+function pesan(t, ok) { const el = $('pesan-feedback'); el.textContent = t; el.className = 'pesan-simpan ' + (ok ? 'ok' : 'err') }
+
+async function muatSiswa() {
+  const kelasId = $('filter-kelas').value
+  if (!kelasId) { opsi($('filter-siswa'), [], 'Tidak ada siswa'); return render() }
+  const d = await Narf.rpc('guru_detail_kelas', { p_kelas_id: kelasId })
+  opsi($('filter-siswa'), (d.siswa || []).map(s => ({ v: s.user_id, t: s.nama })), 'Tidak ada siswa')
+  const want = qs.get('siswa')
+  if (want && (d.siswa || []).some(s => s.user_id === want)) $('filter-siswa').value = want
+  qs.delete('siswa')
+  render()
+}
+
+async function renderJurnal(siswa, modul, n) {
+  const box = $('tempat-jurnal'), ai = $('box-ai'), btn = $('btn-kirim-feedback')
+  jurnalAktif = null; btn.disabled = true; $('btn-ai-jurnal').disabled = true; $('ringkasan-chat').hidden = true; $('btn-ringkas').disabled = !siswa; ai.hidden = true; $('input-feedback-guru').value = ''; $('pesan-feedback').textContent = ''
+  if (!siswa || !modul) { box.innerHTML = '<span class="kosong-mon">Pilih siswa dan modul.</span>'; return }
+  const rows = await Narf.query(sb.from('jurnal_refleksi').select('id,isi,analisis_ai,feedback_guru,updated_at').eq('siswa_id', siswa).eq('modul_id', modul).limit(1))
+  if (n !== seq) return
+  const j = rows[0]
+  if (!j) { box.innerHTML = '<span class="kosong-mon">Siswa belum menulis jurnal untuk modul ini.</span>'; return }
+  jurnalAktif = j
+  box.textContent = j.isi || ''
+  if (j.analisis_ai) { ai.hidden = false; $('tempat-ai-feedback').textContent = j.analisis_ai }
+  $('input-feedback-guru').value = j.feedback_guru || ''
+  btn.disabled = false; $('btn-ai-jurnal').disabled = false
+}
+
+function mulaiWaktu(f) {
+  const d = new Date(); d.setHours(0, 0, 0, 0)
+  if (f === 'kemarin') d.setDate(d.getDate() - 1)
+  else if (f === 'minggu') d.setDate(d.getDate() - 6)
+  else if (f === 'bulan') d.setDate(1)
+  else if (f === 'semua') return null
+  return d
+}
+function labelHari(d) {
+  const t = new Date(); t.setHours(0, 0, 0, 0)
+  const x = new Date(d); x.setHours(0, 0, 0, 0)
+  const sel = Math.round((t - x) / 86400000)
+  if (sel === 0) return 'HARI INI'
+  if (sel === 1) return 'KEMARIN'
+  return x.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).toUpperCase()
+}
+
+async function renderChat(siswa, n) {
+  const box = $('tempat-chat')
+  if (!siswa) { box.innerHTML = '<div class="kosong-mon">Pilih siswa.</div>'; return }
+  const f = $('filter-waktu-chat').value
+  const sesi = await Narf.query(sb.from('sesi_ai').select('id').eq('siswa_id', siswa))
+  if (n !== seq) return
+  if (!sesi.length) { box.innerHTML = '<div class="kosong-mon">Siswa belum pernah memakai chatbot.</div>'; return }
+  let q = sb.from('pesan_ai').select('pengirim,isi_pesan,created_at').in('sesi_id', sesi.map(s => s.id)).order('created_at', { ascending: true }).limit(500)
+  const dari = mulaiWaktu(f)
+  if (dari) q = q.gte('created_at', dari.toISOString())
+  if (f === 'kemarin') { const s = new Date(dari); s.setDate(s.getDate() + 1); q = q.lt('created_at', s.toISOString()) }
+  const msgs = await Narf.query(q)
+  if (n !== seq) return
+  if (!msgs.length) { box.innerHTML = '<div class="kosong-mon">Tidak ada riwayat obrolan di waktu ini.</div>'; return }
+  box.innerHTML = ''
+  let hari = ''
+  msgs.forEach(m => {
+    const dt = new Date(m.created_at)
+    const lbl = labelHari(dt)
+    if (lbl !== hari) {
+      hari = lbl
+      const dv = document.createElement('div'); dv.className = 'chat-divider'
+      dv.innerHTML = '<span class="chat-divider-text"></span>'; dv.firstChild.textContent = lbl
+      box.appendChild(dv)
     }
-  };
+    const siswaMsg = m.pengirim === 'siswa'
+    const w = document.createElement('div'); w.className = 'bubble-wrap ' + (siswaMsg ? 'siswa' : 'ai')
+    const b = document.createElement('div'); b.className = 'bubble'
+    if (siswaMsg) b.textContent = m.isi_pesan
+    else { b.classList.add('md'); b.innerHTML = DOMPurify.sanitize(marked.parse(m.isi_pesan || '')) }
+    const t = document.createElement('div'); t.className = 'waktu'
+    t.textContent = dt.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+    w.appendChild(b); w.appendChild(t); box.appendChild(w)
+  })
+  box.scrollTop = box.scrollHeight
+}
 
-  // Data Chat terikat pada Nama Siswa -> Waktu
-  const dataChat = {
-    "Chen Junming": {
-      "Hari Ini": [
-        { sender: "siswa", time: "09:12", text: "Gimana cara baca sensor proximity di C++ Arduino?" },
-        { sender: "ai", time: "09:12", text: "Untuk membaca sensor proximity digital, kamu bisa menggunakan fungsi <code>digitalRead(pinSensor)</code>. Jika hasilnya HIGH, artinya ada objek." },
-        { sender: "siswa", time: "09:15", text: "Kalau limit switch sama aja bacanya pakai digitalRead?" },
-        { sender: "ai", time: "09:16", text: "Betul sekali! Keduanya memberikan sinyal digital (HIGH/LOW)." }
-      ],
-      "Kemarin": [
-        { sender: "siswa", time: "15:30", text: "Kenapa ya relay aku bunyi cetak-cetek terus padahal kodenya bener?" },
-        { sender: "ai", time: "15:31", text: "Itu kemungkinan besar karena efek <strong>Floating Pin</strong>! Tambahkan pinMode(pin, INPUT_PULLUP);" }
-      ]
-    },
-    "Yang Bowen": {
-      "Hari Ini": [
-        { sender: "siswa", time: "10:05", text: "Tolong cek logika ladder diagram ini, bener nggak buat saklar tukar?" },
-        { sender: "ai", time: "10:06", text: "Secara logika sudah benar, namun pastikan penguncian (latching) diletakkan paralel dengan tombol start." }
-      ]
-    }
-  };
+async function render() {
+  const n = ++seq
+  const siswa = $('filter-siswa').value, modul = $('filter-modul').value
+  try { await Promise.all([renderJurnal(siswa, modul, n), renderChat(siswa, n)]) }
+  catch (e) { if (n === seq) Narf.toast(e.message, 'error') }
+}
 
-  // ===== LOGIKA RENDER TAMPILAN =====
-  
-  // Tangkap elemen dari DOM
-  const selectSiswa = document.getElementById('filter-siswa');
-  const selectModul = document.getElementById('filter-modul');
-  const selectWaktu = document.getElementById('filter-waktu-chat');
-  
-  const boxJurnal = document.getElementById('tempat-jurnal');
-  const boxAi = document.getElementById('tempat-ai-feedback');
-  const boxChat = document.getElementById('tempat-chat');
-  const inputFeedback = document.getElementById('input-feedback-guru');
-  const btnKirim = document.getElementById('btn-kirim-feedback');
+async function pesanFungsi(error) {
+  try { if (error && error.context && typeof error.context.json === 'function') { const j = await error.context.json(); if (j && j.error) return j.error } } catch (e) { /* abaikan */ }
+  return 'Gagal menghubungi NARF AI. Coba lagi.'
+}
+async function panggilNilaiAi(jenis, id) {
+  const { data, error } = await sb.functions.invoke(window.NARF_FN_NILAI || 'nilai-ai', { body: { jenis, id } })
+  if (error || !data || data.error) throw new Error(error ? await pesanFungsi(error) : (data && data.error) || 'Gagal.')
+  return data
+}
+async function analisisJurnal() {
+  if (!jurnalAktif) return
+  const b = $('btn-ai-jurnal'); b.disabled = true; b.textContent = 'NARF AI sedang membaca...'
+  try {
+    const d = await panggilNilaiAi('jurnal', jurnalAktif.id)
+    jurnalAktif.analisis_ai = d.analisis_ai
+    $('box-ai').hidden = false; $('tempat-ai-feedback').textContent = d.analisis_ai
+  } catch (e) { Narf.toast(e.message, 'error') } finally { b.disabled = false; b.textContent = 'Analisis jurnal dengan NARF AI' }
+}
+async function ringkasChat() {
+  const siswa = $('filter-siswa').value
+  if (!siswa) return
+  const b = $('btn-ringkas'); b.disabled = true; b.textContent = 'Meringkas...'
+  try {
+    const d = await panggilNilaiAi('ringkas_chat', siswa)
+    const box = $('ringkasan-chat'); box.hidden = false; box.textContent = d.ringkasan
+  } catch (e) { Narf.toast(e.message, 'error') } finally { b.disabled = false; b.textContent = 'Ringkas dengan NARF AI' }
+}
 
-  // Fungsi Update Panel Kiri (Jurnal)
-  function renderJurnal() {
-    const siswa = selectSiswa.value;
-    const modul = selectModul.value;
+async function kirimFeedback() {
+  if (!jurnalAktif) return
+  const t = $('input-feedback-guru').value.trim()
+  if (t.length < 3) return pesan('Feedback tidak boleh kosong.', false)
+  const b = $('btn-kirim-feedback'); b.disabled = true
+  try {
+    await Narf.rpc('beri_feedback_jurnal', { p_jurnal_id: jurnalAktif.id, p_feedback: t })
+    jurnalAktif.feedback_guru = t
+    pesan('Feedback terkirim ke siswa.', true)
+  } catch (e) { pesan(e.message, false) } finally { b.disabled = false }
+}
 
-    // Cek apakah data tersedia
-    if (dataJurnal[siswa] && dataJurnal[siswa][modul]) {
-      boxJurnal.innerHTML = `"${dataJurnal[siswa][modul].jurnal}"`;
-      boxAi.innerHTML = `<span>Analisis AI</span>${dataJurnal[siswa][modul].ai}`;
-    } else {
-      boxJurnal.innerHTML = `<span style="color:rgba(var(--fg-rgb), 0.4)">Siswa belum mengumpulkan jurnal untuk modul ini.</span>`;
-      boxAi.innerHTML = `<span>Analisis AI</span>Tidak ada data untuk dianalisis.`;
-    }
+async function init() {
+  try {
+    const profil = await Narf.guard('guru')
+    NarfNav.init(profil)
+    const [ring, modul] = await Promise.all([
+      Narf.rpc('guru_ringkasan'),
+      Narf.query(sb.from('modul').select('id,judul,urutan,course(judul)').order('urutan'))
+    ])
+    opsi($('filter-kelas'), ring.kelas.map(k => ({ v: k.id, t: k.nama_kelas })), 'Belum ada kelas')
+    opsi($('filter-modul'), modul.map(m => ({ v: m.id, t: (m.course && m.course.judul ? m.course.judul + ': ' : '') + 'Modul ' + m.urutan + ' - ' + m.judul })), 'Belum ada modul')
+    const k = qs.get('kelas')
+    if (k && ring.kelas.some(x => x.id === k)) $('filter-kelas').value = k
+    await muatSiswa()
+  } catch (e) {
+    Narf.toast(e.message, 'error')
+    $('tempat-jurnal').innerHTML = '<span class="kosong-mon">' + esc(e.message) + '</span>'
   }
-
-  // Fungsi Update Panel Kanan (Chat)
-  function renderChat() {
-    const siswa = selectSiswa.value;
-    const waktu = selectWaktu.value;
-
-    if (dataChat[siswa] && dataChat[siswa][waktu]) {
-      const chats = dataChat[siswa][waktu];
-      
-      // Map data array ke elemen HTML
-      boxChat.innerHTML = chats.map(chat => `
-        <div class="bubble-wrap ${chat.sender}">
-          <div class="bubble">${chat.text}</div>
-          <div class="waktu">${chat.time}</div>
-        </div>
-      `).join('');
-      
-    } else {
-      boxChat.innerHTML = `<div style="text-align:center; padding:40px; color:rgba(var(--fg-rgb), 0.4); font-size:13px; font-weight:700;">Tidak ada riwayat obrolan di waktu ini.</div>`;
-    }
-  }
-
-  // ===== EVENT LISTENERS =====
-
-  // Saat nama siswa diganti, update jurnal dan chat sekaligus
-  selectSiswa.addEventListener('change', () => {
-    renderJurnal();
-    renderChat();
-  });
-
-  // Saat modul diganti, update jurnal saja
-  selectModul.addEventListener('change', renderJurnal);
-
-  // Saat waktu chat diganti, update chat saja
-  selectWaktu.addEventListener('change', renderChat);
-
-  // Aksi Tombol Kirim Feedback
-  btnKirim.addEventListener('click', () => {
-    const isiFeedback = inputFeedback.value.trim();
-    if (isiFeedback === "") {
-      alert("Feedback tidak boleh kosong!");
-      return;
-    }
-    
-    // Simulasi pengiriman data
-    alert(`Feedback berhasil dikirim ke modul siswa: ${selectSiswa.value}`);
-    
-    // Kosongkan textarea setelah kirim
-    inputFeedback.value = "";
-  });
-
-  // Render pertama kali saat halaman dimuat
-  renderJurnal();
-  renderChat();
-
-  // Toggle tema terang/gelap
-  const root = document.documentElement;
-  const toggleBtn = document.getElementById('theme-toggle');
-  const iconMoon = document.getElementById('icon-moon');
-  const iconSun = document.getElementById('icon-sun');
-
-  function applyTheme(theme) {
-    if (theme === 'light') {
-      root.setAttribute('data-theme', 'light');
-      iconMoon.style.display = 'none';
-      iconSun.style.display = 'block';
-    } else {
-      root.removeAttribute('data-theme');
-      iconMoon.style.display = 'block';
-      iconSun.style.display = 'none';
-    }
-  }
-
-  const saved = localStorage.getItem('narfkit-theme') || 'dark';
-  applyTheme(saved);
-
-  toggleBtn.addEventListener('click', () => {
-    const isLight = root.getAttribute('data-theme') === 'light';
-    const next = isLight ? 'dark' : 'light';
-    localStorage.setItem('narfkit-theme', next);
-    applyTheme(next);
-  });
+}
+$('filter-kelas').addEventListener('change', () => muatSiswa().catch(e => Narf.toast(e.message, 'error')))
+$('filter-modul').addEventListener('change', render)
+$('filter-siswa').addEventListener('change', render)
+$('filter-waktu-chat').addEventListener('change', render)
+$('btn-kirim-feedback').addEventListener('click', kirimFeedback)
+$('btn-ai-jurnal').addEventListener('click', analisisJurnal)
+$('btn-ringkas').addEventListener('click', ringkasChat)
+init()
 </script>
 </body>
 </html>

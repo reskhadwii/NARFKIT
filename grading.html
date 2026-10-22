@@ -4,9 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NARF KIT - Grading</title>
+  <script src="global.js"></script>
   <link rel="stylesheet" type="text/css" href="global.css">
   <link rel="stylesheet" type="text/css" href="styleguru.css">
   <link rel="stylesheet" type="text/css" href="grading.css">
+  <style>
+    [hidden] { display: none !important; }
+    .filter-antrean { width: 100%; margin-bottom: 12px; background: rgba(var(--card-rgb),0.1); border: 1.5px solid var(--border-color); border-radius: 10px; padding: 8px 12px; color: var(--fg-solid); font: 700 13px "Montserrat", sans-serif; }
+    .filter-antrean option { background: var(--bg-primary); }
+    .antrean-item { cursor: pointer; }
+    .kosong-grading { color: rgba(var(--fg-rgb),0.5); font-weight: 700; font-size: 14px; text-align: center; padding: 40px 16px; }
+    .pesan-simpan { font-size: 13px; font-weight: 700; margin-top: 10px; min-height: 18px; }
+    .pesan-simpan.ok { color: #4dda90; } .pesan-simpan.err { color: #e07070; }
+    .lampiran-card.mati { opacity: .5; pointer-events: none; }
+    .btn-ai-saran { margin-top: 12px; background: transparent; border: 1.5px solid #fe7f42; color: #fe7f42; border-radius: 10px; padding: 8px 16px; font: 700 13px "Montserrat", sans-serif; cursor: pointer; transition: background .2s, color .2s; }
+    .btn-ai-saran:hover:not(:disabled) { background: #fe7f42; color: #1a1313; }
+    .btn-ai-saran:disabled { opacity: .5; cursor: wait; }
+    .ai-catatan { margin-top: 8px; font-size: 12px; font-weight: 700; color: rgba(var(--fg-rgb),0.45); }
+    .badge-sudah { background: rgba(77,218,144,0.12); border-color: rgba(77,218,144,0.3); color: #4dda90; }
+  </style>
 </head>
 <body>
 
@@ -19,10 +35,10 @@
     <a href="monitoring.html" class="menu-item">MONITORING</a>
   </div>
   <div class="nav-right">
-    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
-    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
-      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    <button class="nav-icon-btn" id="nav-profil" type="button" aria-label="Akun"><svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg></button>
+    <button class="theme-toggle" data-theme-toggle title="Ganti tema" type="button" aria-label="Ganti tema">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
     </button>
   </div>
 </nav>
@@ -36,258 +52,266 @@
 
   <!-- Tab Navigasi Kategori Penilaian -->
   <div class="grading-tabs">
-    <button class="tab-btn active" onclick="switchTab('esai')">Esai (Asesmen & Kuis)</button>
-    <button class="tab-btn" onclick="switchTab('proyek')">Proyek</button>
+    <button class="tab-btn active" id="tab-esai" type="button">Esai (Asesmen & Kuis)</button>
+    <button class="tab-btn" id="tab-proyek" type="button">Proyek</button>
   </div>
 
-  <!-- Kontainer Split View -->
   <div class="grading-layout">
-    
-    <!-- KOLOM KIRI: Daftar Antrean -->
+
     <div class="panel antrean-panel">
       <div class="section-label">ANTREAN PENILAIAN</div>
-      
-      <!-- List Esai -->
-      <div id="list-esai" class="list-container active">
-        <div class="antrean-item active">
-          <div class="antrean-avatar">ZG</div>
-          <div class="antrean-info">
-            <div class="antrean-nama">Zhang Guiyuan</div>
-            <div class="antrean-meta">Asesmen Modul 1 • XII TM A</div>
-          </div>
-          <span class="badge-tipe badge-asesmen">AI Draft</span>
-        </div>
-        <div class="antrean-item">
-          <div class="antrean-avatar">YB</div>
-          <div class="antrean-info">
-            <div class="antrean-nama">Yang Bowen</div>
-            <div class="antrean-meta">Kuis Modul 2 • XII TM C</div>
-          </div>
-          <span class="badge-tipe badge-kuis">AI Draft</span>
-        </div>
-      </div>
-
-      <!-- List Proyek -->
-      <div id="list-proyek" class="list-container" style="display: none;">
-        <div class="antrean-item active">
-          <!-- Pakai inisial grup agar terlihat beda dengan individu -->
-          <div class="antrean-avatar" style="border-radius: 10px;">K3</div>
-          <div class="antrean-info">
-            <div class="antrean-nama">Kelompok 3</div>
-            <div class="antrean-meta">Submit: Chen Junming • XII TM A</div>
-          </div>
-          <span class="badge-tipe badge-proyek">3 Siswa</span>
-        </div>
-      </div>
+      <select class="filter-antrean" id="filter-antrean" aria-label="Filter antrean">
+        <option value="belum">Belum dinilai</option>
+        <option value="semua">Semua</option>
+        <option value="asesmen">Asesmen (pretest)</option>
+        <option value="kuis">Kuis</option>
+      </select>
+      <div id="list-antrean"><div class="kosong-grading">Memuat...</div></div>
     </div>
 
-    <!-- KOLOM KANAN: Detail Penilaian -->
     <div class="panel detail-panel">
-      
-      <!-- TAMPILAN ESAI (Validasi AI) -->
-      <div id="detail-esai" class="detail-content active">
-        <div class="detail-header-grading">
-          <div>
-            <div class="detail-judul">Zhang Guiyuan</div>
-            <div class="detail-sub">Asesmen Pemrograman Dasar: Modul 1</div>
-          </div>
-        </div>
+      <div class="kosong-grading" id="detail-kosong">Pilih satu item dari antrean di kiri.</div>
 
-        <div class="soal-box">
-          <div class="soal-label">PERTANYAAN</div>
-          <div class="soal-teks">Jelaskan perbedaan mendasar antara tipe data array dan struct dalam C++ beserta contoh kasus penggunaannya!</div>
+      <!-- ESAI -->
+      <div id="detail-esai" hidden>
+        <div class="detail-header-grading"><div>
+          <div class="detail-judul" id="e-nama"></div>
+          <div class="detail-sub" id="e-sub"></div>
+        </div></div>
+        <div class="soal-box"><div class="soal-label">PERTANYAAN</div><div class="soal-teks" id="e-soal"></div></div>
+        <div class="jawaban-box"><div class="soal-label">JAWABAN SISWA</div><div class="jawaban-teks" id="e-jawaban"></div></div>
+        <div class="ai-suggestion-box" id="e-ai">
+          <div class="ai-header"><span>REKOMENDASI NILAI AI</span><div class="ai-score-badge" id="e-ai-skor"></div></div>
+          <div class="ai-reasoning" id="e-ai-alasan"></div>
+          <button class="btn-ai-saran" id="btn-ai-esai" type="button">Minta saran NARF AI</button>
+          <div class="ai-catatan">Hanya saran. Nilai final tetap kamu yang menentukan.</div>
         </div>
-
-        <div class="jawaban-box">
-          <div class="soal-label">JAWABAN SISWA</div>
-          <div class="jawaban-teks">Array itu untuk nyimpan data yang tipe datanya sama semua, kaya nilai ulangan. Kalau struct itu bisa campur-campur tipe datanya, kaya data siswa ada nama (string) dan umur (int).</div>
-        </div>
-
-        <div class="ai-suggestion-box">
-          <div class="ai-header">
-            <span style="display: flex; align-items: center; gap: 6px;">
-              <!-- Ikon AI SVG -->
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="10" rx="2"></rect>
-                <circle cx="12" cy="5" r="2"></circle>
-                <path d="M12 7v4"></path>
-                <line x1="8" y1="16" x2="8" y2="16"></line>
-                <line x1="16" y1="16" x2="16" y2="16"></line>
-              </svg>
-              REKOMENDASI NILAI AI
-            </span>
-            <div class="ai-score-badge">85 / 100</div>
-          </div>
-          <div class="ai-reasoning">
-            Siswa telah memahami konsep dasar dengan sangat baik dan memberikan analogi yang tepat. Namun, penjelasan teknis mengenai alokasi memori atau sintaks tidak disertakan. Disarankan untuk memvalidasi nilai ini.
-          </div>
-        </div>
-
         <div class="grading-action-box">
-          <div class="input-group">
-            <label>NILAI FINAL (0-100)</label>
-            <input type="number" class="score-input" value="85" min="0" max="100">
-          </div>
-          <div class="input-group" style="flex: 1;">
-            <label>FEEDBACK GURU (Opsional)</label>
-            <textarea class="feedback-input" placeholder="Tambahkan catatan untuk siswa..."></textarea>
-          </div>
+          <div class="input-group"><label for="e-nilai">NILAI FINAL (0-100)</label>
+            <input type="number" class="score-input" id="e-nilai" min="0" max="100" step="1"></div>
+          <div class="input-group" style="flex: 1;"><label for="e-feedback">FEEDBACK GURU (Opsional)</label>
+            <textarea class="feedback-input" id="e-feedback" maxlength="1000" placeholder="Tambahkan catatan untuk siswa..."></textarea></div>
         </div>
-        <button class="btn-upload-nilai">Simpan & Upload Nilai</button>
+        <button class="btn-upload-nilai" id="btn-simpan-esai" type="button">Simpan & Upload Nilai</button>
+        <div class="ai-catatan">Nilai ini menentukan XP esai siswa: poin soal × nilai ÷ 100. Nilai project diisi terpisah di tab Proyek.</div>
+        <div class="pesan-simpan" id="e-pesan" role="status"></div>
       </div>
 
-      <!-- TAMPILAN PROYEK (Validasi Manual) -->
-      <div id="detail-proyek" class="detail-content" style="display: none;">
-        <div class="detail-header-grading">
-          <div>
-            <div class="detail-judul">Kelompok 3</div>
-            <div class="detail-sub">Proyek Akhir: Purwarupa Smart Trash Bin (Disubmit oleh Chen Junming)</div>
-          </div>
-        </div>
-
-        <!-- LAMPIRAN FILE (Laporan & Video) -->
+      <!-- PROYEK -->
+      <div id="detail-proyek" hidden>
+        <div class="detail-header-grading"><div>
+          <div class="detail-judul" id="p-nama"></div>
+          <div class="detail-sub" id="p-sub"></div>
+        </div></div>
         <div class="lampiran-section">
           <div class="soal-label">LAMPIRAN FILE KELOMPOK</div>
           <div class="lampiran-grid" style="grid-template-columns: 1fr 1fr; display: grid;">
-            <a href="#" class="lampiran-card">
-              <span class="icon">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-              </span>
-              <div class="lampiran-info">
-                <span class="lampiran-title">Laporan</span>
-                <span class="lampiran-type">Lihat PDF ↗</span>
-              </div>
-            </a>
-            <a href="#" class="lampiran-card">
-              <span class="icon">
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                </svg>
-              </span>
-              <div class="lampiran-info">
-                <span class="lampiran-title">Video Presentasi</span>
-                <span class="lampiran-type">Buka Tautan ↗</span>
-              </div>
-            </a>
+            <a href="#" class="lampiran-card" id="p-laporan" target="_blank" rel="noopener noreferrer"><div class="lampiran-info"><span class="lampiran-title">Laporan</span><span class="lampiran-type">Lihat PDF ↗</span></div></a>
+            <a href="#" class="lampiran-card" id="p-video" target="_blank" rel="noopener noreferrer"><div class="lampiran-info"><span class="lampiran-title">Video Presentasi</span><span class="lampiran-type">Buka Tautan ↗</span></div></a>
           </div>
         </div>
-
-        <!-- DATA BUSINESS MODEL CANVAS (Read Only) -->
-        <div class="lampiran-section">
-          <div class="soal-label">DATA BUSINESS MODEL CANVAS</div>
-          <div class="bmc-grid-read">
-            <div class="bmc-block-read"><label>Key Partners</label><p>Toko komponen elektronik lokal, Pengepul barang bekas.</p></div>
-            <div class="bmc-block-read"><label>Key Activities</label><p>Merakit komponen, Menulis kode program, Uji coba sensor.</p></div>
-            <div class="bmc-block-read"><label>Value Prop.</label><p>Tempat sampah higienis tanpa sentuhan tangan langsung.</p></div>
-            <div class="bmc-block-read"><label>Customer Rel.</label><p>Garansi perbaikan 1 bulan, tutorial penggunaan.</p></div>
-            <div class="bmc-block-read"><label>Cust. Segments</label><p>Sekolah, Rumah Sakit, Rumah tangga.</p></div>
-            <div class="bmc-block-read"><label>Key Resources</label><p>Komponen IoT (Arduino, Sensor), Kardus/Plastik.</p></div>
-            <div class="bmc-block-read"><label>Channels</label><p>Demo langsung di sekolah, Media sosial.</p></div>
-            <div class="bmc-block-read"><label>Cost Structure</label><p>Beli sensor Rp 15rb, Servo Rp 20rb, Mikrokontroler Rp 60rb.</p></div>
-            <div class="bmc-block-read"><label>Revenue Streams</label><p>Penjualan unit alat Rp 150rb per buah.</p></div>
-          </div>
+        <div class="lampiran-section" id="p-rancangan-wrap" hidden>
+          <div class="soal-label">RANCANGAN PROJECT (DIISI KELOMPOK)</div>
+          <div class="bmc-block-read"><label>Judul</label><p id="p-r-judul"></p></div>
+          <div class="bmc-block-read" style="margin-top:10px;"><label>Deskripsi</label><p id="p-r-deskripsi"></p></div>
+          <div class="bmc-block-read" style="margin-top:10px;"><label>Alat &amp; Bahan</label><ul id="p-r-alat" style="margin:0;padding-left:20px;"></ul></div>
+          <div class="bmc-block-read" style="margin-top:10px;"><label>Langkah Pengerjaan</label><ol id="p-r-panduan" style="margin:0;padding-left:20px;"></ol></div>
         </div>
-
-        <!-- DATA SWOT (Read Only) -->
-        <div class="lampiran-section">
-          <div class="soal-label">ANALISIS SWOT</div>
-          <div class="swot-grid-read">
-            <div class="swot-block-read strength"><label>Strengths</label><p>Alat mudah dirakit dan biaya pembuatannya sangat murah.</p></div>
-            <div class="swot-block-read weakness"><label>Weaknesses</label><p>Motor servo SG90 kurang kuat jika tutup sampah terlalu berat.</p></div>
-            <div class="swot-block-read opportunity"><label>Opportunities</label><p>Bisa dikembangkan memakai panel surya agar hemat listrik.</p></div>
-            <div class="swot-block-read threat"><label>Threats</label><p>Sensor kadang error jika terkena cipratan air hujan.</p></div>
-          </div>
-        </div>
-
-        <div class="manual-grading-notice">
-          Guru wajib memvalidasi nilai proyek. Anda dapat memberikan nilai dan catatan yang berbeda untuk masing-masing anggota kelompok di bawah ini.
-        </div>
-
-        <!-- PENILAIAN INDIVIDU -->
+        <div class="lampiran-section"><div class="soal-label">DATA BUSINESS MODEL CANVAS</div><div class="bmc-grid-read" id="p-bmc"></div></div>
+        <div class="lampiran-section"><div class="soal-label">ANALISIS SWOT</div><div class="swot-grid-read" id="p-swot"></div></div>
+        <div class="manual-grading-notice">Nilai proyek diberikan per anggota. Kamu bisa memberi nilai dan catatan yang berbeda untuk tiap anggota kelompok.</div>
         <div class="soal-label" style="margin-top: 24px;">PENILAIAN INDIVIDU ANGGOTA KELOMPOK</div>
-        <div class="group-grading-list">
-          
-          <div class="group-member-grade">
-            <div class="member-info">
-              <div class="antrean-avatar">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <span class="member-name">Chen Junming</span>
-            </div>
-            <input type="text" class="feedback-input-mini" placeholder="Catatan: Kodingan sangat rapi...">
-            <input type="number" class="score-input-mini empty" placeholder="0" min="0" max="100">
-          </div>
-
-          <div class="group-member-grade">
-            <div class="member-info">
-              <div class="antrean-avatar">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <span class="member-name">Song Yuqi</span>
-            </div>
-            <input type="text" class="feedback-input-mini" placeholder="Catatan: Laporan ditulis dengan baik...">
-            <input type="number" class="score-input-mini empty" placeholder="0" min="0" max="100">
-          </div>
-
-        </div>
-
-        <button class="btn-upload-nilai" style="margin-top: 20px;">Simpan Semua Nilai</button>
+        <div class="group-grading-list" id="p-anggota"></div>
+        <button class="btn-upload-nilai" id="btn-simpan-proyek" type="button" style="margin-top: 20px;">Simpan Semua Nilai</button>
+        <div class="pesan-simpan" id="p-pesan" role="status"></div>
       </div>
     </div>
+  </div>
 </main>
 
 <footer class="footer">
   <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="siswa-nav.js"></script>
 <script>
-  // Script Toggle Tema
-  const root = document.documentElement;
-  const toggleBtn = document.getElementById('theme-toggle');
-  const iconMoon = document.getElementById('icon-moon');
-  const iconSun = document.getElementById('icon-sun');
+const $ = id => document.getElementById(id)
+const esc = Narf.esc
+const BMC = { 'bmc-partners': 'Key Partners', 'bmc-activities': 'Key Activities', 'bmc-value': 'Value Prop.', 'bmc-relationship': 'Customer Rel.', 'bmc-segments': 'Cust. Segments', 'bmc-resources': 'Key Resources', 'bmc-channels': 'Channels', 'bmc-cost': 'Cost Structure', 'bmc-revenue': 'Revenue Streams' }
+const SWOT = { 'swot-s': ['strength', 'Strengths'], 'swot-w': ['weakness', 'Weaknesses'], 'swot-o': ['opportunity', 'Opportunities'], 'swot-t': ['threat', 'Threats'] }
 
-  function applyTheme(theme) {
-    if (theme === 'light') {
-      root.setAttribute('data-theme', 'light');
-      iconMoon.style.display = 'none';
-      iconSun.style.display = 'block';
+let tab = 'esai'
+let esai = [], proyek = []
+let terpilih = null
+
+function setTab(t) {
+  tab = t
+  $('tab-esai').classList.toggle('active', t === 'esai')
+  $('tab-proyek').classList.toggle('active', t === 'proyek')
+  $('filter-antrean').hidden = t !== 'esai'
+  terpilih = null
+  tampilDetail(null)
+  renderAntrean()
+}
+
+function tampilDetail(kind) {
+  $('detail-kosong').hidden = !!kind
+  $('detail-esai').hidden = kind !== 'esai'
+  $('detail-proyek').hidden = kind !== 'proyek'
+}
+
+/* ---------- antrean ---------- */
+function esaiTersaring() {
+  const f = $('filter-antrean').value
+  return esai.filter(e => f === 'semua' ? true : f === 'belum' ? !e.sudah : f === 'asesmen' ? e.tipe === 'pretest' : e.tipe !== 'pretest')
+}
+function renderAntrean() {
+  const box = $('list-antrean')
+  const list = tab === 'esai' ? esaiTersaring() : proyek
+  if (!list.length) { box.innerHTML = '<div class="kosong-grading">' + (tab === 'esai' ? 'Tidak ada esai di antrean.' : 'Belum ada proyek yang dikumpulkan.') + '</div>'; return }
+  box.innerHTML = ''
+  list.forEach(it => {
+    const d = document.createElement('div')
+    d.className = 'antrean-item' + (terpilih === it.id ? ' active' : '')
+    d.tabIndex = 0; d.setAttribute('role', 'button')
+    if (tab === 'esai') {
+      d.innerHTML = '<div class="antrean-avatar">' + esc(Narf.inisial(it.nama)) + '</div><div class="antrean-info"><div class="antrean-nama">' + esc(it.nama) +
+        '</div><div class="antrean-meta">' + esc(it.asesmen) + ' • ' + esc(it.kelas || '-') + '</div></div><span class="badge-tipe ' +
+        (it.sudah ? 'badge-sudah">Dinilai' : (it.tipe === 'pretest' ? 'badge-asesmen">Asesmen' : 'badge-kuis">Kuis')) + '</span>'
     } else {
-      root.removeAttribute('data-theme');
-      iconMoon.style.display = 'block';
-      iconSun.style.display = 'none';
+      d.innerHTML = '<div class="antrean-avatar" style="border-radius: 10px;">' + esc(Narf.inisial(it.kelompok)) + '</div><div class="antrean-info"><div class="antrean-nama">' + esc(it.kelompok) +
+        '</div><div class="antrean-meta">Submit: ' + esc(it.pengirim || '-') + ' • ' + esc(it.kelas || '-') + '</div></div><span class="badge-tipe ' +
+        (it.status === 'dinilai' ? 'badge-sudah">Dinilai' : 'badge-proyek">' + esc(it.anggota.length) + ' Siswa') + '</span>'
     }
+    const pilih = () => { terpilih = it.id; renderAntrean(); tab === 'esai' ? bukaEsai(it) : bukaProyek(it) }
+    d.addEventListener('click', pilih)
+    d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pilih() } })
+    box.appendChild(d)
+  })
+}
+
+/* ---------- esai ---------- */
+function pesan(id, t, ok) { const el = $(id); el.textContent = t; el.className = 'pesan-simpan ' + (ok ? 'ok' : 'err') }
+
+function tampilAi(it) {
+  const adaAi = it.skor_ai !== null && it.skor_ai !== undefined
+  $('e-ai-skor').textContent = adaAi ? Math.round(it.skor_ai) + ' / 100' : ''
+  $('e-ai-alasan').textContent = adaAi ? (it.feedback_ai || '') : 'Belum ada saran. Klik tombol di bawah untuk meminta NARF AI memeriksa jawaban ini.'
+  $('btn-ai-esai').textContent = adaAi ? 'Minta saran ulang' : 'Minta saran NARF AI'
+}
+async function pesanFungsi(error) {
+  try { if (error && error.context && typeof error.context.json === 'function') { const j = await error.context.json(); if (j && j.error) return j.error } } catch (e) { /* abaikan */ }
+  return 'Gagal menghubungi NARF AI. Coba lagi.'
+}
+async function mintaSaranAi() {
+  const it = esai.find(e => e.id === terpilih)
+  if (!it) return
+  const b = $('btn-ai-esai'); b.disabled = true; b.textContent = 'NARF AI sedang memeriksa...'
+  try {
+    const { data, error } = await sb.functions.invoke(window.NARF_FN_NILAI || 'nilai-ai', { body: { jenis: 'esai', id: it.id } })
+    if (error || !data || data.error) throw new Error(error ? await pesanFungsi(error) : (data && data.error) || 'Gagal.')
+    it.skor_ai = data.skor_ai; it.feedback_ai = data.feedback_ai
+    tampilAi(it)
+    if ($('e-nilai').value === '') $('e-nilai').value = Math.round(it.skor_ai)
+  } catch (e) { Narf.toast(e.message, 'error'); tampilAi(it) } finally { b.disabled = false }
+}
+
+function bukaEsai(it) {
+  tampilDetail('esai')
+  $('e-nama').textContent = it.nama
+  $('e-sub').textContent = it.asesmen + ' • ' + (it.kelas || '-')
+  $('e-soal').textContent = it.pertanyaan
+  $('e-jawaban').textContent = it.jawaban || ''
+  tampilAi(it)
+  const adaAi = it.skor_ai !== null && it.skor_ai !== undefined
+  $('e-nilai').value = it.skor_guru ?? (adaAi ? Math.round(it.skor_ai) : '')
+  $('e-feedback').value = it.feedback_guru || ''
+  $('e-pesan').textContent = ''
+}
+async function simpanEsai() {
+  const it = esai.find(e => e.id === terpilih)
+  const v = $('e-nilai').value.trim()
+  const n = Number(v)
+  if (v === '' || !Number.isFinite(n) || n < 0 || n > 100) return pesan('e-pesan', 'Nilai harus berupa angka 0-100.', false)
+  const b = $('btn-simpan-esai'); b.disabled = true
+  try {
+    const r = await Narf.rpc('nilai_jawaban', { p_id: it.id, p_skor: n, p_feedback: $('e-feedback').value })
+    it.skor_guru = n; it.feedback_guru = $('e-feedback').value; it.sudah = true
+    pesan('e-pesan', 'Nilai tersimpan. XP esai siswa: ' + r.xp_esai + (r.xp_selisih ? ' (' + (r.xp_selisih > 0 ? '+' : '') + r.xp_selisih + ' dari sebelumnya)' : '') + '. Siswa sudah diberi notifikasi.', true)
+    renderAntrean()
+  } catch (e) { pesan('e-pesan', e.message, false) } finally { b.disabled = false }
+}
+
+/* ---------- proyek ---------- */
+function setLink(id, url) {
+  const a = $(id), u = Narf.safeUrl(url)
+  a.classList.toggle('mati', !u)
+  if (u) a.href = u; else a.removeAttribute('href')
+}
+function bukaProyek(it) {
+  tampilDetail('proyek')
+  $('p-nama').textContent = it.kelompok
+  $('p-sub').textContent = it.proyek + ' (Disubmit oleh ' + (it.pengirim || '-') + ')'
+  setLink('p-laporan', it.link_laporan); setLink('p-video', it.link_video)
+  $('p-rancangan-wrap').hidden = !it.bebas
+  if (it.bebas) {
+    $('p-r-judul').textContent = it.proyek || '-'
+    $('p-r-deskripsi').textContent = it.deskripsi || '-'
+    const isi = (id, arr) => { const el = $(id); el.innerHTML = ''; (arr || []).forEach(t => { const li = document.createElement('li'); li.textContent = t; el.appendChild(li) }); if (!(arr || []).length) el.textContent = '-' }
+    isi('p-r-alat', it.alat_bahan); isi('p-r-panduan', it.panduan)
   }
-  const saved = localStorage.getItem('narfkit-theme') || 'dark';
-  applyTheme(saved);
-  toggleBtn.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    localStorage.setItem('narfkit-theme', next);
-    applyTheme(next);
-  });
-
-  // Script Switch Tab Penilaian (Esai vs Proyek)
-  function switchTab(type) {
-    // 1. Update status tombol tab di atas
-    const btns = document.querySelectorAll('.tab-btn');
-    btns.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-
-    // 2. Ganti daftar antrean (Panel Kiri)
-    document.getElementById('list-esai').style.display = type === 'esai' ? 'block' : 'none';
-    document.getElementById('list-proyek').style.display = type === 'proyek' ? 'block' : 'none';
-
-    // 3. Ganti detail konten penilaian (Panel Kanan)
-    document.getElementById('detail-esai').style.display = type === 'esai' ? 'block' : 'none';
-    document.getElementById('detail-proyek').style.display = type === 'proyek' ? 'block' : 'none';
+  $('p-bmc').innerHTML = Object.entries(BMC).map(([k, lbl]) => '<div class="bmc-block-read"><label>' + esc(lbl) + '</label><p>' + esc((it.bmc || {})[k] || '-') + '</p></div>').join('')
+  $('p-swot').innerHTML = Object.entries(SWOT).map(([k, [cls, lbl]]) => '<div class="swot-block-read ' + cls + '"><label>' + esc(lbl) + '</label><p>' + esc((it.swot || {})[k] || '-') + '</p></div>').join('')
+  $('p-anggota').innerHTML = it.anggota.map(a => '<div class="group-member-grade" data-siswa="' + esc(a.siswa_id) + '"><div class="member-info"><div class="antrean-avatar">' + esc(Narf.inisial(a.nama)) +
+    '</div><span class="member-name">' + esc(a.nama) + '</span></div><input type="text" class="feedback-input-mini" maxlength="500" placeholder="Catatan untuk ' + esc(a.nama) + '" aria-label="Catatan ' + esc(a.nama) + '" value="' + esc(a.feedback || '') +
+    '"><input type="number" class="score-input-mini' + (a.nilai === null ? ' empty' : '') + '" placeholder="0" min="0" max="100" step="1" aria-label="Nilai ' + esc(a.nama) + '" value="' + esc(a.nilai ?? '') + '"></div>').join('')
+  $('p-pesan').textContent = ''
+}
+async function simpanProyek() {
+  const it = proyek.find(p => p.id === terpilih)
+  const arr = []
+  for (const row of document.querySelectorAll('#p-anggota .group-member-grade')) {
+    const v = row.querySelector('.score-input-mini').value.trim()
+    if (v === '') continue
+    const n = Number(v)
+    if (!Number.isFinite(n) || n < 0 || n > 100) return pesan('p-pesan', 'Semua nilai harus 0-100.', false)
+    arr.push({ siswa_id: row.dataset.siswa, nilai: n, feedback: row.querySelector('.feedback-input-mini').value })
   }
+  if (!arr.length) return pesan('p-pesan', 'Isi minimal satu nilai anggota.', false)
+  const b = $('btn-simpan-proyek'); b.disabled = true
+  try {
+    const r = await Narf.rpc('nilai_proyek', { p_submission_id: it.id, p_nilai: arr })
+    arr.forEach(x => { const a = it.anggota.find(m => m.siswa_id === x.siswa_id); a.nilai = x.nilai; a.feedback = x.feedback })
+    if (r.dinilai >= r.anggota) it.status = 'dinilai'
+    pesan('p-pesan', r.dinilai >= r.anggota ? 'Semua anggota sudah dinilai.' : 'Tersimpan. Masih ada ' + (r.anggota - r.dinilai) + ' anggota tanpa nilai.', true)
+    renderAntrean()
+  } catch (e) { pesan('p-pesan', e.message, false) } finally { b.disabled = false }
+}
+
+async function init() {
+  try {
+    const profil = await Narf.guard('guru')
+    NarfNav.init(profil)
+    const [e, p] = await Promise.all([Narf.rpc('guru_antrean_esai'), Narf.rpc('guru_antrean_proyek')])
+    esai = e; proyek = p
+    const tipe = new URLSearchParams(location.search).get('tipe')
+    if (tipe === 'asesmen' || tipe === 'kuis') $('filter-antrean').value = tipe
+    setTab(tipe === 'proyek' ? 'proyek' : 'esai')
+  } catch (err) {
+    Narf.toast(err.message, 'error')
+    $('list-antrean').innerHTML = '<div class="kosong-grading">' + esc(err.message) + '</div>'
+  }
+}
+$('tab-esai').addEventListener('click', () => setTab('esai'))
+$('tab-proyek').addEventListener('click', () => setTab('proyek'))
+$('filter-antrean').addEventListener('change', () => { terpilih = null; tampilDetail(null); renderAntrean() })
+$('btn-simpan-esai').addEventListener('click', simpanEsai)
+$('btn-ai-esai').addEventListener('click', mintaSaranAi)
+$('btn-simpan-proyek').addEventListener('click', simpanProyek)
+init()
 </script>
 </body>
 </html>

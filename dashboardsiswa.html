@@ -4,7 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NARF KIT - Dashboard Siswa</title>
+  <script src="global.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+    .posttest-card { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+      background: rgba(var(--card-rgb),0.05); border:2px solid var(--border-color); border-radius:20px; padding:20px 24px; }
+    .posttest-judul { color: rgba(var(--highlight-rgb),0.9); font-size:18px; font-weight:700; }
+    .posttest-desk { color: rgba(var(--fg-rgb),0.6); font-size:14px; font-weight:700; margin-top:4px; }
+    [hidden] { display:none !important; }
+    .daftar-feedback { display:flex; flex-direction:column; gap:10px; }
+    .item-feedback { background: rgba(77,218,144,0.08); border:1.5px solid rgba(77,218,144,0.35); border-radius:14px; padding:14px 18px; }
+    .item-feedback .fb-judul { font-size:12px; font-weight:700; letter-spacing:.5px; color: rgba(var(--fg-rgb),0.55); margin-bottom:6px; }
+    .item-feedback .fb-isi { font-size:14px; font-weight:700; line-height:1.55; color: var(--fg-solid); overflow-wrap:anywhere; }
+    .item-feedback .fb-tanya { font-size:12px; font-weight:700; color: rgba(var(--fg-rgb),0.5); margin-top:6px; overflow-wrap:anywhere; }
+    .riwayat-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+    .riwayat-bar .chip { border:1.5px solid var(--border-color); background:transparent; color: var(--fg-solid); border-radius:999px; padding:6px 14px; font-weight:700; font-size:13px; cursor:pointer; font-family:inherit; }
+    .riwayat-bar .chip.aktif { background: rgba(var(--highlight-rgb),0.15); border-color: rgba(var(--highlight-rgb),0.7); }
+    .riwayat-list { display:flex; flex-direction:column; gap:10px; }
+    .rw-item { background: rgba(var(--card-rgb),0.05); border:1.5px solid var(--border-color); border-radius:14px; overflow:hidden; }
+    .rw-item summary { list-style:none; cursor:pointer; padding:14px 18px; display:flex; gap:12px; align-items:flex-start; justify-content:space-between; }
+    .rw-item summary::-webkit-details-marker { display:none; }
+    .rw-sum-teks { min-width:0; }
+    .rw-meta { font-size:11px; font-weight:700; letter-spacing:.5px; color: rgba(var(--fg-rgb),0.5); margin-bottom:4px; }
+    .rw-tanya { font-size:14px; font-weight:700; color: var(--fg-solid); overflow-wrap:anywhere; }
+    .rw-badge { flex-shrink:0; font-size:12px; font-weight:700; border-radius:999px; padding:4px 12px; border:1.5px solid var(--border-color); white-space:nowrap; }
+    .rw-badge.ok { color:#4dda90; border-color:rgba(77,218,144,0.6); }
+    .rw-badge.salah { color:#ff6b6b; border-color:rgba(255,107,107,0.6); }
+    .rw-badge.tunggu { color:#fe7f42; border-color:rgba(254,127,66,0.6); }
+    .rw-body { padding:0 18px 16px; display:flex; flex-direction:column; gap:10px; font-size:14px; font-weight:600; color: var(--fg-solid); }
+    .rw-body .rw-label { font-size:11px; font-weight:700; letter-spacing:.5px; color: rgba(var(--fg-rgb),0.5); margin-bottom:2px; }
+    .rw-body .rw-teks { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.55; }
+    .rw-body pre { margin:0; padding:10px 12px; border-radius:10px; background: rgba(var(--border-rgb),0.12); overflow:auto; font-size:12.5px; }
+    .rw-kosong { color: rgba(var(--fg-rgb),0.6); font-weight:700; font-size:14px; }
+    .modal-kontak { position:fixed; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; padding:20px; z-index:1000; }
+    .kontak-box { background: var(--bg-primary); color: var(--fg-solid); border:2px solid var(--border-color); border-radius:20px; padding:24px; max-width:420px; width:100%; }
+    .kontak-judul { font-size:18px; font-weight:800; color: rgba(var(--highlight-rgb),0.95); margin-bottom:8px; }
+    .kontak-desk { font-size:14px; font-weight:600; line-height:1.55; color: rgba(var(--fg-rgb),0.75); margin-bottom:14px; }
+    .kontak-email { font-size:16px; font-weight:800; padding:12px 14px; border-radius:12px; border:1.5px solid var(--border-color); background: rgba(var(--border-rgb),0.12); overflow-wrap:anywhere; user-select:all; margin-bottom:16px; }
+    .kontak-aksi { display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+    .stats-row { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  </style>
 </head>
 <body>
 
@@ -17,28 +56,32 @@
     <a href="chatbot.html" class="menu-item">CHATBOT</a>
   </div>
   <div class="nav-right">
-    <svg viewBox="0 0 60 60" fill="none"><path d="M7.5 38.75L17.14 30.72C21.23 27.31 23.91 27.66 27.44 31.19L27.46 31.2C31.3 35.05 34.06 34.89 37.89 31.54L52.5 18.75" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M52.5 52.5H23.5C17.9 52.5 15.1 52.5 12.96 51.41C11.08 50.45 9.55 48.92 8.59 47.04C7.5 44.9 7.5 42.1 7.5 36.5V7.5" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <svg viewBox="0 0 60 60" fill="none"><path d="M22.5 42.5V45C22.5 46.99 23.29 48.9 24.7 50.3C26.1 51.71 28.01 52.5 30 52.5C31.99 52.5 33.9 51.71 35.3 50.3C36.71 48.9 37.5 46.99 37.5 45V42.5M25 12.5C25 11.17 25.53 9.9 26.46 8.96C27.4 8.03 28.67 7.5 30 7.5C31.33 7.5 32.6 8.03 33.54 8.96C34.47 9.9 35 11.17 35 12.5C37.87 13.86 40.32 15.97 42.08 18.61C43.84 21.26 44.85 24.33 45 27.5V35C45.19 36.55 45.74 38.04 46.61 39.35C47.48 40.65 48.64 41.73 50 42.5H10C11.36 41.73 12.52 40.65 13.39 39.35C14.26 38.04 14.81 36.55 15 35V27.5C15.15 24.33 16.16 21.26 17.92 18.61C19.68 15.97 22.13 13.86 25 12.5Z" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg>
-    <button class="theme-toggle" id="theme-toggle" title="Ganti tema">
-      <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    <button class="nav-icon-btn" id="nav-progress" type="button" aria-label="Progress belajar"><svg viewBox="0 0 60 60" fill="none"><path d="M7.5 38.75L17.14 30.72C21.23 27.31 23.91 27.66 27.44 31.19L27.46 31.2C31.3 35.05 34.06 34.89 37.89 31.54L52.5 18.75" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M52.5 52.5H23.5C17.9 52.5 15.1 52.5 12.96 51.41C11.08 50.45 9.55 48.92 8.59 47.04C7.5 44.9 7.5 42.1 7.5 36.5V7.5" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="nav-icon-btn" id="nav-notif" type="button" aria-label="Notifikasi"><svg viewBox="0 0 60 60" fill="none"><path d="M22.5 42.5V45C22.5 46.99 23.29 48.9 24.7 50.3C26.1 51.71 28.01 52.5 30 52.5C31.99 52.5 33.9 51.71 35.3 50.3C36.71 48.9 37.5 46.99 37.5 45V42.5M25 12.5C25 11.17 25.53 9.9 26.46 8.96C27.4 8.03 28.67 7.5 30 7.5C31.33 7.5 32.6 8.03 33.54 8.96C34.47 9.9 35 11.17 35 12.5C37.87 13.86 40.32 15.97 42.08 18.61C43.84 21.26 44.85 24.33 45 27.5V35C45.19 36.55 45.74 38.04 46.61 39.35C47.48 40.65 48.64 41.73 50 42.5H10C11.36 41.73 12.52 40.65 13.39 39.35C14.26 38.04 14.81 36.55 15 35V27.5C15.15 24.33 16.16 21.26 17.92 18.61C19.68 15.97 22.13 13.86 25 12.5Z" stroke="#FE7F42" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="nav-icon-btn" id="nav-profil" type="button" aria-label="Akun"><svg viewBox="0 0 60 60" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 22.5C40 25.15 38.95 27.7 37.07 29.57C35.2 31.45 32.65 32.5 30 32.5C27.35 32.5 24.8 31.45 22.93 29.57C21.05 27.7 20 25.15 20 22.5C20 19.85 21.05 17.3 22.93 15.43C24.8 13.55 27.35 12.5 30 12.5C32.65 12.5 35.2 13.55 37.07 15.43C38.95 17.3 40 19.85 40 22.5ZM35 22.5C35 23.83 34.47 25.1 33.54 26.04C32.6 26.97 31.33 27.5 30 27.5C28.67 27.5 27.4 26.97 26.46 26.04C25.53 25.1 25 23.83 25 22.5C25 21.17 25.53 19.9 26.46 18.96C27.4 18.03 28.67 17.5 30 17.5C31.33 17.5 32.6 18.03 33.54 18.96C34.47 19.9 35 21.17 35 22.5Z" fill="#FE7F42"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30 2.5C14.81 2.5 2.5 14.81 2.5 30C2.5 45.19 14.81 57.5 30 57.5C45.19 57.5 57.5 45.19 57.5 30C57.5 14.81 45.19 2.5 30 2.5ZM7.5 30C7.5 35.23 9.28 40.04 12.27 43.86C14.37 41.1 17.08 38.87 20.18 37.33C23.28 35.8 26.7 35 30.16 35C33.58 35 36.96 35.77 40.03 37.27C43.1 38.77 45.79 40.95 47.89 43.65C50.06 40.8 51.52 37.49 52.15 33.97C52.78 30.45 52.56 26.84 51.52 23.42C50.47 20 48.63 16.89 46.14 14.33C43.65 11.76 40.59 9.83 37.2 8.69C33.82 7.54 30.21 7.22 26.67 7.75C23.14 8.28 19.78 9.64 16.88 11.72C13.98 13.81 11.61 16.55 9.98 19.73C8.35 22.91 7.5 26.43 7.5 30ZM30 52.5C24.83 52.51 19.83 50.73 15.82 47.47C17.43 45.16 19.58 43.28 22.08 41.98C24.57 40.68 27.35 40 30.16 40C32.94 40 35.68 40.66 38.16 41.93C40.63 43.2 42.77 45.04 44.39 47.3C40.35 50.67 35.26 52.51 30 52.5Z" fill="#FE7F42"/></svg></button>
+    <button class="theme-toggle" data-theme-toggle title="Ganti tema" type="button" aria-label="Ganti tema">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#fe7f42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
     </button>
   </div>
 </nav>
 
-<div class="screen active" id="screen-asesmen">
+<div class="screen active" id="screen-error">
+  <div class="asesmen-page"><div class="pesan-error" id="pesan-error">Memuat...</div></div>
+</div>
+
+<div class="screen" id="screen-asesmen">
   <div class="asesmen-page">
     <div class="asesmen-header">
       <div class="asesmen-badge"><span>ASESMEN DIAGNOSTIK</span></div>
-      <div class="asesmen-judul">Yuk, kumpulkan XP pertamamu untuk menentukan level kepemahamanmu!</div>
+      <div class="asesmen-judul">Yuk, kumpulkan XP pertamamu untuk menentukan level kepahamanmu!</div>
       <div class="asesmen-sub">Jawab pertanyaan berikut dengan jujur. Poin yang kamu dapatkan<br>akan otomatis masuk ke profil NARFKIT kamu.</div>
     </div>
 
     <div class="asesmen-progress-wrap">
       <div class="asesmen-progress-label">
         <span>PROGRESS ASESMEN</span>
-        <span class="soal-ke" id="prog-label">Soal 1 dari 8</span>
+        <span class="soal-ke" id="prog-label">Memuat soal...</span>
       </div>
       <div class="asesmen-track">
         <div class="asesmen-fill" id="asesmen-fill" style="width: 0%"></div>
@@ -53,8 +96,8 @@
     </div>
 
     <div class="soal-nav">
-      <button class="btn-skip" id="btn-skip" onclick="skipSoal()">Lewati soal ini</button>
-      <button class="btn-next-soal" id="btn-next-soal" onclick="nextSoal()" disabled>
+      <button class="btn-skip" id="btn-skip" type="button">Lewati soal ini</button>
+      <button class="btn-next-soal" id="btn-next-soal" type="button" disabled>
         Lanjut <span>&#8594;</span>
       </button>
     </div>
@@ -81,7 +124,12 @@
       <div class="hasil-skor-wrap">
         <div class="hasil-skor-item">
           <div class="hasil-skor-angka" id="hasil-skor-pg">—</div>
-          <div class="hasil-skor-label">SKOR PG</div>
+          <div class="hasil-skor-label">SKOR KOGNITIF</div>
+        </div>
+        <div class="hasil-divider"></div>
+        <div class="hasil-skor-item">
+          <div class="hasil-skor-angka" id="hasil-skor-kog">—</div>
+          <div class="hasil-skor-label">GAYA BELAJAR</div>
         </div>
         <div class="hasil-divider"></div>
         <div class="hasil-skor-item">
@@ -96,7 +144,7 @@
       </div>
 
       <div class="hasil-deskripsi" id="hasil-deskripsi">Poin pertamamu sudah berhasil masuk. Mari mulai pelajari materi dan kerjakan proyek-proyek seru yang ada di NARFKIT!</div>
-      <button class="btn-masuk-dashboard" onclick="masukDashboard()">Masuk ke Dashboard &#8594;</button>
+      <button class="btn-masuk-dashboard" id="btn-masuk-dashboard" type="button">Masuk ke Dashboard &#8594;</button>
     </div>
   </div>
 </div>
@@ -108,7 +156,7 @@
       <div class="sapaan">
         <svg class="sapaan-icon" viewBox="0 0 96 96" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M75.624 15.688C71.568 11.544 65.784 10.02 60.124 11.628C59.74 11.751 59.336 11.796 58.936 11.76C58.535 11.723 58.146 11.606 57.791 11.416C57.436 11.226 57.123 10.967 56.87 10.654C56.618 10.34 56.431 9.979 56.321 9.592C56.211 9.205 56.18 8.8 56.23 8.4C56.28 8.001 56.41 7.616 56.611 7.268C56.813 6.919 57.083 6.615 57.404 6.374C57.726 6.132 58.093 5.957 58.484 5.86C66.232 3.652 74.3 5.76 79.912 11.492C80.194 11.772 80.417 12.106 80.569 12.473C80.721 12.84 80.798 13.234 80.797 13.631C80.795 14.029 80.714 14.422 80.56 14.788C80.405 15.154 80.179 15.486 79.895 15.763C79.611 16.041 79.274 16.26 78.905 16.407C78.536 16.554 78.141 16.626 77.744 16.619C77.346 16.612 76.954 16.526 76.59 16.366C76.227 16.206 75.898 15.976 75.624 15.688ZM44.76 13.232C43.904 11.764 41.408 10.872 38.876 12.324C36.348 13.764 35.904 16.312 36.748 17.752L46.848 35.08C47.064 35.421 47.208 35.801 47.273 36.199C47.339 36.597 47.323 37.004 47.227 37.396C47.132 37.787 46.958 38.155 46.717 38.479C46.476 38.802 46.172 39.073 45.824 39.276C45.476 39.479 45.09 39.61 44.69 39.66C44.29 39.711 43.884 39.68 43.496 39.571C43.108 39.461 42.747 39.274 42.432 39.022C42.118 38.769 41.858 38.456 41.668 38.1L31.56 20.776L28.196 15C27.34 13.532 24.844 12.64 22.312 14.092C19.784 15.532 19.34 18.08 20.18 19.52L35.336 45.508C35.535 45.849 35.664 46.225 35.717 46.615C35.771 47.006 35.746 47.403 35.646 47.784C35.546 48.165 35.371 48.523 35.133 48.836C34.894 49.15 34.596 49.414 34.256 49.612C33.916 49.811 33.54 49.94 33.149 49.993C32.759 50.047 32.361 50.022 31.98 49.922C31.599 49.822 31.242 49.647 30.928 49.409C30.614 49.171 30.351 48.873 30.152 48.532L23.416 36.98C22.56 35.512 20.068 34.62 17.532 36.072C15.008 37.512 14.56 40.056 15.404 41.5L30.556 67.488C36.996 78.524 52.876 82.104 66.344 74.408C79.8 66.716 84.584 51.352 78.164 40.34L68.06 23.016C67.204 21.548 64.708 20.656 62.176 22.104C59.648 23.548 59.208 26.092 60.048 27.536L66.784 39.084C66.984 39.427 67.115 39.805 67.167 40.199C67.22 40.592 67.195 40.991 67.092 41.375C66.989 41.758 66.812 42.117 66.569 42.431C66.327 42.745 66.025 43.008 65.68 43.204C59.508 46.724 57.62 53.544 60.32 58.176C60.519 58.517 60.648 58.893 60.701 59.283C60.755 59.674 60.73 60.071 60.63 60.452C60.53 60.833 60.355 61.191 60.117 61.504C59.878 61.818 59.58 62.082 59.24 62.28C58.9 62.479 58.524 62.608 58.133 62.661C57.743 62.715 57.345 62.69 56.964 62.59C56.583 62.49 56.226 62.315 55.912 62.077C55.598 61.839 55.335 61.541 55.136 61.2C50.896 53.932 53.568 44.948 60.188 39.692L44.76 13.232ZM55.68 20.04L49.948 10.216C47.084 5.304 40.656 4.4 35.904 7.12C34.455 7.94 33.208 9.073 32.252 10.436C29.052 6.912 23.54 6.484 19.336 8.884C14.576 11.608 12.124 17.612 15.004 22.548L19.012 29.424C17.446 29.597 15.931 30.087 14.56 30.864C9.796 33.584 7.344 39.592 10.224 44.528L25.38 70.516C33.82 84.996 53.636 88.588 69.324 79.62C85.02 70.652 91.808 51.824 83.352 37.32L73.24 20C70.376 15.088 63.948 14.184 59.196 16.9C57.796 17.7 56.596 18.784 55.672 20.04" fill="#FE7F42"/></svg>
         <span class="halo">Halo!</span>
-        <span class="nama-siswa" id="display-nama">Siswa</span>
+        <span class="nama-siswa" id="display-nama">...</span>
       </div>
       <div class="subtitle" id="display-subtitle">Selamat datang kembali, ayo berprogress!</div>
     </div>
@@ -118,9 +166,9 @@
         <div class="stat-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
         </div>
-        <div class="stat-label">Materi Aktif</div>
-        <div class="stat-value">1</div>
-        <div class="stat-sub">dari 5 materi tersedia</div>
+        <div class="stat-label">Modul Berjalan</div>
+        <div class="stat-value" id="stat-aktif">0</div>
+        <div class="stat-sub" id="stat-aktif-sub">sedang kamu pelajari</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon">
@@ -135,8 +183,16 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.2 22a7.1 7.1 0 0 0-2.4-4.8c-1.3-1.1-3.2-1.6-4.6-2.5-2.2-1.5-3.2-4.3-2.5-6.8 1.8 3.5 5.5 4.8 7.9 2.5 1-1 1.5-2.5 1.5-3.9 0-2-1.5-4-3-5.5-.3-.3-.6-.6-1-1 3.5 1 6.5 3.8 7.5 7.4.8 3.2.1 6.6-1.5 9.3-.5.9-1.2 1.7-1.9 2.3Z"></path></svg>
         </div>
         <div class="stat-label">Streak Belajar</div>
-        <div class="stat-value">1</div>
+        <div class="stat-value" id="stat-streak">0</div>
         <div class="stat-sub">hari berturut-turut</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-3.5 2 1-4L6 10.5l4-.3L12 6.5l2 3.7 4 .3-3.5 2.5 1 4z"></path><circle cx="12" cy="12" r="10"></circle></svg>
+        </div>
+        <div class="stat-label">Nilai Project</div>
+        <div class="stat-value" id="stat-nilai">-</div>
+        <div class="stat-sub" id="stat-nilai-sub">belum ada nilai</div>
       </div>
     </div>
 
@@ -147,17 +203,17 @@
           <div class="thumbnail-placeholder">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
           </div>
-          <div class="play-btn" onclick="window.location.href='course.html'">
+          <div class="play-btn" id="btn-play" role="button" tabindex="0" aria-label="Lanjut belajar">
             <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
           </div>
         </div>
         <div class="judul-kursus">
           <div class="tag-kursus"><span id="tag-kursus-label">⭐ MULAI DARI SINI</span></div>
-          <div class="kursus-title" id="kursus-title">Pemrograman C++</div>
+          <div class="kursus-title" id="kursus-title">Memuat...</div>
           <div class="detail-modul">
-            <span>Modul 1</span>
+            <span id="kursus-modul">Modul</span>
             <svg viewBox="0 0 16 16" fill="rgba(var(--fg-rgb),0.4)" width="6" height="6"><circle cx="8" cy="8" r="4"/></svg>
-            <span id="kursus-subtitle">Dasar-dasar sintaks C++</span>
+            <span id="kursus-subtitle"></span>
           </div>
           <div class="progress-wrap">
             <div class="progress-label" id="progress-label">Progress: 0%</div>
@@ -165,7 +221,7 @@
               <div class="progress-fill" id="progress-fill"></div>
             </div>
           </div>
-          <button class="btn-lanjut" onclick="window.location.href='course.html'">Lanjut Belajar</button>
+          <button class="btn-lanjut" id="btn-lanjut" type="button">Lanjut Belajar</button>
         </div>
       </div>
     </div>
@@ -188,422 +244,553 @@
 
     <div>
       <div class="section-label">SEMUA MATERI NARFKIT</div>
-      <div class="kursus-grid">
-        
-        <a class="kursus-card" href="course.html">
-          <div class="kursus-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
-          </div>
-          <div class="kursus-judul">Pemrograman C++</div>
-          <div class="kursus-meta"><span class="kursus-modul">Modul Dasar Hardware</span></div>
-        </a>
+      <div class="kursus-grid" id="kursus-grid"><div class="nav-kosong">Memuat materi...</div></div>
+    </div>
 
-        <a class="kursus-card" href="course.html">
-          <div class="kursus-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-          </div>
-          <div class="kursus-judul">Internet of Things</div>
-          <div class="kursus-meta"><span class="kursus-modul">Konektivitas WiFi & Cloud</span></div>
-        </a>
+    <div id="kartu-feedback" hidden>
+      <div class="section-label">FEEDBACK DARI GURU</div>
+      <div class="daftar-feedback" id="daftar-feedback"></div>
+    </div>
 
-        <a class="kursus-card" href="course.html">
-          <div class="kursus-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
-          </div>
-          <div class="kursus-judul">Machine Learning</div>
-          <div class="kursus-meta"><span class="kursus-modul">Vision AI Terapan</span></div>
-        </a>
+    <div>
+      <div class="section-label">RIWAYAT SOAL</div>
+      <div class="riwayat-bar">
+        <button class="btn-lanjut" id="btn-riwayat" type="button">Lihat Riwayat Soal &amp; Nilai</button>
+        <span class="chip aktif" data-f="semua" hidden>Semua</span>
+        <span class="chip" data-f="kuis" hidden>Kuis</span>
+        <span class="chip" data-f="pretest" hidden>Pretest</span>
+      </div>
+      <div class="riwayat-list" id="riwayat-list"></div>
+    </div>
 
-        <a class="kursus-card" href="course.html">
-          <div class="kursus-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          </div>
-          <div class="kursus-judul">Kewirausahaan</div>
-          <div class="kursus-meta"><span class="kursus-modul">Dari Ide ke Produk Jual</span></div>
-        </a>
+    <div>
+      <div class="section-label">RIWAYAT CHAT NARF AI</div>
+      <div class="riwayat-bar">
+        <button class="btn-lanjut" id="btn-riwayat-chat" type="button">Lihat Riwayat Chat</button>
+      </div>
+      <div class="riwayat-list" id="riwayat-chat-list"></div>
+    </div>
 
-        <a class="kursus-card" href="course.html">
-          <div class="kursus-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-          </div>
-          <div class="kursus-judul">Project Akhir</div>
-          <div class="kursus-meta"><span class="kursus-modul">Implementasi pembelajaran</span></div>
-        </a>
-
+    <div id="kartu-posttest" hidden>
+      <div class="section-label">POST-TEST</div>
+      <div class="posttest-card">
+        <div class="posttest-info">
+          <div class="posttest-judul" id="posttest-judul"></div>
+          <div class="posttest-desk" id="posttest-desk"></div>
+        </div>
+        <button class="btn-lanjut" id="btn-posttest" type="button" hidden>Mulai Post-test</button>
       </div>
     </div>
 
   </main>
 </div>
 
+<div class="modal-kontak" id="modal-kontak" hidden role="dialog" aria-modal="true" aria-labelledby="kontak-judul">
+  <div class="kontak-box">
+    <div class="kontak-judul" id="kontak-judul">Hubungi Admin</div>
+    <div class="kontak-desk">Menemukan error, bug, atau ada kendala di NARFKIT? Kirim email ke alamat ini dan jelaskan masalahmu (sertakan nama dan kelasmu, serta screenshot kalau ada).</div>
+    <div class="kontak-email" id="kontak-email"></div>
+    <div class="kontak-aksi">
+      <button class="btn-lanjut" id="btn-salin-email" type="button">Salin Email</button>
+      <button class="btn-lanjut" id="btn-tutup-kontak" type="button">Tutup</button>
+    </div>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="copyright">© 2026 NARFKIT. All rights reserved.</div>
-  <svg class="chat-icon" viewBox="0 0 80 80" fill="none" onclick="window.location.href='chatbot.html'"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 73.33C58.41 73.33 73.33 58.41 73.33 40C73.33 21.59 58.41 6.67 40 6.67C21.59 6.67 6.67 21.59 6.67 40C6.67 45.33 7.92 50.37 10.14 54.84C10.74 56.03 10.93 57.39 10.59 58.67L8.61 66.09C8.41 66.82 8.41 67.6 8.61 68.33C8.8 69.07 9.19 69.74 9.73 70.27C10.27 70.81 10.93 71.2 11.67 71.39C12.4 71.59 13.18 71.59 13.91 71.4L21.33 69.41C22.62 69.08 23.98 69.24 25.16 69.85C29.77 72.15 34.85 73.34 40 73.33ZM26.67 44.17C26 44.17 25.37 44.43 24.9 44.9C24.43 45.37 24.17 46 24.17 46.67C24.17 47.33 24.43 47.97 24.9 48.43C25.37 48.9 26 49.17 26.67 49.17H45C45.66 49.17 46.3 48.9 46.77 48.43C47.24 47.97 47.5 47.33 47.5 46.67C47.5 46 47.24 45.37 46.77 44.9C46.3 44.43 45.66 44.17 45 44.17H26.67ZM24.17 35C24.17 34.34 24.43 33.7 24.9 33.23C25.37 32.76 26 32.5 26.67 32.5H53.33C54 32.5 54.63 32.76 55.1 33.23C55.57 33.7 55.83 34.34 55.83 35C55.83 35.66 55.57 36.3 55.1 36.77C54.63 37.24 54 37.5 53.33 37.5H26.67C26 37.5 25.37 37.24 24.9 36.77C24.43 36.3 24.17 35.66 24.17 35Z" fill="#DDA39E"/></svg>
+  <svg class="chat-icon" id="btn-chat" viewBox="0 0 80 80" fill="none" role="button" aria-label="Hubungi admin" title="Hubungi admin" tabindex="0" style="cursor:pointer"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 73.33C58.41 73.33 73.33 58.41 73.33 40C73.33 21.59 58.41 6.67 40 6.67C21.59 6.67 6.67 21.59 6.67 40C6.67 45.33 7.92 50.37 10.14 54.84C10.74 56.03 10.93 57.39 10.59 58.67L8.61 66.09C8.41 66.82 8.41 67.6 8.61 68.33C8.8 69.07 9.19 69.74 9.73 70.27C10.27 70.81 10.93 71.2 11.67 71.39C12.4 71.59 13.18 71.59 13.91 71.4L21.33 69.41C22.62 69.08 23.98 69.24 25.16 69.85C29.77 72.15 34.85 73.34 40 73.33ZM26.67 44.17C26 44.17 25.37 44.43 24.9 44.9C24.43 45.37 24.17 46 24.17 46.67C24.17 47.33 24.43 47.97 24.9 48.43C25.37 48.9 26 49.17 26.67 49.17H45C45.66 49.17 46.3 48.9 46.77 48.43C47.24 47.97 47.5 47.33 47.5 46.67C47.5 46 47.24 45.37 46.77 44.9C46.3 44.43 45.66 44.17 45 44.17H26.67ZM24.17 35C24.17 34.34 24.43 33.7 24.9 33.23C25.37 32.76 26 32.5 26.67 32.5H53.33C54 32.5 54.63 32.76 55.1 33.23C55.57 33.7 55.83 34.34 55.83 35C55.83 35.66 55.57 36.3 55.1 36.77C54.63 37.24 54 37.5 53.33 37.5H26.67C26 37.5 25.37 37.24 24.9 36.77C24.43 36.3 24.17 35.66 24.17 35Z" fill="#DDA39E"/></svg>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="siswa-nav.js"></script>
 <script>
+const $ = id => document.getElementById(id)
+const esc = Narf.esc
 
-const dataModulDetail = {
-  1: { 
-    title: "Pemrograman", 
-    subtitle: "Dasar-dasar sintaks C++", 
-    tipe: "teks", // <--- Tambahkan ini
-    progress: "0%" 
-  },
-  2: { 
-    title: "Internet of Things", 
-    subtitle: "Konektivitas WiFi & Cloud", 
-    tipe: "video", // <--- Tambahkan ini
-    progress: "0%" 
-  }
-};
+// ISI EMAIL ADMIN DI SINI (contoh: 'admin@narfkit.id')
+const EMAIL_ADMIN = ''
 
-// =====================================================
-// THEME (LIGHT / DARK)
-// =====================================================
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme)
-  localStorage.setItem('narfkit_theme', theme)
-  document.getElementById('icon-moon').style.display = theme === 'dark' ? 'block' : 'none'
-  document.getElementById('icon-sun').style.display = theme === 'light' ? 'block' : 'none'
-}
-applyTheme(localStorage.getItem('narfkit_theme') || 'dark')
-document.getElementById('theme-toggle').addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme') || 'dark'
-  applyTheme(current === 'dark' ? 'light' : 'dark')
-})
-
-// =====================================================
-// DATA SOAL ASESMEN DIAGNOSTIK
-// =====================================================
-const soalList = [
-  {
-    id: 'pg1', tipe: 'pg',
-    teks: 'Apa yang dimaksud dengan mikrokontroler?',
-    opsi: [
-      'Chip kecil yang bisa diprogram untuk mengontrol perangkat elektronik',
-      'Jenis komputer besar untuk memproses data berat',
-      'Kabel penghubung antar komponen elektronik',
-      'Sensor untuk mendeteksi suhu dan kelembaban'
-    ],
-    jawaban: 0, poin: 10
-  },
-  {
-    id: 'pg2', tipe: 'pg',
-    teks: 'Perhatikan kode berikut. Apa yang akan dicetak?',
-    konteks: 'int x = 5;\nif (x > 3) {\n  Serial.println("Atas");\n} else {\n  Serial.println("Bawah");\n}',
-    opsi: ['"Atas"', '"Bawah"', 'Tidak mencetak apa-apa', 'Error'],
-    jawaban: 0, poin: 15
-  },
-  {
-    id: 'pg3', tipe: 'pg',
-    teks: 'Komponen apa yang digunakan untuk mendeteksi intensitas cahaya pada rangkaian elektronik?',
-    opsi: ['LED (Light Emitting Diode)', 'LDR (Light Dependent Resistor)', 'Kapasitor', 'Transistor NPN'],
-    jawaban: 1, poin: 10
-  },
-  {
-    id: 'pg4', tipe: 'pg',
-    teks: 'Pada Arduino, pin yang bertanda "~" (tilde) berfungsi sebagai apa?',
-    opsi: [
-      'Pin ground (GND)',
-      'Pin khusus untuk sensor suhu',
-      'Pin PWM — bisa menghasilkan sinyal analog',
-      'Pin komunikasi serial (TX/RX)'
-    ],
-    jawaban: 2, poin: 15
-  },
-  {
-    id: 'pg5', tipe: 'pg',
-    teks: 'IoT (Internet of Things) adalah konsep di mana...',
-    opsi: [
-      'Internet hanya digunakan untuk browsing website',
-      'Perangkat fisik terhubung ke internet dan bisa saling bertukar data',
-      'Komputer besar mengelola seluruh jaringan dunia',
-      'Robot menggantikan semua pekerjaan manusia'
-    ],
-    jawaban: 1, poin: 10
-  },
-  {
-    id: 'esai1', tipe: 'esai',
-    teks: 'Jelaskan dengan bahasamu sendiri: apa perbedaan antara pin digital dan pin analog pada Arduino?',
-    hint: 'Minimal 2 kalimat. Tidak perlu sempurna, tulis apa yang kamu tahu.',
-    poin: 20
-  },
-  {
-    id: 'esai2', tipe: 'esai',
-    teks: 'Bayangkan kamu ingin membuat alat pengukur suhu ruangan yang datanya bisa dilihat dari HP. Komponen apa saja yang kamu butuhkan dan bagaimana cara kerjanya?',
-    hint: 'Sebutkan minimal 2 komponen dan jelaskan alur kerjanya secara sederhana.',
-    poin: 25
-  },
-  {
-    id: 'esai3', tipe: 'esai',
-    teks: 'Menurutmu, apa tantangan terbesar dalam mengembangkan produk IoT untuk dijual? Bagaimana cara mengatasinya?',
-    hint: 'Ini soal berpikir kritis — tidak ada jawaban salah. Tulis pendapatmu!',
-    poin: 20
-  }
-]
-
-// =====================================================
-// STATE
-// =====================================================
+let soalList = []
+let jawabanSiswa = {}
 let stepSekarang = 0
-let jawabanSiswa = {} 
-let skorPG = 0
-let esaiDijawab = 0
+let sedangKirim = false
+let modeTes = 'pre'   // 'pre' | 'post'
 
-// =====================================================
-// INIT
-// =====================================================
-function init() {
-  const userData = localStorage.getItem('narfkit_user')
-  
-  // Mengambil nama dari localStorage (disimpan saat user register)
-  // Pastikan di halaman register ada kode: localStorage.setItem('narfkit_nama', 'Nama Siswa');
-  const namaDariRegister = localStorage.getItem('narfkit_nama') || 'Siswa'
+function tampilLayar(id) {
+  ['screen-error', 'screen-asesmen', 'screen-loading', 'screen-hasil', 'screen-dashboard']
+    .forEach(s => $(s).classList.toggle('active', s === id))
+}
+function tampilError(msg) {
+  $('pesan-error').textContent = msg
+  tampilLayar('screen-error')
+}
 
-  if (userData) {
-    const user = JSON.parse(userData)
-    user.nama = namaDariRegister // Update nama selalu
-    if (user.levelSelesai) {
-      tampilDashboard(user)
-    } else {
-      renderSoal(0)
-    }
-  } else {
-    // User belum pernah ngerjain asesmen
-    const dummyUser = { nama: namaDariRegister }
-    localStorage.setItem('narfkit_user', JSON.stringify(dummyUser))
-    renderSoal(0)
+/* ===================== INIT ===================== */
+async function init() {
+  $('pesan-error').textContent = 'Memuat...'
+  tampilLayar('screen-error')
+  try {
+    const profil = await Narf.guard('siswa')
+    NarfNav.init(profil)
+    $('display-nama').textContent = String(profil.nama).split(/\s+/)[0]
+    const data = await Narf.rpc('dashboard_siswa')
+    if (!data) throw new Error('Data siswa tidak ditemukan. Hubungi admin.')
+    if (!data.pretest_selesai) await mulaiPretest()
+    else await tampilDashboard(data)
+  } catch (e) {
+    tampilError(e.message)
   }
 }
 
-// =====================================================
-// RENDER SOAL
-// =====================================================
+/* ===================== PRETEST (soal dari Supabase) ===================== */
+async function mulaiPretest() { return mulaiTes('pre') }
+
+async function mulaiTes(mode) {
+  modeTes = mode
+  const as = await Narf.query(sb.from('asesmen').select('id').eq('tipe', 'pretest').limit(1))
+  if (!as.length) throw new Error('Soal belum tersedia. Hubungi gurumu.')
+  let q = sb.from('soal')
+    .select('id,pertanyaan,tipe_soal,opsi_jawaban,poin,konteks,hint,urutan,kategori')
+    .eq('asesmen_id', as[0].id).order('urutan')
+  if (mode === 'post') q = q.eq('tipe_soal', 'pg').eq('kategori', 'kognitif')
+  soalList = await Narf.query(q)
+  if (!soalList.length) throw new Error('Soal belum tersedia. Hubungi gurumu.')
+  stepSekarang = 0
+  jawabanSiswa = {}
+  tampilLayar('screen-asesmen')
+  renderSoal(0)
+}
+
 function renderSoal(idx) {
   const soal = soalList[idx]
   const total = soalList.length
+  $('asesmen-fill').style.width = Math.round((idx / total) * 100) + '%'
+  $('prog-label').textContent = `Soal ${idx + 1} dari ${total}`
 
-  const persen = Math.round((idx / total) * 100)
-  document.getElementById('asesmen-fill').style.width = persen + '%'
-  document.getElementById('prog-label').textContent = `Soal ${idx + 1} dari ${total}`
+  const isPg = soal.tipe_soal === 'pg'
+  const tipeEl = $('soal-tipe-label')
+  const nonkog = soal.kategori === 'nonkognitif'
+  tipeEl.textContent = nonkog ? 'PROFIL BELAJAR · TIDAK ADA JAWABAN BENAR/SALAH' : (isPg ? 'PILIHAN GANDA' : 'ESAI SINGKAT')
+  tipeEl.className = 'soal-tipe-label ' + (nonkog ? 'label-kognitif' : (isPg ? 'label-pg' : 'label-esai'))
 
-  const tipeEl = document.getElementById('soal-tipe-label')
-  tipeEl.textContent = soal.tipe === 'pg' ? 'PILIHAN GANDA' : 'ESAI SINGKAT'
-  tipeEl.className = 'soal-tipe-label ' + (soal.tipe === 'pg' ? 'label-pg' : 'label-esai')
-
-  document.getElementById('soal-teks').textContent = soal.teks
-  const konteksWrap = document.getElementById('soal-konteks-wrap')
+  $('soal-teks').textContent = soal.pertanyaan
+  const konteksWrap = $('soal-konteks-wrap')
+  konteksWrap.innerHTML = ''
   if (soal.konteks) {
-    konteksWrap.innerHTML = `<div class="soal-konteks">${soal.konteks}</div>`
-  } else {
-    konteksWrap.innerHTML = ''
+    const k = document.createElement('div')
+    k.className = 'soal-konteks'
+    k.textContent = soal.konteks
+    konteksWrap.appendChild(k)
   }
 
-  const area = document.getElementById('soal-jawaban-area')
+  const area = $('soal-jawaban-area')
   area.innerHTML = ''
-  const btnNext = document.getElementById('btn-next-soal')
+  const btnNext = $('btn-next-soal')
   btnNext.disabled = true
 
-  if (soal.tipe === 'pg') {
+  if (isPg) {
     const list = document.createElement('div')
     list.className = 'opsi-list'
-    const huruf = ['A', 'B', 'C', 'D']
-    soal.opsi.forEach((teks, i) => {
+    const huruf = ['A', 'B', 'C', 'D', 'E']
+    ;(soal.opsi_jawaban || []).forEach((teks, i) => {
       const item = document.createElement('div')
       item.className = 'opsi-item'
-      item.innerHTML = `<div class="opsi-huruf">${huruf[i]}</div><div class="opsi-teks">${teks}</div>`
-      item.addEventListener('click', () => {
+      item.tabIndex = 0
+      item.setAttribute('role', 'button')
+      const h = document.createElement('div'); h.className = 'opsi-huruf'; h.textContent = huruf[i]
+      const t = document.createElement('div'); t.className = 'opsi-teks'; t.textContent = teks
+      item.append(h, t)
+      const pilih = () => {
         list.querySelectorAll('.opsi-item').forEach(el => el.classList.remove('selected'))
         item.classList.add('selected')
-        jawabanSiswa[soal.id] = i
-        btnNext.disabled = false
-      })
-      if (jawabanSiswa[soal.id] === i) {
-        item.classList.add('selected')
+        jawabanSiswa[soal.id] = String(i)
         btnNext.disabled = false
       }
+      item.addEventListener('click', pilih)
+      item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pilih() } })
+      if (jawabanSiswa[soal.id] === String(i)) { item.classList.add('selected'); btnNext.disabled = false }
       list.appendChild(item)
     })
     area.appendChild(list)
   } else {
     const wrap = document.createElement('div')
     wrap.className = 'esai-wrap'
-    const hint = document.createElement('div')
-    hint.className = 'esai-hint'
-    hint.textContent = '💡 ' + soal.hint
+    if (soal.hint) {
+      const hint = document.createElement('div')
+      hint.className = 'esai-hint'
+      hint.textContent = '💡 ' + soal.hint
+      wrap.appendChild(hint)
+    }
     const ta = document.createElement('textarea')
     ta.className = 'esai-input'
     ta.placeholder = 'Tulis jawabanmu di sini...'
-    ta.id = 'esai-' + soal.id
+    ta.maxLength = 2000
+    ta.setAttribute('aria-label', 'Jawaban esai')
     const counter = document.createElement('div')
     counter.className = 'esai-counter'
-    counter.textContent = '0 karakter'
-
     ta.value = jawabanSiswa[soal.id] || ''
-    if (ta.value.trim().length >= 10) btnNext.disabled = false
     counter.textContent = ta.value.length + ' karakter'
-
+    btnNext.disabled = ta.value.trim().length < 10
     ta.addEventListener('input', () => {
-      const len = ta.value.trim().length
       jawabanSiswa[soal.id] = ta.value
       counter.textContent = ta.value.length + ' karakter'
-      btnNext.disabled = len < 10
+      btnNext.disabled = ta.value.trim().length < 10
     })
-    wrap.appendChild(hint)
-    wrap.appendChild(ta)
-    wrap.appendChild(counter)
+    wrap.append(ta, counter)
     area.appendChild(wrap)
     setTimeout(() => ta.focus(), 80)
   }
 
-  document.getElementById('btn-skip').style.visibility = soal.tipe === 'esai' ? 'visible' : 'hidden'
-  btnNext.innerHTML = idx < total - 1 ? 'Lanjut <span>&#8594;</span>' : 'Selesai Asesmen <span>&#10003;</span>'
+  $('btn-skip').style.visibility = isPg ? 'hidden' : 'visible'
+  btnNext.innerHTML = idx < total - 1 ? 'Lanjut <span>&#8594;</span>' : (modeTes === 'post' ? 'Selesai Post-test' : 'Selesai Asesmen') + ' <span>&#10003;</span>'
 }
 
 function nextSoal() {
-  const soal = soalList[stepSekarang]
-  const card = document.getElementById('soal-card')
+  if (sedangKirim) return
+  const card = $('soal-card')
   card.classList.add('fade-out')
-
   setTimeout(() => {
     card.classList.remove('fade-out')
     stepSekarang++
-    if (stepSekarang >= soalList.length) {
-      selesaiAsesmen()
-    } else {
-      renderSoal(stepSekarang)
-    }
+    if (stepSekarang >= soalList.length) kirimPretest()
+    else renderSoal(stepSekarang)
   }, 250)
 }
 
 function skipSoal() {
-  jawabanSiswa[soalList[stepSekarang].id] = null
-  document.getElementById('btn-next-soal').disabled = false
+  delete jawabanSiswa[soalList[stepSekarang].id]
   nextSoal()
 }
 
-// =====================================================
-// SELESAI ASESMEN — HITUNG SKOR (Tanpa Leveling)
-// =====================================================
-function selesaiAsesmen() {
-  let totalPoinPG = 0
-  let maxPoinPG = 0
-  soalList.filter(s => s.tipe === 'pg').forEach(s => {
-    maxPoinPG += s.poin
-    if (jawabanSiswa[s.id] === s.jawaban) totalPoinPG += s.poin
-  })
+/* Penilaian dilakukan di server (fungsi kirim_pretest); kunci jawaban tidak pernah sampai ke browser */
+async function kirimPretest() {
+  sedangKirim = true
+  tampilLayar('screen-loading')
+  try {
+    const [hasil] = await Promise.all([
+      Narf.rpc(modeTes === 'post' ? 'kirim_posttest' : 'kirim_pretest', { p_jawaban: jawabanSiswa }),
+      new Promise(r => setTimeout(r, 1200))
+    ])
+    tampilHasil(hasil)
+  } catch (e) {
+    Narf.toast(e.message, 'error')
+    // soal terakhir dibuka lagi supaya bisa dicoba kirim ulang
+    stepSekarang = soalList.length - 1
+    tampilLayar('screen-asesmen')
+    renderSoal(stepSekarang)
+  } finally {
+    sedangKirim = false
+  }
+}
 
-  let esaiJawab = 0
-  let totalPoinEsai = 0
-  let maxPoinEsai = 0
-  soalList.filter(s => s.tipe === 'esai').forEach(s => {
-    maxPoinEsai += s.poin
-    const jawaban = jawabanSiswa[s.id]
-    if (jawaban && jawaban.trim().length >= 10) {
-      esaiJawab++
-      totalPoinEsai += Math.round(s.poin * 0.6)
+const LABEL_PRE = ['SKOR KOGNITIF', 'GAYA BELAJAR', 'ESAI DIJAWAB', 'TOTAL POIN (XP)']
+function tampilHasilPost(h) {
+  const lbl = document.querySelectorAll('.hasil-skor-label')
+  ;['SKOR PRETEST', 'SKOR POST-TEST', 'PENINGKATAN', 'BENAR'].forEach((t, i) => { if (lbl[i]) lbl[i].textContent = t })
+  $('hasil-skor-pg').textContent = (h.skor_pre ?? 0) + '%'
+  const g = $('hasil-skor-kog'); g.textContent = h.skor_post + '%'; g.style.fontSize = ''
+  $('hasil-skor-esai').textContent = (h.peningkatan > 0 ? '+' : '') + h.peningkatan
+  $('hasil-total').textContent = h.benar + '/' + h.total
+  $('hasil-deskripsi').textContent = h.peningkatan > 0
+    ? 'Keren! Skormu naik ' + h.peningkatan + ' poin dibanding pretest. Terus semangat belajar!'
+    : h.peningkatan === 0
+      ? 'Skormu sama dengan pretest. Ulangi materi yang masih terasa sulit ya.'
+      : 'Skormu lebih rendah dari pretest. Tidak apa-apa, ulangi materi yang masih sulit dan tanyakan ke gurumu.'
+  tampilLayar('screen-hasil')
+}
+
+function tampilHasil(h) {
+  if (modeTes === 'post') return tampilHasilPost(h)
+  document.querySelectorAll('.hasil-skor-label').forEach((el, i) => { if (LABEL_PRE[i]) el.textContent = LABEL_PRE[i] })
+  $('hasil-skor-pg').textContent = h.skor_kognitif + '%'
+  const DESK_GAYA = {
+  'Visual': 'Kamu paling mudah paham lewat gambar, diagram, dan video.',
+  'Auditori': 'Kamu paling mudah paham lewat penjelasan lisan dan diskusi.',
+  'Kinestetik': 'Kamu paling mudah paham lewat praktik langsung dan mencoba sendiri.'
+}
+$('hasil-deskripsi').textContent =
+  (DESK_GAYA[h.gaya_belajar] ? 'Gaya belajarmu: ' + h.gaya_belajar + '. ' + DESK_GAYA[h.gaya_belajar] + ' ' : '') +
+  'Poin pertamamu sudah masuk! Berdasarkan hasilmu, kamu mulai dari Modul ' + h.modul_terbuka +
+  ' di setiap course. Jawaban esaimu akan dinilai gurumu.'
+}
+
+async function masukDashboard() {
+  try {
+    await tampilDashboard(await Narf.rpc('dashboard_siswa'))
+  } catch (e) { tampilError(e.message) }
+}
+
+/* ===================== DASHBOARD ===================== */
+const IKON_TIPE = {
+  video: '<polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>',
+  pdf: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>',
+  teks: '<polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>'
+}
+const IKON_COURSE = [
+  '<polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>',
+  '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>',
+  '<rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path>',
+  '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>'
+]
+const svg = (inner, extra) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' + (extra || '') + '>' + inner + '</svg>'
+
+async function muatPosttest() {
+  const kartu = $('kartu-posttest')
+  try {
+    const s = await Narf.rpc('status_posttest')
+    kartu.hidden = false
+    const btn = $('btn-posttest')
+    btn.hidden = !s.boleh
+    if (s.selesai) {
+      const naik = s.skor_post - (s.skor_pre ?? 0)
+      $('posttest-judul').textContent = 'Post-test selesai'
+      $('posttest-desk').textContent = 'Pretest ' + (s.skor_pre ?? 0) + '% → Post-test ' + s.skor_post + '% (' + (naik > 0 ? '+' : '') + naik + ' poin)'
+    } else if (s.boleh) {
+      $('posttest-judul').textContent = 'Post-test sudah dibuka'
+      $('posttest-desk').textContent = 'Kamu sudah menyelesaikan satu course. Kerjakan post-test untuk melihat kemajuanmu. Hanya bisa dikerjakan sekali.'
+    } else {
+      $('posttest-judul').textContent = 'Post-test'
+      $('posttest-desk').textContent = 'Terbuka setelah kamu menyelesaikan semua modul di satu course.'
     }
+  } catch (e) { kartu.hidden = true }
+}
+
+async function muatFeedback() {
+  const box = $('daftar-feedback'), kartu = $('kartu-feedback')
+  try {
+    const uid = (await sb.auth.getUser()).data.user.id
+    const [jurnal, esai, nilai] = await Promise.all([
+      Narf.query(sb.from('jurnal_refleksi').select('feedback_guru,updated_at,modul(judul)')
+        .eq('siswa_id', uid).not('feedback_guru', 'is', null).order('updated_at', { ascending: false }).limit(5)),
+      Narf.query(sb.from('jawaban_siswa').select('skor_guru,feedback_guru,submitted_at,soal(pertanyaan,tipe_soal)')
+        .eq('siswa_id', uid).not('skor_guru', 'is', null).order('submitted_at', { ascending: false }).limit(5)),
+      Narf.rpc('nilai_saya').catch(() => ({ daftar: [] }))
+    ])
+    const items = []
+    ;(nilai.daftar || []).forEach(p => items.push({ judul: 'PROJECT · ' + p.proyek + ' · NILAI ' + p.nilai, isi: p.feedback || 'Project sudah dinilai.', urut: Infinity }))
+    jurnal.forEach(j => items.push({ judul: 'JURNAL REFLEKSI' + (j.modul && j.modul.judul ? ' · ' + j.modul.judul : ''), isi: j.feedback_guru, urut: Date.parse(j.updated_at) || 0 }))
+    esai.forEach(e => items.push({
+      judul: 'ESAI · NILAI ' + e.skor_guru + '/100', isi: e.feedback_guru || 'Esaimu sudah dinilai.',
+      tanya: e.soal && e.soal.pertanyaan ? e.soal.pertanyaan : '', urut: Date.parse(e.submitted_at) || 0 }))
+    items.sort((a, b) => b.urut - a.urut)
+    box.innerHTML = ''
+    if (!items.length) { kartu.hidden = true; return }
+    items.slice(0, 8).forEach(it => {
+      const d = document.createElement('div'); d.className = 'item-feedback'
+      const j = document.createElement('div'); j.className = 'fb-judul'; j.textContent = it.judul
+      const i = document.createElement('div'); i.className = 'fb-isi'; i.textContent = it.isi
+      d.append(j, i)
+      if (it.tanya) { const t = document.createElement('div'); t.className = 'fb-tanya'; t.textContent = 'Soal: ' + (it.tanya.length > 120 ? it.tanya.slice(0, 120) + '…' : it.tanya); d.appendChild(t) }
+      box.appendChild(d)
+    })
+    kartu.hidden = false
+  } catch (e) { kartu.hidden = true }
+}
+
+/* ---------- RIWAYAT SOAL ---------- */
+let riwayat = [], filterRiwayat = 'semua'
+const HURUF = ['A', 'B', 'C', 'D', 'E']
+function teksOpsi(r, idx) {
+  const i = Number(idx)
+  if (!Number.isInteger(i) || !r.opsi_jawaban || r.opsi_jawaban[i] === undefined) return '-'
+  return HURUF[i] + '. ' + r.opsi_jawaban[i]
+}
+function blok(label, teks, pre) {
+  const w = document.createElement('div')
+  const l = document.createElement('div'); l.className = 'rw-label'; l.textContent = label
+  const t = document.createElement(pre ? 'pre' : 'div'); if (!pre) t.className = 'rw-teks'; t.textContent = teks
+  w.append(l, t); return w
+}
+function renderRiwayat() {
+  const box = $('riwayat-list'); box.innerHTML = ''
+  const data = riwayat.filter(r => filterRiwayat === 'semua' || r.jenis === filterRiwayat)
+  if (!data.length) { box.innerHTML = '<div class="rw-kosong">Belum ada soal yang kamu kerjakan di kategori ini.</div>'; return }
+  data.forEach(r => {
+    const pg = r.tipe_soal === 'pg'
+    const d = document.createElement('details'); d.className = 'rw-item'
+    const s = document.createElement('summary')
+    const kiri = document.createElement('div'); kiri.className = 'rw-sum-teks'
+    const meta = document.createElement('div'); meta.className = 'rw-meta'
+    meta.textContent = (r.jenis === 'pretest' ? 'PRETEST' : 'KUIS') + (r.course ? ' · ' + r.course : '') + (r.modul_urutan ? ' · MODUL ' + r.modul_urutan : '')
+    const q = document.createElement('div'); q.className = 'rw-tanya'
+    q.textContent = r.pertanyaan.length > 110 ? r.pertanyaan.slice(0, 110) + '…' : r.pertanyaan
+    kiri.append(meta, q)
+    const b = document.createElement('span'); b.className = 'rw-badge'
+    if (pg) {
+      if (r.benar === true) { b.classList.add('ok'); b.textContent = 'Benar' }
+      else if (r.benar === false) { b.classList.add('salah'); b.textContent = 'Salah' }
+      else b.textContent = 'Terkirim'
+    } else if (r.skor_guru !== null && r.skor_guru !== undefined) { b.classList.add('ok'); b.textContent = 'Nilai ' + r.skor_guru + '/100' }
+    else { b.classList.add('tunggu'); b.textContent = 'Menunggu nilai' }
+    s.append(kiri, b)
+    const body = document.createElement('div'); body.className = 'rw-body'
+    body.appendChild(blok('SOAL', r.pertanyaan))
+    if (r.konteks) body.appendChild(blok('KODE / KONTEKS', r.konteks, true))
+    body.appendChild(blok('JAWABANMU', pg ? teksOpsi(r, r.jawaban) : (r.jawaban || '-')))
+    if (pg && r.kunci !== null && r.kunci !== undefined) body.appendChild(blok('JAWABAN BENAR', teksOpsi(r, r.kunci)))
+    if (pg && r.jenis === 'pretest' && r.benar === null) body.appendChild(blok('CATATAN', 'Benar/salah pretest ditampilkan setelah kamu menyelesaikan post-test.'))
+    if (pg && r.benar !== null) body.appendChild(blok('XP', (r.poin_didapat || 0) + ' dari ' + r.poin))
+    if (!pg && r.skor_guru !== null && r.skor_guru !== undefined) {
+      body.appendChild(blok('NILAI DARI GURU', r.skor_guru + '/100' + (r.poin_didapat !== null && r.poin_didapat !== undefined ? ' · XP ' + r.poin_didapat + ' dari ' + r.poin : '')))
+      if (r.feedback_guru) { const f = blok('FEEDBACK GURU', r.feedback_guru); f.className = 'item-feedback'; f.querySelector('.rw-teks').className = 'fb-isi'; body.appendChild(f) }
+    }
+    d.append(s, body); box.appendChild(d)
   })
-
-  const totalPoin = totalPoinPG + totalPoinEsai
-  skorPG = totalPoinPG
-  esaiDijawab = esaiJawab
-
-  // Simpan ke localStorage (hanya state selesai & poin)
-  const userData = JSON.parse(localStorage.getItem('narfkit_user') || '{}')
-  userData.levelSelesai = true
-  userData.skorAsesmen = { pg: totalPoinPG, esai: esaiJawab, total: totalPoin }
-  userData.jawabanEsai = {
-    esai1: jawabanSiswa['esai1'] || null,
-    esai2: jawabanSiswa['esai2'] || null,
-    esai3: jawabanSiswa['esai3'] || null
-  }
-  localStorage.setItem('narfkit_user', JSON.stringify(userData))
-
-  document.getElementById('screen-asesmen').classList.remove('active')
-  document.getElementById('screen-loading').classList.add('active')
-
-  setTimeout(() => {
-    document.getElementById('screen-loading').classList.remove('active')
-    tampilHasil(totalPoinPG, esaiJawab, totalPoin)
-  }, 2500)
+}
+async function muatRiwayat() {
+  const btn = $('btn-riwayat'); btn.disabled = true; btn.textContent = 'Memuat...'
+  try {
+    riwayat = await Narf.rpc('riwayat_soal') || []
+    document.querySelectorAll('.riwayat-bar .chip').forEach(c => { c.hidden = false })
+    btn.textContent = 'Muat Ulang Riwayat'
+    renderRiwayat()
+  } catch (e) { btn.textContent = 'Lihat Riwayat Soal & Nilai'; Narf.toast(e.message, 'error') } finally { btn.disabled = false }
 }
 
-function tampilHasil(pg, esai, total) {
-  document.getElementById('hasil-skor-pg').textContent = pg
-  document.getElementById('hasil-skor-esai').textContent = esai + '/3'
-  document.getElementById('hasil-total').textContent = total
-  document.getElementById('screen-hasil').classList.add('active')
+/* ---------- RIWAYAT CHAT (prompt ke NARF AI) ---------- */
+async function bukaSesiChat(det, sesiId) {
+  if (det.dataset.dimuat) return
+  const isi = det.querySelector('.rw-body'); isi.textContent = 'Memuat...'
+  try {
+    const ps = await Narf.query(sb.from('pesan_ai').select('pengirim,isi_pesan,created_at').eq('sesi_id', sesiId).order('created_at').limit(200))
+    isi.textContent = ''
+    ps.forEach(p => {
+      const w = document.createElement('div')
+      const l = document.createElement('div'); l.className = 'rw-label'; l.textContent = p.pengirim === 'siswa' ? 'KAMU' : 'NARF AI'
+      const t = document.createElement('div'); t.className = 'rw-teks'; t.textContent = p.isi_pesan
+      w.append(l, t); isi.appendChild(w)
+    })
+    if (!ps.length) isi.textContent = 'Belum ada pesan.'
+    det.dataset.dimuat = '1'
+  } catch (e) { isi.textContent = e.message }
+}
+async function muatRiwayatChat() {
+  const btn = $('btn-riwayat-chat'), box = $('riwayat-chat-list')
+  btn.disabled = true; btn.textContent = 'Memuat...'
+  try {
+    const uid = (await sb.auth.getUser()).data.user.id
+    const sesi = await Narf.query(sb.from('sesi_ai').select('id,judul_topik,created_at').eq('siswa_id', uid).order('created_at', { ascending: false }).limit(30))
+    box.innerHTML = ''
+    if (!sesi.length) box.innerHTML = '<div class="rw-kosong">Belum ada percakapan dengan NARF AI.</div>'
+    sesi.forEach(s => {
+      const d = document.createElement('details'); d.className = 'rw-item'
+      const sm = document.createElement('summary')
+      const kiri = document.createElement('div'); kiri.className = 'rw-sum-teks'
+      const meta = document.createElement('div'); meta.className = 'rw-meta'
+      meta.textContent = new Date(s.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }).toUpperCase()
+      const q = document.createElement('div'); q.className = 'rw-tanya'; q.textContent = s.judul_topik || 'Percakapan'
+      kiri.append(meta, q); sm.appendChild(kiri)
+      const body = document.createElement('div'); body.className = 'rw-body'
+      d.append(sm, body)
+      d.addEventListener('toggle', () => { if (d.open) bukaSesiChat(d, s.id) })
+      box.appendChild(d)
+    })
+    btn.textContent = 'Muat Ulang Riwayat Chat'
+  } catch (e) { btn.textContent = 'Lihat Riwayat Chat'; Narf.toast(e.message, 'error') } finally { btn.disabled = false }
 }
 
-function masukDashboard() {
-  const userData = JSON.parse(localStorage.getItem('narfkit_user') || '{}')
-  document.getElementById('screen-hasil').classList.remove('active')
-  tampilDashboard(userData)
+async function muatNilai() {
+  try {
+    const n = await Narf.rpc('nilai_saya')
+    if (n && n.jumlah > 0) {
+      $('stat-nilai').textContent = n.rata_rata
+      $('stat-nilai-sub').textContent = n.jumlah > 1 ? 'rata-rata ' + n.jumlah + ' project' : (n.daftar[0] ? n.daftar[0].proyek : 'nilai project')
+    } else {
+      $('stat-nilai').textContent = '-'
+      $('stat-nilai-sub').textContent = 'belum ada nilai project'
+    }
+  } catch (e) { $('stat-nilai-sub').textContent = 'tidak bisa dimuat' }
 }
 
-// =====================================================
-// TAMPIL DASHBOARD
-// =====================================================
-function tampilDashboard(user) {
-  document.getElementById('screen-asesmen').classList.remove('active')
-  document.getElementById('screen-loading').classList.remove('active')
-  document.getElementById('screen-hasil').classList.remove('active')
-  document.getElementById('screen-dashboard').classList.add('active')
+async function tampilDashboard(d) {
+  tampilLayar('screen-dashboard')
+  muatPosttest()
+  muatNilai()
+  muatFeedback()
+  $('display-nama').textContent = String(d.nama).split(/\s+/)[0]
+  $('stat-xp').textContent = d.xp_total
+  $('stat-streak').textContent = d.streak
+  $('stat-aktif').textContent = d.materi_aktif
+  $('stat-aktif-sub').textContent = 'dari ' + d.jumlah_course + ' course tersedia'
+  $('display-subtitle').textContent = d.streak > 1
+    ? 'Streak ' + d.streak + ' hari! Pertahankan ya.'
+    : 'Selamat datang kembali, ayo berprogress!'
 
-  // Set Nama
-  document.getElementById('display-nama').textContent = user.nama || localStorage.getItem('narfkit_nama') || 'Siswa'
-  
-  // Set Total XP
-  if (user.skorAsesmen) {
-    document.getElementById('stat-xp').textContent = user.skorAsesmen.total
-    document.getElementById('display-subtitle').textContent = `Asesmen selesai — mari kumpulkan lebih banyak XP!`
-  }
-
-  // Animate progress bar (default)
-  setTimeout(() => {
-    document.getElementById('progress-fill').style.width = '0%'
-    document.getElementById('progress-label').textContent = 'Progress: 0% — Siap dimulai!'
-  }, 400)
-}
-
-function updateDashboardLanjutBelajar() {
-  const userData = JSON.parse(localStorage.getItem('narfkit_user') || '{}');
-  const lastModul = userData.progressTerakhir || 1;
-  const detail = dataModulDetail[lastModul] || dataModulDetail[1];
-
-  // ... (update teks judul/progress seperti sebelumnya) ...
-
-  // Update Icon/Thumbnail berdasarkan tipe
-  const thumbWrap = document.querySelector('.thumbnail-placeholder');
-  
-  if (detail.tipe === 'video') {
-    // Tampilkan ikon video (Play/Camera)
-    thumbWrap.innerHTML = `
-      <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="23 7 16 12 23 17 23 7"></polygon>
-        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-      </svg>`;
+  const l = d.lanjut
+  const thumb = document.querySelector('.thumbnail-placeholder')
+  if (!l) {
+    $('tag-kursus-label').textContent = '🎉 SEMUA SELESAI'
+    $('kursus-title').textContent = 'Semua modul yang terbuka sudah kamu selesaikan'
+    $('kursus-modul').textContent = 'Hebat!'
+    $('kursus-subtitle').textContent = 'Cek Project Akhir atau ulangi materi favoritmu.'
+    $('progress-fill').style.width = '100%'
+    $('progress-label').textContent = 'Progress: 100%'
+    $('btn-lanjut').onclick = () => { location.href = 'course.html' }
+    $('btn-play').onclick = () => { location.href = 'course.html' }
   } else {
-    // Tampilkan ikon dokumen/teks
-    thumbWrap.innerHTML = `
-      <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-        <line x1="16" y1="13" x2="8" y2="13"></line>
-        <line x1="16" y1="17" x2="8" y2="17"></line>
-      </svg>`;
+    const go = () => { location.href = 'course.html?course=' + encodeURIComponent(l.course_id) + '&modul=' + encodeURIComponent(l.modul_id) }
+    $('tag-kursus-label').textContent = l.sudah_mulai ? '▶ LANJUTKAN' : '⭐ MULAI DARI SINI'
+    $('kursus-title').textContent = l.course
+    $('kursus-modul').textContent = 'Modul ' + l.urutan
+    $('kursus-subtitle').textContent = l.modul
+    thumb.innerHTML = svg(IKON_TIPE[l.tipe] || IKON_TIPE.teks, 'width="64" height="64"')
+    const persen = Math.round(l.persen || 0)
+    setTimeout(() => { $('progress-fill').style.width = persen + '%' }, 300)
+    $('progress-label').textContent = 'Progress: ' + persen + '%' + (persen === 0 ? ' — Siap dimulai!' : '')
+    $('btn-lanjut').onclick = go
+    $('btn-play').onclick = go
+    $('btn-play').onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go() } }
+  }
+
+  try {
+    const cs = await Narf.query(sb.from('course').select('id,judul,deskripsi').order('judul'))
+    $('kursus-grid').innerHTML = cs.map((c, i) =>
+      '<a class="kursus-card" href="course.html?course=' + encodeURIComponent(c.id) + '"><div class="kursus-icon">' +
+      svg(IKON_COURSE[i % IKON_COURSE.length]) + '</div><div class="kursus-judul">' + esc(c.judul) +
+      '</div><div class="kursus-meta"><span class="kursus-modul">' + esc(c.deskripsi || '') + '</span></div></a>').join('') +
+      '<a class="kursus-card" href="course.html?tab=proyek"><div class="kursus-icon">' +
+      svg('<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>') +
+      '</div><div class="kursus-judul">Project Akhir</div><div class="kursus-meta"><span class="kursus-modul">Implementasi pembelajaran</span></div></a>'
+  } catch (e) {
+    $('kursus-grid').innerHTML = '<div class="nav-kosong">' + esc(e.message) + '</div>'
   }
 }
 
-// =====================================================
-// RESET (dev helper)
-// =====================================================
-window.narfkitReset = () => { localStorage.clear(); location.reload() }
-
-// Start
+$('btn-skip').addEventListener('click', skipSoal)
+$('btn-next-soal').addEventListener('click', nextSoal)
+$('btn-masuk-dashboard').addEventListener('click', masukDashboard)
+$('btn-posttest').addEventListener('click', async () => {
+  if (!confirm('Post-test hanya bisa dikerjakan satu kali. Mulai sekarang?')) return
+  try { await mulaiTes('post') } catch (e) { Narf.toast(e.message, 'error') }
+})
+$('btn-riwayat').addEventListener('click', muatRiwayat)
+$('btn-riwayat-chat').addEventListener('click', muatRiwayatChat)
+document.querySelectorAll('.riwayat-bar .chip').forEach(c => c.addEventListener('click', () => {
+  filterRiwayat = c.dataset.f
+  document.querySelectorAll('.riwayat-bar .chip').forEach(x => x.classList.toggle('aktif', x === c))
+  renderRiwayat()
+}))
+function tutupKontak() { $('modal-kontak').hidden = true }
+function hubungiAdmin() {
+  $('kontak-email').textContent = EMAIL_ADMIN || 'reskhaadwii@gmail.com'
+  $('btn-salin-email').hidden = !EMAIL_ADMIN
+  $('modal-kontak').hidden = false
+}
+async function salinEmail() {
+  try { await navigator.clipboard.writeText(EMAIL_ADMIN); Narf.toast('Email disalin.', 'ok') }
+  catch (e) { Narf.toast('Gagal menyalin. Salin manual ya.', 'error') }
+}
+$('btn-chat').addEventListener('click', hubungiAdmin)
+$('btn-chat').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hubungiAdmin() } })
+$('btn-tutup-kontak').addEventListener('click', tutupKontak)
+$('btn-salin-email').addEventListener('click', salinEmail)
+$('modal-kontak').addEventListener('click', e => { if (e.target === $('modal-kontak')) tutupKontak() })
+document.addEventListener('keydown', e => { if (e.key === 'Escape') tutupKontak() })
 init()
 </script>
+
 </body>
 </html>
