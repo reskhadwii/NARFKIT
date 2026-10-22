@@ -316,7 +316,7 @@ function kembaliKeKatalog() {
 /* ---------- data ---------- */
 async function muatSemua() {
   const [courses, moduls, materi, prog, done, proyek] = await Promise.all([
-    Narf.query(sb.from('course').select('id,judul,deskripsi').order('judul')),
+    Narf.query(sb.from('course').select('id,judul,deskripsi,urutan').order('urutan').order('judul')),
     Narf.query(sb.from('modul').select('id,course_id,judul,urutan').order('urutan')),
     Narf.query(sb.from('materi').select('id,modul_id,judul,tipe,url,konten,urutan').order('urutan')),
     Narf.query(sb.from('progress_modul').select('modul_id,status,persen_selesai').eq('siswa_id', ST.uid)),
