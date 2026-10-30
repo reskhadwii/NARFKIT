@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Lab IoT</title>
+  <script src="global.js?v=20261023"></script>
+  <link rel="stylesheet" type="text/css" href="style.css?v=20261023">
+  <style>
+    [hidden] { display:none !important; }
+    .stats-row { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+    .stat-card.nk-warn { border-color: rgba(226,137,95,0.8); }
+    .stat-card.nk-bad { border-color: rgba(255,107,107,0.8); }
+    .stat-sub.nk-bad { color:#ff6b6b; }
+    .nk-on { color:#6dbb93; }
+    .nk-unit { font-size:14px; font-weight:600; margin-left:4px; color: rgba(var(--fg-rgb),0.55); }
+    .nk-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px; }
+    .nk-bar input[type=text] { font-family:inherit; font-size:14px; font-weight:600; padding:10px 14px; border-radius:12px; width:180px;
+      border: 1px solid var(--border-color); background: rgba(var(--border-rgb),0.12); color: var(--fg-solid); }
+    .nk-msg { font-size:13px; font-weight:600; min-height:18px; color:#ff6b6b; margin-bottom:12px; }
+    .btn-hw:disabled { opacity:.5; cursor:not-allowed; }
+    .hw-content input[type=range] { width:100%; margin-top:6px; }
+    .hw-content input[type=range] { accent-color:#e2895f; }
+    .hw-icon { flex-shrink:0; }
+    .hw-content { min-width:0; }
+    @media (max-width: 720px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .hardware-grid { flex-direction:column; }
+      .stat-value { font-size:24px; }
+      .sapaan { font-size:32px; }
+    }
+    .nk-raw summary { cursor:pointer; font-size:13px; font-weight:600; color: rgba(var(--fg-rgb),0.6); }
+    .nk-raw pre { margin:10px 0 0; padding:10px 12px; border-radius:10px; background: rgba(var(--border-rgb),0.12);
+      overflow:auto; font-size:12.5px; color: var(--fg-solid); }
+  </style>
+  <link rel="stylesheet" type="text/css" href="theme.css?v=20261023">
+</head>
+<body>
+
+<nav class="navigasi-siswa">
+  <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+  <div class="menu">
+    <a href="dashboard.html" class="menu-item">DASHBOARD</a>
+    <a href="course.html" class="menu-item">COURSE</a>
+    <a href="simulation.html" class="menu-item">SIMULATION</a>
+    <a href="chatbot.html" class="menu-item">CHATBOT</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-icon-btn" id="nav-progress" type="button" aria-label="Progress belajar"><svg viewBox="0 0 60 60" fill="none"><path d="M7.5 38.75L17.14 30.72C21.23 27.31 23.91 27.66 27.44 31.19L27.46 31.2C31.3 35.05 34.06 34.89 37.89 31.54L52.5 18.75" stroke="#e2895f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M52.5 52.5H23.5C17.9 52.5 15.1 52.5 12.96 51.41C11.08 50.45 9.55 48.92 8.59 47.04C7.5 44.9 7.5 42.1 7.5 36.5V7.5" stroke="#e2895f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="nav-icon-btn" id="nav-notif" type="button" aria-label="Notifikasi"><svg viewBox="0 0 60 60" fill="none"><path d="M22.5 42.5V45C22.5 46.99 23.29 48.9 24.7 50.3C26.1 51.71 28.01 52.5 30 52.5C31.99 52.5 33.9 51.71 35.3 50.3C36.71 48.9 37.5 46.99 37.5 45V42.5M25 12.5C25 11.17 25.53 9.9 26.46 8.96C27.4 8.03 28.67 7.5 30 7.5C31.33 7.5 32.6 8.03 33.54 8.96C34.47 9.9 35 11.17 35 12.5C37.87 13.86 40.32 15.97 42.08 18.61C43.84 21.26 44.85 24.33 45 27.5V35C45.19 36.55 45.74 38.04 46.61 39.35C47.48 40.65 48.64 41.73 50 42.5H10C11.36 41.73 12.52 40.65 13.39 39.35C14.26 38.04 14.81 36.55 15 35V27.5C15.15 24.33 16.16 21.26 17.92 18.61C19.68 15.97 22.13 13.86 25 12.5Z" stroke="#e2895f" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="nav-icon-btn" id="nav-profil" type="button" aria-label="Akun"><span class="nav-avatar" data-avatar>&middot;</span></button>
+    <button class="theme-toggle" data-theme-toggle title="Ganti tema" type="button" aria-label="Ganti tema">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#e2895f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#e2895f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="screen active" id="screen-error">
+  <div class="asesmen-page"><div class="pesan-error" id="pesan-error">Memuat...</div></div>
+</div>
+
+<div class="screen" id="screen-lab">
+  <main class="main-content">
+
+    <div class="kata-kata">
+      <div class="sapaan">
+        <span class="halo">Lab</span>
+        <span class="nama-siswa">IoT</span>
+      </div>
+      <div class="subtitle">Pantau sensor dan kendalikan kit hardware-mu secara langsung.</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card" id="c-status">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+        </div>
+        <div class="stat-label">Status Kit</div>
+        <div class="stat-value" id="v-state">...</div>
+        <div class="stat-sub" id="v-kit">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+        </div>
+        <div class="stat-label">Suhu</div>
+        <div class="stat-value"><span id="v-temp">--</span><span class="nk-unit">&deg;C</span></div>
+        <div class="stat-sub">DHT11</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+        </div>
+        <div class="stat-label">Kelembapan</div>
+        <div class="stat-value"><span id="v-hum">--</span><span class="nk-unit">%</span></div>
+        <div class="stat-sub">DHT11</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </div>
+        <div class="stat-label">Cahaya</div>
+        <div class="stat-value"><span id="v-light">--</span><span class="nk-unit">%</span></div>
+        <div class="stat-sub">LDR</div>
+      </div>
+      <div class="stat-card" id="c-gas">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path></svg>
+        </div>
+        <div class="stat-label">Gas (relatif)</div>
+        <div class="stat-value"><span id="v-gas">--</span><span class="nk-unit">%</span></div>
+        <div class="stat-sub" id="s-gas">MQ-2</div>
+      </div>
+      <div class="stat-card" id="c-motion">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </div>
+        <div class="stat-label">Gerakan</div>
+        <div class="stat-value" id="v-motion">--</div>
+        <div class="stat-sub">PIR HC-SR501</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 8.7l-6-6a1 1 0 0 0-1.4 0L2.7 13.9a1 1 0 0 0 0 1.4l6 6a1 1 0 0 0 1.4 0L21.3 10a1 1 0 0 0 0-1.3z"></path><line x1="7.5" y1="10.5" x2="9.5" y2="12.5"></line><line x1="10.5" y1="7.5" x2="12.5" y2="9.5"></line><line x1="13.5" y1="4.5" x2="15.5" y2="6.5"></line></svg>
+        </div>
+        <div class="stat-label">Jarak</div>
+        <div class="stat-value"><span id="v-dist">--</span><span class="nk-unit">cm</span></div>
+        <div class="stat-sub">HC-SR04</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">KONTROL</div>
+      <div class="hardware-grid">
+        <div class="hw-card">
+          <div class="hw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          </div>
+          <div class="hw-content">
+            <h3>Buzzer</h3>
+            <p id="buzzer-info">Menunggu kit online.</p>
+            <button class="btn-hw" id="buzzer" type="button" aria-pressed="false" disabled>Nyalakan</button>
+          </div>
+        </div>
+        <div class="hw-card">
+          <div class="hw-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+          </div>
+          <div class="hw-content">
+            <h3>Motor servo: <span id="servo-val">90</span>&deg;</h3>
+            <p>Geser untuk memutar servo (0&ndash;180&deg;).</p>
+            <input type="range" id="servo" min="0" max="180" value="90" disabled aria-label="Sudut servo">
+          </div>
+        </div>
+      </div>
+      <div class="nk-msg" id="ctl-msg"></div>
+    </div>
+
+    <div>
+      <div class="section-label">KIT YANG DIPANTAU</div>
+      <div class="nk-bar">
+        <input type="text" id="kit-input" maxlength="32" autocomplete="off" aria-label="ID kit">
+        <button class="btn-lanjut" id="kit-apply" type="button">Terapkan</button>
+      </div>
+      <div class="nk-msg" id="kit-msg"></div>
+      <details class="nk-raw">
+        <summary>Data mentah dari kit</summary>
+        <pre id="raw">(belum ada data)</pre>
+      </details>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js?v=20261023"></script>
+<script src="auth.js?v=20261023"></script>
+<script src="siswa-nav.js?v=20261023"></script>
+<script src="iot-core.js?v=20261030"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var cfg = window.NARFKIT_IOT;
+
+  function tampilLayar(id) {
+    ['screen-error', 'screen-lab'].forEach(function (s) { $(s).classList.toggle('active', s === id); });
+  }
+  function tampilError(msg) { $('pesan-error').textContent = msg; tampilLayar('screen-error'); }
+
+  var kit = '';
+  var conn = null;
+  var s = { statusOnline: null, last: 0, link: false };
+  var dragging = false;
+
+  function isNum(v) { return typeof v === 'number' && isFinite(v); }
+  function show(id, v, dec) { $(id).textContent = isNum(v) ? (dec ? v.toFixed(dec) : String(Math.round(v))) : '--'; }
+  function isOnline() { return s.statusOnline !== false && (Date.now() - s.last) < cfg.staleMs; }
+
+  function clearValues() {
+    ['v-temp', 'v-hum', 'v-light', 'v-gas', 'v-dist'].forEach(function (id) { $(id).textContent = '--'; });
+    $('v-motion').textContent = '--';
+    $('c-gas').className = 'stat-card'; $('s-gas').className = 'stat-sub'; $('s-gas').textContent = 'MQ-2';
+    $('c-motion').className = 'stat-card';
+  }
+
+  function render() {
+    var on = isOnline();
+    $('v-state').textContent = on ? 'Online' : (s.link ? 'Offline' : 'Menghubungkan...');
+    $('v-state').className = 'stat-value' + (on ? ' nk-on' : '');
+    $('v-kit').textContent = 'ID kit: ' + kit;
+    $('buzzer').disabled = !on;
+    $('servo').disabled = !on;
+    if (!on) {
+      $('buzzer-info').textContent = s.link ? 'Kit offline. Nyalakan kit dulu.' : 'Menunggu koneksi...';
+      clearValues();
+    }
+  }
+
+  function onSensors(d) {
+    s.last = Date.now();
+    show('v-temp', d.temp, 0);
+    show('v-hum', d.hum, 0);
+    show('v-light', d.light, 0);
+    show('v-gas', d.gas, 0);
+    show('v-dist', d.dist, 1);
+
+    var gasAlarm = !!d.gasAlarm;
+    $('c-gas').className = 'stat-card' + (gasAlarm ? ' nk-bad' : '');
+    $('s-gas').className = 'stat-sub' + (gasAlarm ? ' nk-bad' : '');
+    $('s-gas').textContent = gasAlarm ? 'Gas terdeteksi!' : 'MQ-2';
+
+    var mv = !!d.motion;
+    $('v-motion').textContent = mv ? 'Terdeteksi' : 'Tidak ada';
+    $('c-motion').className = 'stat-card' + (mv ? ' nk-warn' : '');
+
+    var b = !!d.buzzer;
+    $('buzzer').setAttribute('aria-pressed', b ? 'true' : 'false');
+    $('buzzer').textContent = b ? 'Matikan' : 'Nyalakan';
+    $('buzzer-info').textContent = b ? 'Buzzer sedang menyala.' : 'Buzzer mati.';
+
+    if (!dragging && isNum(d.servo)) { $('servo').value = d.servo; $('servo-val').textContent = d.servo; }
+    $('raw').textContent = JSON.stringify(d, null, 2);
+    render();
+  }
+
+  function send(cmd) {
+    var ok = conn && conn.publish('cmd', cmd);
+    $('ctl-msg').textContent = ok ? '' : 'Belum terhubung, perintah tidak terkirim.';
+  }
+
+  function start() {
+    if (conn) conn.end();
+    s = { statusOnline: null, last: 0, link: false };
+    $('raw').textContent = '(belum ada data)';
+    conn = cfg.connect(kit, {
+      onLink: function (ok) { s.link = ok; render(); },
+      onStatus: function (ok) { s.statusOnline = ok; render(); },
+      onSensors: onSensors,
+      onMissing: function (k) { $('kit-msg').textContent = k ? 'Kit "' + k + '" belum terdaftar. Cek ID kit-mu.' : ''; },
+      onCmdError: function (m) { $('ctl-msg').textContent = 'Perintah gagal: ' + m; }
+    });
+    render();
+  }
+
+  function startLab() {
+    if (!cfg) { tampilError('iot-core.js tidak termuat.'); return; }
+    kit = cfg.currentKit();
+    $('kit-input').value = kit;
+
+    $('buzzer').addEventListener('click', function () {
+      send('buzzer:' + ($('buzzer').getAttribute('aria-pressed') === 'true' ? 0 : 1));
+    });
+    $('servo').addEventListener('input', function () { dragging = true; $('servo-val').textContent = $('servo').value; });
+    $('servo').addEventListener('change', function () { dragging = false; send('servo:' + $('servo').value); });
+    $('kit-apply').addEventListener('click', function () {
+      var v = $('kit-input').value.trim();
+      if (!/^[A-Za-z0-9_-]{1,32}$/.test(v)) {
+        $('kit-msg').textContent = 'ID kit hanya boleh huruf, angka, - dan _ (maks. 32 karakter).';
+        return;
+      }
+      $('kit-msg').textContent = '';
+      kit = v;
+      try { localStorage.setItem('nk_kit', kit); } catch (e) {}
+      start();
+    });
+
+    setInterval(render, 2000);
+    tampilLayar('screen-lab');
+    start();
+  }
+
+  async function init() {
+    try {
+      if (window.Narf && Narf.guard) {          // di dalam situs: wajib login sebagai siswa
+        var profil = await Narf.guard('siswa');
+        if (window.NarfNav) NarfNav.init(profil);
+      }
+      startLab();
+    } catch (e) {
+      tampilError((e && e.message) || 'Gagal memuat halaman.');
+    }
+  }
+  init();
+})();
+</script>
+
+</body>
+</html>
