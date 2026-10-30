@@ -225,7 +225,7 @@
     show('v-gas', d.gas, 0);
     show('v-dist', d.dist, 1);
 
-    var gasAlarm = !!d.gasAlarm;
+    var gasAlarm = Number(d.gas) > 60;
     $('c-gas').className = 'stat-card' + (gasAlarm ? ' nk-bad' : '');
     $('s-gas').className = 'stat-sub' + (gasAlarm ? ' nk-bad' : '');
     $('s-gas').textContent = gasAlarm ? 'Gas terdeteksi!' : 'MQ-2';
