@@ -82,6 +82,18 @@
     <div class="kelas">
         <div class="section-label">SEMUA KELAS</div>
         <div class="kelas-grid" id="kelas-grid"><div class="nav-kosong">Memuat...</div></div>
+        <form id="form-kelas" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center">
+          <input id="in-kelas" type="text" placeholder="Nama kelas baru (mis. XI Teknik Otomasi 2)" autocomplete="off" maxlength="60"
+            style="flex:2;min-width:220px;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:10px;background:transparent;color:inherit;font:inherit">
+          <input id="in-tahun" type="text" placeholder="Tahun ajaran (opsional)" autocomplete="off" maxlength="20"
+            style="flex:1;min-width:140px;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:10px;background:transparent;color:inherit;font:inherit">
+          <button class="btn-lanjut" id="btn-kelas" type="submit">Buat Kelas</button>
+        </form>
+        <form id="form-kode" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;align-items:center">
+          <input id="in-kode" type="text" placeholder="Kode kelas baru (mis. TOI-SMK3-A)" autocomplete="off" maxlength="40"
+            style="flex:1;min-width:200px;padding:10px 12px;border:1.5px solid var(--border-color);border-radius:10px;background:transparent;color:inherit;font:inherit;text-transform:uppercase">
+          <button class="btn-lanjut" id="btn-kode" type="submit">Tambah Kelas</button>
+        </form>
     </div>
 </main>
 <footer class="footer">
@@ -146,6 +158,32 @@ async function init() {
     $('display-subtitle').textContent = e.message
   }
 }
+$('form-kelas').addEventListener('submit', async ev => {
+  ev.preventDefault()
+  const nama = $('in-kelas').value.trim()
+  if (!nama) return
+  const btn = $('btn-kelas'); btn.disabled = true
+  try {
+    const r = await Narf.rpc('guru_buat_kelas', { p_nama: nama, p_tahun: $('in-tahun').value.trim() || null })
+    Narf.toast('Kelas ' + r.kelas + ' dibuat. Siswa bisa memilihnya saat daftar.', 'success')
+    $('in-kelas').value = ''; $('in-tahun').value = ''
+    await init()
+  } catch (e) { Narf.toast(e.message, 'error') }
+  btn.disabled = false
+})
+$('form-kode').addEventListener('submit', async ev => {
+  ev.preventDefault()
+  const kode = $('in-kode').value.trim()
+  if (!kode) return
+  const btn = $('btn-kode'); btn.disabled = true
+  try {
+    const r = await Narf.rpc('guru_pakai_kode', { p_kode: kode })
+    Narf.toast('Kelas ' + r.kelas + ' ditambahkan', 'success')
+    $('in-kode').value = ''
+    await init()
+  } catch (e) { Narf.toast(e.message, 'error') }
+  btn.disabled = false
+})
 init()
 </script>
 </body>
