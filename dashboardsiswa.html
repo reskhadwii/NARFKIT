@@ -264,8 +264,7 @@
           <div class="hw-content">
             <h3>User Manual NARF Kit Hardware</h3>
             <p>Panduan lengkap instalasi driver, wiring, dan troubleshooting kit fisikmu.</p>
-            <a class="btn-hw" href="https://qcogfcfrmlyhfxramhrm.supabase.co/storage/v1/object/public/manual%20book/Guidebook_Koper_NARF_Pertemuan1.docx.pdf" target="_blank" rel="noopener">
-              Baca Manual</a>
+            <button class="btn-hw" onclick="window.open('https://qcogfcfrmlyhfxramhrm.supabase.co/storage/v1/object/public/manual%20book/Guidebook_Koper_NARF_Pertemuan1.docx.pdf', '_blank', 'noopener')">Baca Manual</button>
           </div>
         </div>
       </div>
@@ -855,6 +854,48 @@ async function muatNilai() {
   } catch (e) { $('stat-nilai-sub').textContent = 'tidak bisa dimuat' }
 }
 
+// ---- Preview video untuk kartu "Lanjutkan Belajar" ----
+function urlThumbnail(u) {
+  try {
+    const x = new URL(u)
+    const h = x.hostname.replace(/^www\./, '').replace(/^m\./, '')
+    let v = ''
+    if (h === 'youtube.com' || h === 'youtube-nocookie.com') {
+      v = x.searchParams.get('v') || (x.pathname.startsWith('/embed/') ? x.pathname.split('/')[2] : '')
+    } else if (h === 'youtu.be') {
+      v = x.pathname.slice(1)
+    } else if (h === 'drive.google.com') {
+      const m = x.pathname.match(/\/file\/d\/([^/]+)/)
+      if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w640'
+    }
+    if (v) return 'https://img.youtube.com/vi/' + encodeURIComponent(v) + '/hqdefault.jpg'
+  } catch (e) { /* url tidak valid */ }
+  return ''
+}
+
+async function pasangPreview(thumb, modulId) {
+  try {
+    if (!modulId) { // semua selesai: pakai video modul pertama dari course pertama
+      const c = await Narf.query(sb.from('course').select('id').order('urutan').order('judul').limit(1))
+      if (!c || !c.length) return
+      const m = await Narf.query(sb.from('modul').select('id').eq('course_id', c[0].id).order('urutan').limit(1))
+      if (!m || !m.length) return
+      modulId = m[0].id
+    }
+    const v = await Narf.query(sb.from('materi').select('url').eq('modul_id', modulId).eq('tipe', 'video')
+      .not('url', 'is', null).order('urutan').limit(1))
+    const src = v && v.length ? urlThumbnail(v[0].url) : ''
+    if (!src) return
+    const asli = thumb.innerHTML
+    const img = new Image()
+    img.alt = 'Preview video'
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block'
+    img.onload = () => { thumb.innerHTML = ''; thumb.style.overflow = 'hidden'; thumb.appendChild(img) }
+    img.onerror = () => { thumb.innerHTML = asli }
+    img.src = src
+  } catch (e) { }
+}
+
 async function tampilDashboard(d) {
   tampilLayar('screen-dashboard')
   muatPosttest()
@@ -878,6 +919,7 @@ async function tampilDashboard(d) {
     $('kursus-subtitle').textContent = 'Cek Project Akhir atau ulangi materi favoritmu.'
     $('progress-fill').style.width = '100%'
     $('progress-label').textContent = 'Progress: 100%'
+    pasangPreview(thumb, null)
     $('btn-lanjut').onclick = () => { location.href = 'course.html' }
     $('btn-play').onclick = () => { location.href = 'course.html' }
   } else {
@@ -887,6 +929,7 @@ async function tampilDashboard(d) {
     $('kursus-modul').textContent = 'Modul ' + l.urutan
     $('kursus-subtitle').textContent = l.modul
     thumb.innerHTML = svg(IKON_TIPE[l.tipe] || IKON_TIPE.teks, 'width="64" height="64"')
+    pasangPreview(thumb, l.modul_id)
     const persen = Math.round(l.persen || 0)
     setTimeout(() => { $('progress-fill').style.width = persen + '%' }, 300)
     $('progress-label').textContent = 'Progress: ' + persen + '%' + (persen === 0 ? ' — Siap dimulai!' : '')
@@ -947,6 +990,3 @@ init()
 
 </body>
 </html>
-
-
-nah apa bedanya yah, kayaknya yg satu tuh aku ga bisa dpt manual book nya deh, tapi ada lab iot nya, aku ingin kamu benerin file yg ada lab iot nya biar bisa buka manual book
