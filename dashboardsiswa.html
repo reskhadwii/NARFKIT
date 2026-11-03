@@ -65,6 +65,35 @@
         grid-template-columns: 1fr;
       }
     }
+    
+    .aktivitas-belajar { min-width: 0; }
+    .judul-kursus { min-width: 0; }
+    .kursus-title, .detail-modul { overflow-wrap: anywhere; }
+    .detail-modul { flex-wrap: wrap; }
+    
+    @media (max-width: 720px) {
+      .aktivitas-belajar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+        padding: 16px;
+      }
+      .thumbnail {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px;
+      }
+      .thumbnail-placeholder {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+      }
+      .judul-kursus { gap: 12px; }
+      .kursus-title { font-size: 18px; }
+      .progress-bar-container { max-width: none; }
+      .judul-kursus .btn-lanjut { width: 100%; box-sizing: border-box; text-align: center; }
+    }
   </style>
   <link rel="stylesheet" type="text/css" href="theme.css?v=20261023">
 </head>
