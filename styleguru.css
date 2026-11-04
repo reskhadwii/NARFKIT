@@ -189,3 +189,24 @@
   .sapaan { font-size: 30px; }
   .prompt-waktu { margin-left: 0; }
 }
+
+/* ----- Form Buat Kelas / Tambah Kelas ----- */
+.btn-lanjut {
+  border-radius: 12px;
+  border: 2px solid var(--muted-rose);
+  background: transparent;
+  color: rgba(var(--highlight-rgb),0.9);
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 22px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.btn-lanjut:hover { background: rgba(var(--muted-rose-rgb),0.15); }
+.btn-lanjut:disabled { opacity: .5; cursor: default; }
+#form-kelas input, #form-kode input { font-family: "Montserrat", sans-serif; font-size: 14px; }
+@media (max-width: 600px) {
+  #form-kelas .btn-lanjut, #form-kode .btn-lanjut { width: 100%; }
+}
