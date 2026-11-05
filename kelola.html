@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARF KIT - Kelola Modul</title>
+  <script src="global.js?v=20261023"></script>
+  <link rel="stylesheet" type="text/css" href="global.css?v=20261023">
+  <link rel="stylesheet" type="text/css" href="styleguru.css?v=20261023">
+  <link rel="stylesheet" type="text/css" href="theme.css?v=20261023">
+  <style>
+    .kelola-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .kelola-bar select { flex: 1 1 260px; min-width: 0; }
+    .btn-k { display: inline-block; background: #e2895f; color: #fff; border: 1px solid #e2895f; border-radius: 10px; padding: 10px 18px; font: 600 14px/1.2 inherit; font-family: inherit; cursor: pointer; text-decoration: none; transition: .2s; }
+    .btn-k:hover:not(:disabled) { background: #cc764e; border-color: #cc764e; }
+    .btn-k:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-k.ghost { background: transparent; color: #e2895f; }
+    .btn-k.ghost:hover:not(:disabled) { background: rgba(226,137,95,.12); }
+    .btn-k.bahaya { background: transparent; color: #d9675c; border-color: #d9675c; }
+    .btn-k.bahaya:hover:not(:disabled) { background: rgba(217,103,92,.12); }
+    .btn-k.kecil { padding: 6px 12px; font-size: 12px; }
+    .aksi { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+    .modul-kartu .panel-header { gap: 12px; flex-wrap: wrap; }
+    .materi-baris { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 10px; flex-wrap: wrap; }
+    .materi-judul { flex: 1 1 200px; min-width: 0; overflow-wrap: anywhere; color: var(--fg-solid); font-size: 14px; }
+    .tipe-pil { font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 4px 10px; border-radius: 20px; background: rgba(226,137,95,.12); border: 1px solid rgba(226,137,95,.3); color: #e2895f; }
+    #dlg { background: var(--bg-primary); color: var(--fg-solid); border: 1px solid var(--border-color); border-radius: 18px; padding: 24px; width: min(560px, 92vw); max-height: 90vh; overflow: auto; }
+    #dlg::backdrop { background: rgba(0,0,0,.55); }
+    #dlg h3 { margin: 0 0 16px; font-size: 18px; }
+    .f-baris { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; font-size: 13px; font-weight: 600; color: rgba(var(--fg-rgb), .75); }
+    .f-baris input, .f-baris select, .f-baris textarea { background: rgba(var(--card-rgb), .06); border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 10px; padding: 10px 12px; font: 400 14px/1.4 inherit; font-family: inherit; }
+    .f-baris input:focus, .f-baris select:focus, .f-baris textarea:focus { outline: none; border-color: #e2895f; }
+    .f-catatan { font-size: 12px; font-weight: 400; color: rgba(var(--fg-rgb), .55); }
+    #dlg-err { color: #d9675c; font-size: 13px; min-height: 18px; margin-bottom: 10px; }
+    .dlg-aksi { display: flex; justify-content: flex-end; gap: 10px; }
+    .info-pemilik { font-size: 13px; color: rgba(var(--fg-rgb), .6); margin: 4px 0 18px; }
+    .kembali-kelas { margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+
+<nav class="navigasi-siswa">
+  <div class="narfkit"><span class="narf">NARF</span><span class="kit">KIT</span></div>
+  <div class="menu">
+    <a href="dashboardguru.html" class="menu-item">DASHBOARD</a>
+    <a href="class.html" class="menu-item active">CLASS</a>
+    <a href="grading.html" class="menu-item">GRADING</a>
+    <a href="monitoring.html" class="menu-item">MONITORING</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-icon-btn" id="nav-profil" type="button" aria-label="Akun"><span class="nav-avatar" data-avatar>&middot;</span></button>
+    <button class="theme-toggle" data-theme-toggle title="Ganti tema" type="button" aria-label="Ganti tema">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="#e2895f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="#e2895f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    </button>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div class="kembali-kelas"><a class="btn-k ghost kecil" href="class.html">&#8592; Manajemen Kelas</a></div>
+  <div class="kata-kata">
+    <div class="sapaan"><span class="halo">Kelola Modul</span></div>
+    <div class="subtitle">Tambah modul, video, PDF, dan bacaan. Perubahan langsung terlihat oleh siswa.</div>
+  </div>
+
+  <div class="kelola-bar">
+    <label class="f-baris" style="flex:1 1 260px;margin:0">Course
+      <select id="pilih-course"></select>
+    </label>
+    <button class="btn-k" id="btn-modul-baru" type="button">+ Modul</button>
+    <button class="btn-k ghost" id="btn-course-baru" type="button">+ Course</button>
+    <button class="btn-k ghost" id="btn-course-ubah" type="button" hidden>Ubah course</button>
+    <button class="btn-k bahaya" id="btn-course-hapus" type="button" hidden>Hapus course</button>
+    <a class="btn-k ghost" id="link-siswa" href="course.html" target="_blank" rel="noopener">Lihat sebagai siswa</a>
+  </div>
+
+  <div class="info-pemilik" id="info-pemilik"></div>
+  <div id="daftar-modul"><div class="nav-kosong">Memuat...</div></div>
+</main>
+
+<dialog id="dlg">
+  <form id="dlg-form">
+    <h3 id="dlg-judul"></h3>
+    <div id="dlg-isi"></div>
+    <div id="dlg-err" role="alert"></div>
+    <div class="dlg-aksi">
+      <button class="btn-k ghost" type="button" id="dlg-batal">Batal</button>
+      <button class="btn-k" type="submit" id="dlg-simpan">Simpan</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js?v=20261023"></script>
+<script src="auth.js?v=20261023"></script>
+<script src="siswa-nav.js?v=20261023"></script>
+<script>
+const $ = id => document.getElementById(id)
+const esc = Narf.esc
+const BUCKET = 'materi'
+const MAKS_MB = 50
+const TIPE = { video: 'VIDEO', pdf: 'PDF', teks: 'BACAAN' }
+const ST = { uid: null, admin: false, courses: [], moduls: [], materi: [], courseId: null }
+const courseAktif = () => ST.courses.find(c => c.id === ST.courseId)
+const milikku = c => !!c && (ST.admin || c.guru_id === ST.uid)
+const labelPemilik = c => !c.guru_id ? 'Bawaan' : (c.guru_id === ST.uid ? 'Milik saya' : 'Guru lain')
+
+const modulCourse = id => ST.moduls.filter(m => m.course_id === id).sort((a, b) => a.urutan - b.urutan)
+const materiModul = id => ST.materi.filter(m => m.modul_id === id).sort((a, b) => a.urutan - b.urutan)
+const maxUrutan = list => list.reduce((n, x) => Math.max(n, x.urutan || 0), 0)
+
+/* ---------- data ---------- */
+async function muat() {
+  const [c, m, t] = await Promise.all([
+    Narf.query(sb.from('course').select('id,judul,deskripsi,guru_id').order('judul')),
+    Narf.query(sb.from('modul').select('id,course_id,judul,urutan').order('urutan')),
+    Narf.query(sb.from('materi').select('id,modul_id,judul,tipe,url,konten,urutan').order('urutan'))
+  ])
+  ST.courses = c; ST.moduls = m; ST.materi = t
+  if (!ST.courses.find(x => x.id === ST.courseId)) ST.courseId = (ST.courses[0] || {}).id || null
+}
+async function muatUlang() { await muat(); render() }
+
+/* ---------- tampilan ---------- */
+function render() {
+  $('pilih-course').innerHTML = ST.courses.map(c =>
+    '<option value="' + esc(c.id) + '"' + (c.id === ST.courseId ? ' selected' : '') + '>' + esc(c.judul) + ' \u00b7 ' + esc(labelPemilik(c)) + '</option>').join('')
+  const cur = courseAktif(), edit = milikku(cur)
+  $('btn-modul-baru').disabled = !edit
+  $('btn-course-ubah').hidden = !edit; $('btn-course-hapus').hidden = !edit
+  $('info-pemilik').textContent = !cur ? '' : edit
+    ? 'Kamu bisa mengubah course ini.'
+    : (cur.guru_id ? 'Course ini milik guru lain' : 'Course bawaan') + ': hanya bisa dipratinjau.'
+  $('link-siswa').href = ST.courseId ? 'course.html?course=' + encodeURIComponent(ST.courseId) : 'course.html'
+
+  const box = $('daftar-modul')
+  if (!ST.courseId) { box.innerHTML = '<div class="nav-kosong">Belum ada course. Klik "+ Course" untuk membuat.</div>'; return }
+  const ms = modulCourse(ST.courseId)
+  if (!ms.length) { box.innerHTML = '<div class="nav-kosong">Course ini belum punya modul.' + (edit ? ' Klik "+ Modul".' : '') + '</div>'; return }
+
+  box.innerHTML = '<div style="display:flex;flex-direction:column;gap:18px">' + ms.map(m => {
+    const mt = materiModul(m.id)
+    const baris = mt.length ? mt.map(x =>
+      '<div class="materi-baris" data-materi="' + esc(x.id) + '">' +
+        '<span class="tipe-pil">' + esc(TIPE[x.tipe] || x.tipe) + '</span>' +
+        '<span class="materi-judul">' + esc(x.urutan) + '. ' + esc(x.judul) + '</span>' +
+        '<span class="aksi">' +
+          '<a class="btn-k ghost kecil" target="_blank" rel="noopener" href="course.html?course=' + encodeURIComponent(ST.courseId) +
+            '&modul=' + encodeURIComponent(m.id) + '&materi=' + encodeURIComponent(x.id) + '">Pratinjau</a>' +
+          (edit ? '<button type="button" class="btn-k ghost kecil" data-aksi="materi-ubah">Ubah</button>' +
+                  '<button type="button" class="btn-k bahaya kecil" data-aksi="materi-hapus">Hapus</button>' : '') +
+        '</span></div>').join('')
+      : '<div class="nav-kosong">Belum ada materi di modul ini.</div>'
+    return '<section class="panel modul-kartu" data-modul="' + esc(m.id) + '">' +
+      '<div class="panel-header"><span>Modul ' + esc(m.urutan) + ': ' + esc(m.judul) + '</span><span class="aksi">' +
+        (edit ? '<button type="button" class="btn-k kecil" data-aksi="materi-baru">+ Materi</button>' +
+                '<button type="button" class="btn-k ghost kecil" data-aksi="modul-ubah">Ubah</button>' +
+                '<button type="button" class="btn-k bahaya kecil" data-aksi="modul-hapus">Hapus</button>' : '') +
+      '</span></div>' + baris + '</section>'
+  }).join('') + '</div>'
+}
+
+/* ---------- dialog ---------- */
+const dlg = $('dlg')
+function dialogForm(judul, html, onSubmit, siap) {
+  $('dlg-judul').textContent = judul
+  $('dlg-isi').innerHTML = html
+  $('dlg-err').textContent = ''
+  $('dlg-form').onsubmit = async e => {
+    e.preventDefault()
+    const btn = $('dlg-simpan'); btn.disabled = true; $('dlg-err').textContent = ''
+    try { await onSubmit(new FormData($('dlg-form'))); dlg.close() }
+    catch (err) { $('dlg-err').textContent = err.message }
+    btn.disabled = false
+  }
+  dlg.showModal()
+  if (siap) siap()
+}
+$('dlg-batal').addEventListener('click', () => dlg.close())
+
+const fTeks = (label, nama, nilai) =>
+  '<label class="f-baris">' + label + '<input name="' + nama + '" required maxlength="150" value="' + esc(nilai || '') + '"></label>'
+
+/* ---------- storage ---------- */
+function pathStorage(url) {
+  const k = '/storage/v1/object/public/' + BUCKET + '/'
+  const s = String(url || ''), i = s.indexOf(k)
+  return i < 0 ? null : decodeURIComponent(s.slice(i + k.length).split('?')[0])
+}
+async function hapusFile(url) {
+  const p = pathStorage(url)
+  if (!p) return
+  try { await sb.storage.from(BUCKET).remove([p]) } catch (e) { /* abaikan */ }
+}
+async function unggah(file, tipe) {
+  const boleh = tipe === 'pdf' ? ['application/pdf'] : ['video/mp4', 'video/webm']
+  if (!boleh.includes(file.type)) throw new Error(tipe === 'pdf' ? 'File harus berformat PDF.' : 'Video harus berformat MP4 atau WebM.')
+  if (file.size > MAKS_MB * 1024 * 1024) throw new Error('Ukuran file maksimal ' + MAKS_MB + ' MB. Untuk video lebih besar, unggah ke YouTube (unlisted) lalu tempel linknya.')
+  const path = ST.uid + '/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9._-]+/g, '_')
+  const { error } = await sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false })
+  if (error) throw new Error(error.message)
+  return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl
+}
+
+/* teks biasa -> HTML sederhana (paragraf, "# judul", "- poin") */
+function teksKeHtml(t) {
+  return t.split(/\n{2,}/).map(blok => {
+    const b = blok.split('\n').map(s => s.trim()).filter(Boolean)
+    if (!b.length) return ''
+    if (b.every(s => /^[-*] /.test(s))) return '<ul>' + b.map(s => '<li>' + esc(s.slice(2)) + '</li>').join('') + '</ul>'
+    if (b.length === 1 && /^#{1,3} /.test(b[0])) return '<h3>' + esc(b[0].replace(/^#{1,3} /, '')) + '</h3>'
+    return '<p>' + b.map(s => esc(s)).join('<br>') + '</p>'
+  }).join('')
+}
+
+/* ---------- course ---------- */
+function courseBaru() {
+  dialogForm('Course baru',
+    fTeks('Judul course', 'judul') +
+    '<label class="f-baris">Deskripsi (opsional)<textarea name="deskripsi" rows="3"></textarea></label>',
+    async fd => {
+      const r = await Narf.query(sb.from('course').insert({
+        judul: String(fd.get('judul')).trim(), deskripsi: String(fd.get('deskripsi') || '').trim(), guru_id: ST.uid
+      }).select('id'))
+      if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel course.')
+      ST.courseId = r[0].id
+      await muatUlang()
+    })
+}
+function courseUbah() {
+  const c = courseAktif()
+  dialogForm('Ubah course',
+    fTeks('Judul course', 'judul', c.judul) +
+    '<label class="f-baris">Deskripsi<textarea name="deskripsi" rows="3">' + esc(c.deskripsi || '') + '</textarea></label>',
+    async fd => {
+      const r = await Narf.query(sb.from('course').update({
+        judul: String(fd.get('judul')).trim(), deskripsi: String(fd.get('deskripsi') || '').trim()
+      }).eq('id', c.id).select('id'))
+      if (!r.length) throw new Error('Perubahan tidak tersimpan. Periksa izin (RLS) tabel course.')
+      await muatUlang()
+    })
+}
+async function courseHapus() {
+  const c = courseAktif(), ms = modulCourse(c.id)
+  const semuaMateri = ms.flatMap(m => materiModul(m.id))
+  if (!confirm('Hapus course "' + c.judul + '" beserta ' + ms.length + ' modul dan ' + semuaMateri.length + ' materi di dalamnya?\nProgres siswa pada course ini ikut terhapus. Tindakan ini tidak bisa dibatalkan.')) return
+  try {
+    const r = await Narf.query(sb.from('course').delete().eq('id', c.id).select('id'))
+    if (!r.length) throw new Error('Tidak terhapus. Periksa izin (RLS) tabel course.')
+    for (const x of semuaMateri) await hapusFile(x.url)
+    ST.courseId = null
+    Narf.toast('Course dihapus.', 'ok')
+    await muatUlang()
+  } catch (e) { Narf.toast(e.message, 'error') }
+}
+
+/* ---------- modul ---------- */
+function modulBaru() {
+  dialogForm('Modul baru', fTeks('Judul modul', 'judul'), async fd => {
+    const r = await Narf.query(sb.from('modul').insert({
+      course_id: ST.courseId, judul: String(fd.get('judul')).trim(), urutan: maxUrutan(modulCourse(ST.courseId)) + 1
+    }).select('id'))
+    if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel modul.')
+    await muatUlang()
+  })
+}
+function modulUbah(m) {
+  dialogForm('Ubah modul',
+    fTeks('Judul modul', 'judul', m.judul) +
+    '<label class="f-baris">Urutan<input type="number" name="urutan" min="1" required value="' + esc(m.urutan) + '"></label>',
+    async fd => {
+      const r = await Narf.query(sb.from('modul').update({
+        judul: String(fd.get('judul')).trim(), urutan: parseInt(fd.get('urutan'), 10) || m.urutan
+      }).eq('id', m.id).select('id'))
+      if (!r.length) throw new Error('Perubahan tidak tersimpan. Periksa izin (RLS) tabel modul.')
+      await muatUlang()
+    })
+}
+async function modulHapus(m) {
+  const mt = materiModul(m.id)
+  if (!confirm('Hapus modul "' + m.judul + '" beserta ' + mt.length + ' materi di dalamnya?\nProgres siswa pada modul ini ikut terhapus. Tindakan ini tidak bisa dibatalkan.')) return
+  try {
+    const r = await Narf.query(sb.from('modul').delete().eq('id', m.id).select('id'))
+    if (!r.length) throw new Error('Tidak terhapus. Periksa izin (RLS) tabel modul.')
+    for (const x of mt) await hapusFile(x.url)
+    Narf.toast('Modul dihapus.', 'ok')
+    await muatUlang()
+  } catch (e) { Narf.toast(e.message, 'error') }
+}
+
+/* ---------- materi ---------- */
+function formMateri(modulId, x) {
+  const urutan = x ? x.urutan : maxUrutan(materiModul(modulId)) + 1
+  return fTeks('Judul materi', 'judul', x && x.judul) +
+    '<label class="f-baris">Jenis' +
+      '<select name="tipe" id="f-tipe"><option value="video">Video</option><option value="pdf">PDF / dokumen</option><option value="teks">Bacaan (teks)</option></select></label>' +
+    '<div id="blok-media">' +
+      '<label class="f-baris">Link video / PDF' +
+        '<input name="url" placeholder="https://youtu.be/... atau link Google Drive atau file .mp4 / .pdf" value="' + esc(x && x.tipe !== 'teks' ? x.url : '') + '">' +
+        '<span class="f-catatan">Link YouTube dan Google Drive (bagikan sebagai "siapa saja dengan link") bisa langsung diputar di halaman siswa.</span></label>' +
+      '<label class="f-baris">atau unggah file (maks. ' + MAKS_MB + ' MB)' +
+        '<input type="file" name="file" accept="video/mp4,video/webm,application/pdf">' +
+        '<span class="f-catatan">Kalau file dipilih, link di atas diabaikan.</span></label>' +
+    '</div>' +
+    '<div id="blok-teks">' +
+      '<label class="f-baris">Format isi' +
+        '<select name="format"><option value="teks">Teks biasa</option><option value="html"' + (x && x.tipe === 'teks' ? ' selected' : '') + '>HTML</option></select>' +
+        '<span class="f-catatan">Teks biasa: pisahkan paragraf dengan baris kosong, awali "# " untuk judul atau "- " untuk poin.</span></label>' +
+      '<label class="f-baris">Isi bacaan<textarea name="konten" rows="10">' + esc(x && x.tipe === 'teks' ? x.konten : '') + '</textarea></label>' +
+    '</div>' +
+    '<label class="f-baris">Urutan<input type="number" name="urutan" min="1" required value="' + esc(urutan) + '"></label>'
+}
+function siapMateri(x) {
+  const sel = $('f-tipe')
+  const ganti = () => {
+    const teks = sel.value === 'teks'
+    $('blok-media').hidden = teks; $('blok-teks').hidden = !teks
+  }
+  sel.value = x ? x.tipe : 'video'
+  sel.addEventListener('change', ganti); ganti()
+}
+async function simpanMateri(fd, modulId, x) {
+  const tipe = String(fd.get('tipe'))
+  const judul = String(fd.get('judul') || '').trim()
+  if (!judul) throw new Error('Judul wajib diisi.')
+  const row = { judul, tipe, urutan: parseInt(fd.get('urutan'), 10) || 1, url: '', konten: '' }
+  let urlBaru = null
+
+  if (tipe === 'teks') {
+    const isi = String(fd.get('konten') || '').trim()
+    if (!isi) throw new Error('Isi bacaan wajib diisi.')
+    row.konten = fd.get('format') === 'html' ? isi : teksKeHtml(isi)
+  } else {
+    const file = fd.get('file')
+    const link = String(fd.get('url') || '').trim()
+    if (file && file.size) { urlBaru = await unggah(file, tipe); row.url = urlBaru }
+    else if (/^https?:\/\//i.test(link) && Narf.safeUrl(link)) row.url = link
+    else if (!link && x && x.tipe === tipe && x.url) row.url = x.url
+    else throw new Error('Isi link yang valid (diawali https://) atau pilih file.')
+  }
+
+  if (x) {
+    const r = await Narf.query(sb.from('materi').update(row).eq('id', x.id).select('id'))
+    if (!r.length) throw new Error('Perubahan tidak tersimpan. Periksa izin (RLS) tabel materi.')
+    if (x.url && x.url !== row.url) await hapusFile(x.url)
+  } else {
+    row.modul_id = modulId
+    const r = await Narf.query(sb.from('materi').insert(row).select('id'))
+    if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel materi.')
+  }
+  await muatUlang()
+}
+function materiBaru(modulId) {
+  dialogForm('Materi baru', formMateri(modulId), fd => simpanMateri(fd, modulId, null), () => siapMateri(null))
+}
+function materiUbah(x) {
+  dialogForm('Ubah materi', formMateri(x.modul_id, x), fd => simpanMateri(fd, x.modul_id, x), () => siapMateri(x))
+}
+async function materiHapus(x) {
+  if (!confirm('Hapus materi "' + x.judul + '"? Tindakan ini tidak bisa dibatalkan.')) return
+  try {
+    const r = await Narf.query(sb.from('materi').delete().eq('id', x.id).select('id'))
+    if (!r.length) throw new Error('Tidak terhapus. Periksa izin (RLS) tabel materi.')
+    await hapusFile(x.url)
+    Narf.toast('Materi dihapus.', 'ok')
+    await muatUlang()
+  } catch (e) { Narf.toast(e.message, 'error') }
+}
+
+/* ---------- event ---------- */
+$('pilih-course').addEventListener('change', e => { ST.courseId = e.target.value; render() })
+$('btn-course-baru').addEventListener('click', courseBaru)
+$('btn-course-ubah').addEventListener('click', courseUbah)
+$('btn-course-hapus').addEventListener('click', courseHapus)
+$('btn-modul-baru').addEventListener('click', modulBaru)
+$('daftar-modul').addEventListener('click', e => {
+  const tombol = e.target.closest('[data-aksi]')
+  if (!tombol) return
+  const sec = tombol.closest('[data-modul]')
+  const m = ST.moduls.find(v => v.id === sec.dataset.modul)
+  const baris = tombol.closest('[data-materi]')
+  const x = baris && ST.materi.find(v => v.id === baris.dataset.materi)
+  switch (tombol.dataset.aksi) {
+    case 'materi-baru': return materiBaru(m.id)
+    case 'modul-ubah': return modulUbah(m)
+    case 'modul-hapus': return modulHapus(m)
+    case 'materi-ubah': return materiUbah(x)
+    case 'materi-hapus': return materiHapus(x)
+  }
+})
+
+/* ---------- INIT ---------- */
+async function init() {
+  try {
+    const profil = await Narf.guard('guru')
+    NarfNav.init(profil)
+    const { data: { session } } = await sb.auth.getSession()
+    ST.uid = session.user.id
+    ST.admin = profil.role === 'admin'
+    await muat()
+    render()
+  } catch (e) {
+    $('daftar-modul').innerHTML = '<div class="nav-kosong">' + esc(e.message) + '</div>'
+  }
+}
+init()
+</script>
+</body>
+</html>

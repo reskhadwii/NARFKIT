@@ -1,8 +1,4 @@
-/* ============================================================
-   NARFKIT - helper bersama (butuh config.js dimuat lebih dulu)
-   Narf.guard('siswa'|'guru')  -> pastikan login + peran benar
-   Narf.rpc(nama, args)        -> panggil fungsi server, lempar Error berpesan jelas
-   ============================================================ */
+
 (function () {
   const HOME = { siswa: 'dashboardsiswa.html', guru: 'dashboardguru.html', admin: 'dashboardguru.html' };
 
@@ -54,8 +50,8 @@
     }
     const t = document.createElement('div');
     t.textContent = msg;
-    t.style.cssText = 'font:700 14px Montserrat,sans-serif;padding:12px 20px;border-radius:12px;color:#fff;max-width:90vw;box-shadow:0 6px 24px rgba(0,0,0,.35);background:' +
-      (tipe === 'error' ? '#c0392b' : tipe === 'ok' ? '#2e8b57' : '#7a4b47');
+    t.style.cssText = 'font:500 14px Inter,system-ui,sans-serif;padding:12px 20px;border-radius:12px;color:#fff;max-width:90vw;box-shadow:0 6px 24px rgba(0,0,0,.35);background:' +
+      (tipe === 'error' ? '#b9544a' : tipe === 'ok' ? '#3f8f68' : '#4d3b38');
     wrap.appendChild(t);
     setTimeout(() => t.remove(), 4200);
   }
@@ -73,7 +69,9 @@
     try { info = await rpc('ping'); }
     catch (e) { toast(e.message, 'error'); throw e; }
     if (!info || !info.ada_profil) { location.replace('index.html'); return new Promise(() => {}); }
-    const boleh = peran === 'guru' ? (info.role === 'guru' || info.role === 'admin') : info.role === peran;
+    const boleh = peran === 'semua' ? true
+    :peran === 'guru' ? (info.role === 'guru' || info.role === 'admin')
+    : info.role === peran;
     if (!boleh) { location.replace(HOME[info.role] || 'index.html'); return new Promise(() => {}); }
     document.querySelectorAll('[data-nama]').forEach(el => { el.textContent = info.nama; });
     document.querySelectorAll('[data-nama-depan]').forEach(el => { el.textContent = String(info.nama).split(/\s+/)[0]; });
