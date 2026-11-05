@@ -35,6 +35,16 @@
     .dlg-aksi { display: flex; justify-content: flex-end; gap: 10px; }
     .info-pemilik { font-size: 13px; color: rgba(var(--fg-rgb), .6); margin: 4px 0 18px; }
     .kembali-kelas { margin-bottom: 14px; }
+    .kls-list { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px 0 12px; }
+    .kls-item { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer; color: var(--fg-solid); }
+    .kls-item input { accent-color: #e2895f; }
+    .panel-isi { padding: 0 4px 6px; display: flex; flex-direction: column; gap: 10px; }
+    .catatan { font-size: 12px; color: rgba(var(--fg-rgb), .6); line-height: 1.5; }
+    .opsi-baris { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+    .opsi-baris input[type=text] { flex: 1; min-width: 0; }
+    .opsi-baris input[type=radio] { accent-color: #e2895f; width: 18px; height: 18px; flex-shrink: 0; }
+    .kode-font { font-family: ui-monospace, Consolas, monospace !important; font-size: 13px !important; }
+    .sub-judul { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: rgba(var(--fg-rgb), .55); margin: 6px 0 2px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
   </style>
 </head>
 <body>
@@ -60,7 +70,7 @@
   <div class="kembali-kelas"><a class="btn-k ghost kecil" href="class.html">&#8592; Manajemen Kelas</a></div>
   <div class="kata-kata">
     <div class="sapaan"><span class="halo">Kelola Modul</span></div>
-    <div class="subtitle">Tambah modul, video, PDF, dan bacaan. Perubahan langsung terlihat oleh siswa.</div>
+    <div class="subtitle">Atur course, modul, video, PDF, bacaan, kuis, dan project. Pilih kelas mana yang boleh melihatnya.</div>
   </div>
 
   <div class="kelola-bar">
@@ -75,6 +85,7 @@
   </div>
 
   <div class="info-pemilik" id="info-pemilik"></div>
+  <div id="panel-kelas" style="margin-bottom:18px"></div>
   <div id="daftar-modul"><div class="nav-kosong">Memuat...</div></div>
 </main>
 
@@ -100,7 +111,11 @@ const esc = Narf.esc
 const BUCKET = 'materi'
 const MAKS_MB = 50
 const TIPE = { video: 'VIDEO', pdf: 'PDF', teks: 'BACAAN' }
-const ST = { uid: null, admin: false, courses: [], moduls: [], materi: [], courseId: null }
+const ST = { uid: null, admin: false, courses: [], moduls: [], materi: [], proyek: [], kelasGuru: [], courseKelas: [], kuis: {}, courseId: null }
+const uid = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+  : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16) })
+const proyekCourse = id => ST.proyek.filter(p => p.course_id === id)
+const kelasTerpilih = id => new Set(ST.courseKelas.filter(x => x.course_id === id).map(x => x.kelas_id))
 const courseAktif = () => ST.courses.find(c => c.id === ST.courseId)
 const milikku = c => !!c && (ST.admin || c.guru_id === ST.uid)
 const labelPemilik = c => !c.guru_id ? 'Bawaan' : (c.guru_id === ST.uid ? 'Milik saya' : 'Guru lain')
@@ -111,12 +126,15 @@ const maxUrutan = list => list.reduce((n, x) => Math.max(n, x.urutan || 0), 0)
 
 /* ---------- data ---------- */
 async function muat() {
-  const [c, m, t] = await Promise.all([
+  const [c, m, t, p, ck, kg] = await Promise.all([
     Narf.query(sb.from('course').select('id,judul,deskripsi,guru_id').order('judul')),
     Narf.query(sb.from('modul').select('id,course_id,judul,urutan').order('urutan')),
-    Narf.query(sb.from('materi').select('id,modul_id,judul,tipe,url,konten,urutan').order('urutan'))
+    Narf.query(sb.from('materi').select('id,modul_id,judul,tipe,url,konten,urutan').order('urutan')),
+    Narf.query(sb.from('proyek').select('id,judul,deskripsi,video_demo_url,alat_bahan,panduan,bebas,course_id').order('judul')),
+    Narf.query(sb.from('course_kelas').select('course_id,kelas_id')),
+    Narf.rpc('narf_kelas_guru')
   ])
-  ST.courses = c; ST.moduls = m; ST.materi = t
+  ST.courses = c; ST.moduls = m; ST.materi = t; ST.proyek = p; ST.courseKelas = ck; ST.kelasGuru = kg || []
   if (!ST.courses.find(x => x.id === ST.courseId)) ST.courseId = (ST.courses[0] || {}).id || null
 }
 async function muatUlang() { await muat(); render() }
@@ -132,11 +150,12 @@ function render() {
     ? 'Kamu bisa mengubah course ini.'
     : (cur.guru_id ? 'Course ini milik guru lain' : 'Course bawaan') + ': hanya bisa dipratinjau.'
   $('link-siswa').href = ST.courseId ? 'course.html?course=' + encodeURIComponent(ST.courseId) : 'course.html'
+  renderPanelKelas(cur, edit)
 
   const box = $('daftar-modul')
   if (!ST.courseId) { box.innerHTML = '<div class="nav-kosong">Belum ada course. Klik "+ Course" untuk membuat.</div>'; return }
   const ms = modulCourse(ST.courseId)
-  if (!ms.length) { box.innerHTML = '<div class="nav-kosong">Course ini belum punya modul.' + (edit ? ' Klik "+ Modul".' : '') + '</div>'; return }
+  if (!ms.length) { box.innerHTML = '<div class="nav-kosong">Course ini belum punya modul.' + (edit ? ' Klik "+ Modul".' : '') + '</div>' + htmlProyek(edit); return }
 
   box.innerHTML = '<div style="display:flex;flex-direction:column;gap:18px">' + ms.map(m => {
     const mt = materiModul(m.id)
@@ -156,8 +175,163 @@ function render() {
         (edit ? '<button type="button" class="btn-k kecil" data-aksi="materi-baru">+ Materi</button>' +
                 '<button type="button" class="btn-k ghost kecil" data-aksi="modul-ubah">Ubah</button>' +
                 '<button type="button" class="btn-k bahaya kecil" data-aksi="modul-hapus">Hapus</button>' : '') +
-      '</span></div>' + baris + '</section>'
-  }).join('') + '</div>'
+      '</span></div>' + baris +
+      (edit ? '<div class="panel-isi"><div class="sub-judul"><span>KUIS MODUL</span><button type="button" class="btn-k kecil" data-aksi="soal-baru">+ Soal</button></div>' +
+              '<div id="kuis-' + esc(m.id) + '"><div class="nav-kosong">Memuat soal...</div></div></div>' : '') +
+      '</section>'
+  }).join('') + '</div>' + htmlProyek(edit)
+  if (edit) ms.forEach(m => muatKuisModul(m.id))
+}
+
+/* ---------- panel: tampil di kelas mana ---------- */
+function renderPanelKelas(cur, edit) {
+  const el = $('panel-kelas')
+  if (!cur) { el.innerHTML = ''; return }
+  if (!edit) { el.innerHTML = ''; return }
+  if (!cur.guru_id && !ST.admin) { el.innerHTML = ''; return }
+  if (!cur.guru_id) {
+    el.innerHTML = '<section class="panel"><div class="panel-header"><span>Tampil di kelas</span></div><div class="panel-isi"><div class="catatan">Course bawaan tampil untuk semua kelas.</div></div></section>'
+    return
+  }
+  const pilih = kelasTerpilih(cur.id)
+  const daftar = ST.kelasGuru.length
+    ? '<div class="kls-list">' + ST.kelasGuru.map(k =>
+        '<label class="kls-item"><input type="checkbox" name="kls" value="' + esc(k.id) + '"' + (pilih.has(k.id) ? ' checked' : '') + '> ' + esc(k.nama_kelas) + '</label>').join('') + '</div>'
+    : '<div class="catatan">Kamu belum punya kelas. <a href="class.html" style="color:#e2895f">Buat kelas di Manajemen Kelas</a> dulu.</div>'
+  el.innerHTML = '<section class="panel"><div class="panel-header"><span>Tampil di kelas</span>' +
+    '<button type="button" class="btn-k kecil" id="btn-simpan-kelas"' + (ST.kelasGuru.length ? '' : ' disabled') + '>Simpan</button></div>' +
+    '<div class="panel-isi">' + daftar +
+    '<div class="catatan">' + (pilih.size ? 'Course ini terlihat oleh siswa di kelas yang dicentang.'
+      : 'Belum ada kelas dipilih: course ini <b>belum terlihat oleh siswa</b> (draf). Centang kelas lalu klik Simpan.') + '</div></div></section>'
+  const b = $('btn-simpan-kelas')
+  if (b) b.onclick = simpanKelas
+}
+async function simpanKelas() {
+  const ids = [...document.querySelectorAll('#panel-kelas input[name=kls]:checked')].map(i => i.value)
+  try {
+    await Narf.rpc('narf_set_course_kelas', { p_course: ST.courseId, p_kelas: ids })
+    Narf.toast(ids.length ? 'Kelas disimpan. Siswa di kelas itu sekarang bisa melihat course ini.' : 'Course disembunyikan dari semua siswa (draf).', 'ok')
+    ST.courseKelas = await Narf.query(sb.from('course_kelas').select('course_id,kelas_id'))
+    render()
+  } catch (e) { Narf.toast(e.message, 'error') }
+}
+
+/* ---------- project (tugas kelompok) ---------- */
+function htmlProyek(edit) {
+  const ps = proyekCourse(ST.courseId)
+  const baris = ps.length ? ps.map(p =>
+    '<div class="materi-baris" data-proyek="' + esc(p.id) + '"><span class="tipe-pil">' + (p.bebas ? 'BEBAS' : 'PROJECT') + '</span>' +
+    '<span class="materi-judul">' + esc(p.judul) + '</span>' +
+    (edit ? '<span class="aksi"><button type="button" class="btn-k ghost kecil" data-aksi="proyek-ubah">Ubah</button>' +
+            '<button type="button" class="btn-k bahaya kecil" data-aksi="proyek-hapus">Hapus</button></span>' : '') + '</div>').join('')
+    : '<div class="nav-kosong">Belum ada project di course ini.</div>'
+  return '<section class="panel" style="margin-top:18px"><div class="panel-header"><span>Project (tugas kelompok)</span>' +
+    (edit ? '<span class="aksi"><button type="button" class="btn-k kecil" data-aksi="proyek-baru">+ Project</button></span>' : '') +
+    '</div><div class="panel-isi">' + baris + '</div></section>'
+}
+function formProyek(p) {
+  return fTeks('Judul project', 'judul', p && p.judul) +
+    '<label class="f-baris">Deskripsi<textarea name="deskripsi" rows="3">' + esc(p && p.deskripsi || '') + '</textarea></label>' +
+    '<label class="f-baris">Link video demo (opsional)<input name="video" placeholder="https://youtu.be/..." value="' + esc(p && p.video_demo_url || '') + '"></label>' +
+    '<label class="f-baris">Alat dan bahan (satu per baris)<textarea name="alat" rows="4">' + esc(((p && p.alat_bahan) || []).join('\n')) + '</textarea></label>' +
+    '<label class="f-baris">Langkah panduan (satu per baris)<textarea name="panduan" rows="5">' + esc(((p && p.panduan) || []).join('\n')) + '</textarea></label>' +
+    '<label class="kls-item" style="margin-bottom:14px"><input type="checkbox" name="bebas" value="1"' + (p && p.bebas ? ' checked' : '') +
+    '> Project bebas: kelompok merancang sendiri judul, alat, dan panduannya</label>'
+}
+const barisKe = t => String(t || '').split('\n').map(x => x.trim()).filter(Boolean)
+async function simpanProyek(fd, p) {
+  const judul = String(fd.get('judul') || '').trim()
+  if (!judul) throw new Error('Judul wajib diisi.')
+  const v = String(fd.get('video') || '').trim()
+  if (v && !(/^https?:\/\//i.test(v) && Narf.safeUrl(v))) throw new Error('Link video harus diawali https://')
+  const row = { judul, deskripsi: String(fd.get('deskripsi') || '').trim(), video_demo_url: v || null,
+                alat_bahan: barisKe(fd.get('alat')), panduan: barisKe(fd.get('panduan')), bebas: fd.get('bebas') === '1' }
+  if (p) {
+    const r = await Narf.query(sb.from('proyek').update(row).eq('id', p.id).select('id'))
+    if (!r.length) throw new Error('Perubahan tidak tersimpan. Periksa izin (RLS) tabel proyek.')
+  } else {
+    const r = await Narf.query(sb.from('proyek').insert({ id: uid(), course_id: ST.courseId, ...row }).select('id'))
+    if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel proyek.')
+  }
+  await muatUlang()
+}
+async function proyekHapus(p) {
+  if (!confirm('Hapus project "' + p.judul + '"? Jawaban kelompok untuk project ini bisa ikut terhapus.')) return
+  try {
+    const r = await Narf.query(sb.from('proyek').delete().eq('id', p.id).select('id'))
+    if (!r.length) throw new Error('Tidak terhapus. Periksa izin (RLS) tabel proyek.')
+    Narf.toast('Project dihapus.', 'ok'); await muatUlang()
+  } catch (e) { Narf.toast(e.message, 'error') }
+}
+
+/* ---------- kuis modul ---------- */
+async function muatKuisModul(modulId) {
+  const el = $('kuis-' + modulId)
+  if (!el) return
+  try {
+    const k = await Narf.rpc('narf_kuis_modul', { p_modul: modulId })
+    ST.kuis[modulId] = k.soal || []
+    el.innerHTML = ST.kuis[modulId].length ? ST.kuis[modulId].map((q, i) =>
+      '<div class="materi-baris" data-soal="' + esc(q.id) + '"><span class="tipe-pil">' + (q.tipe_soal === 'pg' ? 'PG' : 'ESAI') + '</span>' +
+      '<span class="materi-judul">' + esc(i + 1) + '. ' + esc(String(q.pertanyaan).slice(0, 110)) + (String(q.pertanyaan).length > 110 ? '...' : '') +
+      ' <span class="catatan">\u00b7 ' + esc(q.poin) + ' poin \u00b7 dijawab ' + esc(q.jml_jawaban) + ' siswa</span></span>' +
+      '<span class="aksi"><button type="button" class="btn-k ghost kecil" data-aksi="soal-ubah">Ubah</button>' +
+      '<button type="button" class="btn-k bahaya kecil" data-aksi="soal-hapus">Hapus</button></span></div>').join('')
+      : '<div class="nav-kosong">Belum ada soal. Kuis baru muncul di halaman siswa setelah ada soal.</div>'
+  } catch (e) { el.innerHTML = '<div class="nav-kosong">' + esc(e.message) + '</div>' }
+}
+const HURUF = ['A', 'B', 'C', 'D', 'E']
+function formSoal(q) {
+  const opsi = (q && q.opsi_jawaban) || []
+  let baris = ''
+  for (let i = 0; i < 5; i++) {
+    baris += '<div class="opsi-baris"><input type="radio" name="kunci" value="' + i + '"' + (q && q.tipe_soal === 'pg' && String(q.kunci) === String(i) ? ' checked' : '') +
+      ' aria-label="Jawaban benar ' + HURUF[i] + '"><input type="text" name="opsi' + i + '" maxlength="300" placeholder="Opsi ' + HURUF[i] + (i < 2 ? ' (wajib)' : ' (opsional)') + '" value="' + esc(opsi[i] || '') + '"></div>'
+  }
+  return '<label class="f-baris">Jenis soal<select name="tipe" id="f-jenis"><option value="pg">Pilihan ganda</option><option value="esai">Esai</option></select></label>' +
+    '<label class="f-baris">Pertanyaan<textarea name="pertanyaan" rows="3" required maxlength="2000">' + esc(q && q.pertanyaan || '') + '</textarea></label>' +
+    '<label class="f-baris">Potongan kode atau data (opsional)<textarea name="konteks" rows="3" class="kode-font">' + esc(q && q.konteks || '') + '</textarea>' +
+    '<span class="f-catatan">Ditampilkan sebagai blok kode di atas jawaban.</span></label>' +
+    '<div id="blok-pg"><div class="f-baris" style="margin-bottom:6px">Pilihan jawaban</div>' + baris +
+    '<div class="f-catatan" style="margin-bottom:14px">Pilih bulatan di sebelah jawaban yang benar. Isi minimal 2 opsi.</div></div>' +
+    '<label class="f-baris">Petunjuk untuk siswa (opsional)<input name="hint" maxlength="300" value="' + esc(q && q.hint || '') + '"></label>' +
+    '<label class="f-baris">Poin (XP kalau benar)<input type="number" name="poin" min="0" max="100" required value="' + esc(q ? q.poin : 10) + '"></label>' +
+    '<label class="f-baris">Urutan (kosongkan = paling akhir)<input type="number" name="urutan" min="1" value="' + esc(q ? q.urutan : '') + '"></label>'
+}
+function siapSoal(q) {
+  const sel = $('f-jenis')
+  const ganti = () => { $('blok-pg').hidden = sel.value !== 'pg' }
+  sel.value = q ? q.tipe_soal : 'pg'
+  sel.addEventListener('change', ganti); ganti()
+}
+async function simpanSoal(fd, modulId, q) {
+  const tipe = String(fd.get('tipe'))
+  const pertanyaan = String(fd.get('pertanyaan') || '').trim()
+  if (pertanyaan.length < 5) throw new Error('Pertanyaan minimal 5 karakter.')
+  let opsi = null, kunci = null
+  if (tipe === 'pg') {
+    const terisi = []
+    for (let i = 0; i < 5; i++) { const t = String(fd.get('opsi' + i) || '').trim(); if (t) terisi.push({ t, asli: String(i) }) }
+    if (terisi.length < 2) throw new Error('Isi minimal 2 opsi jawaban.')
+    const idx = terisi.findIndex(o => o.asli === String(fd.get('kunci')))
+    if (idx < 0) throw new Error('Pilih jawaban yang benar (bulatan di sebelah opsi), dan pastikan opsi itu terisi.')
+    opsi = terisi.map(o => o.t); kunci = String(idx)
+  }
+  const urutan = parseInt(fd.get('urutan'), 10)
+  await Narf.rpc('narf_simpan_soal', {
+    p_modul: modulId, p_soal: q ? q.id : null, p_tipe: tipe, p_pertanyaan: pertanyaan, p_opsi: opsi, p_kunci: kunci,
+    p_poin: parseInt(fd.get('poin'), 10), p_konteks: String(fd.get('konteks') || ''), p_hint: String(fd.get('hint') || ''),
+    p_urutan: Number.isFinite(urutan) ? urutan : null
+  })
+  await muatKuisModul(modulId)
+}
+function soalBaru(modulId) { dialogForm('Soal baru', formSoal(null), fd => simpanSoal(fd, modulId, null), () => siapSoal(null)) }
+function soalUbah(modulId, q) { dialogForm('Ubah soal', formSoal(q), fd => simpanSoal(fd, modulId, q), () => siapSoal(q)) }
+async function soalHapus(modulId, q) {
+  const n = Number(q.jml_jawaban) || 0
+  if (!confirm('Hapus soal ini?' + (n ? '\n' + n + ' jawaban siswa untuk soal ini ikut terhapus (XP yang sudah didapat tidak ditarik).' : ''))) return
+  try { await Narf.rpc('narf_hapus_soal', { p_soal: q.id }); Narf.toast('Soal dihapus.', 'ok'); await muatKuisModul(modulId) }
+  catch (e) { Narf.toast(e.message, 'error') }
 }
 
 /* ---------- dialog ---------- */
@@ -220,7 +394,7 @@ function courseBaru() {
     '<label class="f-baris">Deskripsi (opsional)<textarea name="deskripsi" rows="3"></textarea></label>',
     async fd => {
       const r = await Narf.query(sb.from('course').insert({
-        judul: String(fd.get('judul')).trim(), deskripsi: String(fd.get('deskripsi') || '').trim(), guru_id: ST.uid
+        id: uid(), judul: String(fd.get('judul')).trim(), deskripsi: String(fd.get('deskripsi') || '').trim(), guru_id: ST.uid
       }).select('id'))
       if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel course.')
       ST.courseId = r[0].id
@@ -258,7 +432,7 @@ async function courseHapus() {
 function modulBaru() {
   dialogForm('Modul baru', fTeks('Judul modul', 'judul'), async fd => {
     const r = await Narf.query(sb.from('modul').insert({
-      course_id: ST.courseId, judul: String(fd.get('judul')).trim(), urutan: maxUrutan(modulCourse(ST.courseId)) + 1
+      id: uid(), course_id: ST.courseId, judul: String(fd.get('judul')).trim(), urutan: maxUrutan(modulCourse(ST.courseId)) + 1
     }).select('id'))
     if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel modul.')
     await muatUlang()
@@ -344,7 +518,7 @@ async function simpanMateri(fd, modulId, x) {
     if (!r.length) throw new Error('Perubahan tidak tersimpan. Periksa izin (RLS) tabel materi.')
     if (x.url && x.url !== row.url) await hapusFile(x.url)
   } else {
-    row.modul_id = modulId
+    row.modul_id = modulId; row.id = uid()
     const r = await Narf.query(sb.from('materi').insert(row).select('id'))
     if (!r.length) throw new Error('Gagal menyimpan. Periksa izin (RLS) tabel materi.')
   }
@@ -377,10 +551,20 @@ $('daftar-modul').addEventListener('click', e => {
   const tombol = e.target.closest('[data-aksi]')
   if (!tombol) return
   const sec = tombol.closest('[data-modul]')
-  const m = ST.moduls.find(v => v.id === sec.dataset.modul)
+  const m = sec && ST.moduls.find(v => v.id === sec.dataset.modul)
   const baris = tombol.closest('[data-materi]')
   const x = baris && ST.materi.find(v => v.id === baris.dataset.materi)
+  const brsSoal = tombol.closest('[data-soal]')
+  const q = brsSoal && m && (ST.kuis[m.id] || []).find(v => v.id === brsSoal.dataset.soal)
+  const brsPro = tombol.closest('[data-proyek]')
+  const pr = brsPro && ST.proyek.find(v => v.id === brsPro.dataset.proyek)
   switch (tombol.dataset.aksi) {
+    case 'soal-baru': return soalBaru(m.id)
+    case 'soal-ubah': return soalUbah(m.id, q)
+    case 'soal-hapus': return soalHapus(m.id, q)
+    case 'proyek-baru': return dialogForm('Project baru', formProyek(null), fd => simpanProyek(fd, null))
+    case 'proyek-ubah': return dialogForm('Ubah project', formProyek(pr), fd => simpanProyek(fd, pr))
+    case 'proyek-hapus': return proyekHapus(pr)
     case 'materi-baru': return materiBaru(m.id)
     case 'modul-ubah': return modulUbah(m)
     case 'modul-hapus': return modulHapus(m)
@@ -400,7 +584,8 @@ async function init() {
     await muat()
     render()
   } catch (e) {
-    $('daftar-modul').innerHTML = '<div class="nav-kosong">' + esc(e.message) + '</div>'
+    const perluSql = /course_kelas|narf_|guru_id|does not exist|schema cache/i.test(e.message)
+    $('daftar-modul').innerHTML = '<div class="nav-kosong">' + (perluSql ? 'Pastikan SQL paket terbaru sudah dijalankan di Supabase. ' : '') + esc(e.message) + '</div>'
   }
 }
 init()

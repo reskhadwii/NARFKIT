@@ -116,7 +116,20 @@
   <div class="project-judul" id="project-judul"></div>
   <div class="project-deskripsi" id="project-deskripsi"></div>
 
-  <div class="info-kelompok" id="info-kelompok"></div>
+    <div class="info-kelompok" id="info-kelompok"></div>
+
+  <style>
+    .kel-panel { border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 20px; margin: 14px 0 20px; display: flex; flex-direction: column; gap: 12px; }
+    .kel-judul { font-size: 15px; font-weight: 700; color: var(--fg-solid); }
+    .kel-baris { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .kel-baris input { flex: 1 1 200px; min-width: 0; background: rgba(var(--card-rgb), .06); border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 10px; padding: 10px 12px; font: inherit; font-size: 14px; }
+    .kel-atau, .kel-catatan { font-size: 12px; color: rgba(var(--fg-rgb), .6); }
+    .kel-kode { font-family: ui-monospace, Consolas, monospace; font-size: 18px; font-weight: 700; letter-spacing: 3px; padding: 6px 14px; border: 1px dashed rgba(226,137,95,.7); border-radius: 10px; color: #e2895f; user-select: all; }
+    .kel-anggota { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px solid var(--border-color); font-size: 14px; color: var(--fg-solid); }
+    .kel-aksi { background: transparent; border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 8px; padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+    .kel-aksi.bahaya { color: #d9675c; border-color: #d9675c; }
+  </style>
+  <div id="panel-kelompok"></div>
 
   <div class="project-section" id="sec-video-demo">
     <h3>
@@ -704,6 +717,48 @@ async function bukaProyek(id) {
   } catch (e) { ik.textContent = e.message }
 }
 
+/* ---------- KELOMPOK (dibentuk siswa sendiri) ---------- */
+async function muatUlangSetelahKelompok() {
+  if (!ST.proyekAktif) return
+  const d = await Narf.rpc('proyek_saya', { p_proyek_id: ST.proyekAktif.id })
+  ST.proyekInfo = d
+  renderStatusProyek(d)
+}
+async function aksiKelompok(fn, pesan) {
+  try { await fn(); if (pesan) Narf.toast(pesan, 'ok'); await muatUlangSetelahKelompok() }
+  catch (e) { Narf.toast(e.message, 'error') }
+}
+async function renderPanelKelompok() {
+  const box = $('panel-kelompok')
+  if (!box) return
+  let k = null
+  try { k = await Narf.rpc('narf_kelompok_saya') }
+  catch (e) { box.innerHTML = '<div class="kel-panel">' + esc(e.message) + '</div>'; return }
+  if (!k) {
+    box.innerHTML = '<div class="kel-panel"><div class="kel-judul">Bentuk kelompokmu</div>' +
+      '<div class="kel-baris"><input id="kel-nama" maxlength="40" placeholder="Nama kelompok baru"><button class="btn-submit-tugas" id="kel-buat" type="button">Buat Kelompok</button></div>' +
+      '<div class="kel-atau">atau gabung ke kelompok temanmu</div>' +
+      '<div class="kel-baris"><input id="kel-kode" maxlength="12" placeholder="Kode undangan" style="text-transform:uppercase"><button class="btn-submit-tugas" id="kel-gabung" type="button">Gabung</button></div>' +
+      '<div class="kel-catatan">Satu kelompok maksimal 5 anggota. Pembuat kelompok menjadi perwakilan yang mengumpulkan project.</div></div>'
+    $('kel-buat').onclick = () => aksiKelompok(() => Narf.rpc('narf_buat_kelompok', { p_nama: $('kel-nama').value }), 'Kelompok dibuat. Bagikan kodenya ke temanmu.')
+    $('kel-gabung').onclick = () => aksiKelompok(() => Narf.rpc('narf_gabung_kelompok', { p_kode: $('kel-kode').value }), 'Berhasil bergabung ke kelompok.')
+    return
+  }
+  const anggota = (k.anggota || []).map(a =>
+    '<div class="kel-anggota"><span>' + esc(a.nama) + (a.perwakilan ? ' <b style="color:#e2895f">(perwakilan)</b>' : '') + '</span>' +
+    (k.saya_perwakilan && !a.perwakilan && !k.terkunci ? '<button class="kel-aksi" type="button" data-wakil="' + esc(a.id) + '">Jadikan perwakilan</button>' : '') + '</div>').join('')
+  box.innerHTML = '<div class="kel-panel"><div class="kel-judul">' + esc(k.nama) + ' · ' + esc((k.anggota || []).length) + '/' + esc(k.maks) + ' anggota</div>' +
+    (k.terkunci ? '<div class="kel-catatan">Project sudah dikumpulkan, kelompok terkunci.</div>'
+      : '<div class="kel-baris"><span class="kel-atau">Kode undangan:</span><span class="kel-kode">' + esc(k.kode || '-') + '</span><button class="kel-aksi" id="kel-salin" type="button">Salin</button></div>') +
+    anggota +
+    (k.terkunci ? '' : '<div><button class="kel-aksi bahaya" id="kel-keluar" type="button">Keluar dari kelompok</button></div>') + '</div>'
+  const salin = $('kel-salin')
+  if (salin) salin.onclick = async () => { try { await navigator.clipboard.writeText(k.kode); Narf.toast('Kode disalin.', 'ok') } catch (e) { Narf.toast('Salin manual ya: ' + k.kode, 'error') } }
+  const keluar = $('kel-keluar')
+  if (keluar) keluar.onclick = () => { if (confirm('Keluar dari kelompok ' + k.nama + '?')) aksiKelompok(() => Narf.rpc('narf_keluar_kelompok'), 'Kamu keluar dari kelompok.') }
+  box.querySelectorAll('[data-wakil]').forEach(b => { b.onclick = () => aksiKelompok(() => Narf.rpc('narf_alihkan_perwakilan', { p_siswa: b.dataset.wakil }), 'Perwakilan dialihkan.') })
+}
+
 const RANCANG = ['rc-judul', 'rc-deskripsi', 'rc-alat', 'rc-panduan']
 const barisKe = t => String(t || '').split('\n').map(s => s.trim()).filter(Boolean)
 function infoRancangan() {
@@ -720,11 +775,12 @@ function setFormProyek(bolehIsi, bolehKumpul) {
 }
 
 function renderStatusProyek(d) {
+  renderPanelKelompok()
   const ik = $('info-kelompok'), st = $('status-proyek')
   st.hidden = true; st.className = 'status-proyek'
   if (!d || !d.kelompok) {
     ik.className = 'info-kelompok peringatan'
-    ik.textContent = 'Kamu belum masuk kelompok. Hubungi gurumu untuk dimasukkan ke kelompok sebelum mengerjakan project.'
+    ik.textContent = 'Kamu belum masuk kelompok. Buat kelompok baru atau gabung pakai kode dari temanmu di bawah ini sebelum mengerjakan project.'
     setFormProyek(false, false)
     return
   }

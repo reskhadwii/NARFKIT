@@ -248,6 +248,20 @@
       </div>
     </div>
 
+    <div id="kartu-kelas">
+      <div class="section-label">KELAS SAYA</div>
+      <div class="posttest-card">
+        <div class="posttest-info">
+          <div class="posttest-judul" id="kelas-judul">Memuat...</div>
+          <div class="posttest-desk" id="kelas-desk"></div>
+        </div>
+        <button class="btn-lanjut" id="btn-gabung-kelas" type="button">Gabung Kelas Lain</button>
+      </div>
+      <div class="riwayat-bar" id="form-gabung-kelas" hidden style="margin-top:12px">
+        <input id="input-kode-kelas" maxlength="12" placeholder="Kode kelas dari gurumu" style="flex:1 1 200px;min-width:0;text-transform:uppercase;background:rgba(var(--card-rgb),0.06);border:1px solid var(--border-color);color:var(--fg-solid);border-radius:12px;padding:10px 14px;font:inherit;font-size:14px;font-weight:600">
+        <button class="btn-lanjut" id="btn-kirim-kode-kelas" type="button">Gabung</button>
+      </div>
+    </div>
     <div>
       <div class="section-label">LANJUTKAN BELAJAR</div>
       <div class="aktivitas-belajar">
@@ -930,6 +944,7 @@ async function tampilDashboard(d) {
   muatPosttest()
   muatNilai()
   muatFeedback()
+  muatKelas()
   $('display-nama').textContent = String(d.nama).split(/\s+/)[0]
   $('stat-xp').textContent = d.xp_total
   $('stat-streak').textContent = d.streak
@@ -981,6 +996,28 @@ async function tampilDashboard(d) {
   }
 }
 
+/* ---------- KELAS SAYA (gabung kelas pakai kode) ---------- */
+async function muatKelas() {
+  try {
+    const k = await Narf.rpc('narf_kelas_saya')
+    $('kelas-judul').textContent = k ? k.nama_kelas : 'Belum bergabung ke kelas'
+    $('kelas-desk').textContent = k
+      ? (k.guru && k.guru.length ? 'Guru: ' + k.guru.join(', ') : 'Gabung kelas lain dengan kode dari gurumu.')
+      : 'Masukkan kode kelas dari gurumu untuk mulai.'
+    $('btn-gabung-kelas').textContent = k ? 'Gabung Kelas Lain' : 'Gabung Kelas'
+    if (!k) $('form-gabung-kelas').hidden = false
+  } catch (e) { $('kartu-kelas').hidden = true }
+}
+$('btn-gabung-kelas').addEventListener('click', () => { $('form-gabung-kelas').hidden = !$('form-gabung-kelas').hidden })
+$('btn-kirim-kode-kelas').addEventListener('click', async () => {
+  const btn = $('btn-kirim-kode-kelas'); btn.disabled = true
+  try {
+    const k = await Narf.rpc('narf_gabung_kelas', { p_kode: $('input-kode-kelas').value })
+    Narf.toast('Berhasil bergabung ke ' + k.nama_kelas + '.', 'ok')
+    $('input-kode-kelas').value = ''; $('form-gabung-kelas').hidden = true
+    await tampilDashboard(await Narf.rpc('dashboard_siswa'))
+  } catch (e) { Narf.toast(e.message, 'error') } finally { btn.disabled = false }
+})
 $('btn-skip').addEventListener('click', skipSoal)
 $('btn-next-soal').addEventListener('click', nextSoal)
 $('btn-masuk-dashboard').addEventListener('click', masukDashboard)
