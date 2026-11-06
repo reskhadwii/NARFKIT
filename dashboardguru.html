@@ -7,6 +7,14 @@
   <script src="global.js"></script>
   <link rel="stylesheet" type="text/css" href="global.css">
   <link rel="stylesheet" type="text/css" href="styleguru.css">
+  <style>
+    /* medali Top 3 */
+    .rank-medal svg { width: 16px; height: 16px; }
+    .rank-1 { background: linear-gradient(160deg, #f4cf6a, #d49a1c); color: #fff; }
+    .rank-2 { background: linear-gradient(160deg, #cfd6de, #8d98a6); color: #fff; }
+    .rank-3 { background: linear-gradient(160deg, #dba074, #b06a3a); color: #fff; }
+    .top-catatan { font-size: 11.5px; font-weight: 600; line-height: 1.5; color: rgba(var(--fg-rgb),0.45); padding: 2px 4px 0; }
+  </style>
 </head>
 <body>
 
@@ -138,7 +146,16 @@ async function init() {
     }).join('')
 
     const tl = $('top-list')
-    if (!d.top3.length) kosong(tl, 'Belum ada data XP.')
+    // Top 3: XP terbanyak; seri -> yang lebih dulu mencapai XP itu (SQL 19). Cadangan: data lama dari guru_ringkasan.
+    let top = null
+    try { top = await Narf.rpc('peringkat_top3') } catch (e) { top = null }
+    const MEDALI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg>'
+    if (top && top.length) tl.innerHTML = top.map(s => '<div class="top-siswa-item"><div class="rank-medal rank-' + esc(s.peringkat) + '">' +
+      (s.peringkat === 1 ? MEDALI : esc(s.peringkat)) + '</div><div class="top-siswa-info"><span class="top-siswa-nama">' + esc(s.nama) + '</span><span class="top-siswa-kelas">' +
+      esc(s.kelas || '-') + ' · XP tercapai ' + esc(Narf.waktuRelatif(s.tercapai_at)) + '</span></div><div class="top-siswa-xp">' +
+      Number(s.xp).toLocaleString('id-ID') + ' XP</div></div>').join('') +
+      '<div class="top-catatan">Urutan: XP terbanyak. Kalau XP sama, yang lebih dulu mencapainya ada di atas.</div>'
+    else if (!d.top3.length) kosong(tl, 'Belum ada data XP.')
     else tl.innerHTML = d.top3.map((s, i) => '<div class="top-siswa-item"><div class="rank-medal rank-' + (i + 1) + '">' + (i + 1) +
       '</div><div class="top-siswa-info"><span class="top-siswa-nama">' + esc(s.nama) + '</span><span class="top-siswa-kelas">' + esc(s.kelas || '-') +
       '</span></div><div class="top-siswa-xp">' + Number(s.xp).toLocaleString('id-ID') + ' XP</div></div>').join('')

@@ -115,6 +115,7 @@
 
   <div class="project-judul" id="project-judul"></div>
   <div class="project-deskripsi" id="project-deskripsi"></div>
+  <div class="info-kelompok" id="banner-contoh" hidden>Ini <b>contoh proyek</b> yang sudah terisi lengkap, dari masalah, video, rakitan, Business Model Canvas, sampai SWOT. Pelajari alurnya, lalu kerjakan proyekmu sendiri di bagian <b>Proyek Akhir</b>.</div>
 
     <div class="info-kelompok" id="info-kelompok"></div>
 
@@ -210,7 +211,7 @@
     <a class="btn-buka-simulasi" href="simulation.html" target="_blank" rel="noopener">Buka Simulasi Lab</a>
   </div>
 
-  <div class="project-section">
+  <div class="project-section" id="sec-kumpul">
     <h3>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
       Kumpulkan Project (Perwakilan Kelompok)
@@ -351,7 +352,7 @@ async function muatSemua() {
     Narf.query(sb.from('materi').select('id,modul_id,judul,tipe,url,konten,urutan').order('urutan')),
     Narf.query(sb.from('progress_modul').select('modul_id,status,persen_selesai').eq('siswa_id', ST.uid)),
     Narf.query(sb.from('progress_materi').select('materi_id').eq('siswa_id', ST.uid)),
-    Narf.query(sb.from('proyek').select('id,judul,deskripsi,video_demo_url,alat_bahan,panduan,bebas').order('judul'))
+    ambilProyek()
   ])
   ST.courses = courses; ST.moduls = moduls; ST.materi = materi; ST.proyek = proyek
   ST.progModul = Object.fromEntries(prog.map(p => [p.modul_id, p]))
@@ -681,6 +682,18 @@ async function selesaikanModul() {
 }
 
 /* ---------- PROJECT AKHIR ---------- */
+// contoh_bmc / contoh_swot (SQL 21) boleh belum ada: kalau kolomnya belum dibuat, pakai pilihan kolom lama
+async function ambilProyek() {
+  const dasar = 'id,judul,deskripsi,video_demo_url,alat_bahan,panduan,bebas'
+  try { return await Narf.query(sb.from('proyek').select(dasar + ',contoh_bmc,contoh_swot').order('judul')) }
+  catch (e) { return await Narf.query(sb.from('proyek').select(dasar).order('judul')) }
+}
+// Mode contoh: BMC & SWOT tampil terisi (hanya baca); kelompok, simpan, dan pengumpulan disembunyikan
+function modeContoh(on) {
+  ;['panel-kelompok', 'info-kelompok', 'btn-simpan-project', 'save-status', 'sec-kumpul'].forEach(i => { const e = $(i); if (e) e.hidden = on })
+  $('banner-contoh').hidden = !on
+  if (!on) [...BMC, ...SWOT].forEach(i => { $(i).style.height = '' })
+}
 const BMC = ['bmc-partners', 'bmc-activities', 'bmc-value', 'bmc-relationship', 'bmc-segments', 'bmc-resources', 'bmc-channels', 'bmc-cost', 'bmc-revenue']
 const SWOT = ['swot-s', 'swot-w', 'swot-o', 'swot-t']
 
@@ -709,6 +722,14 @@ async function bukaProyek(id) {
   $('project-guide-list').innerHTML = (p.panduan || []).map(t => '<li>' + esc(t) + '</li>').join('') || '<li>Belum ada panduan.</li>'
 
   ;[...BMC, ...SWOT].forEach(i => { $(i).value = '' })
+  const contoh = !bebas && p.contoh_bmc && Object.keys(p.contoh_bmc).length > 0
+  modeContoh(!!contoh)
+  if (contoh) {
+    ;[...BMC].forEach(i => { $(i).value = p.contoh_bmc[i] || '' })
+    ;[...SWOT].forEach(i => { $(i).value = (p.contoh_swot || {})[i] || '' })
+    ;[...BMC, ...SWOT].forEach(i => { const t = $(i); t.disabled = true; t.style.height = 'auto'; t.style.height = (t.scrollHeight + 4) + 'px' })
+    return
+  }
   const ik = $('info-kelompok'); ik.textContent = 'Memuat data kelompok...'
   try {
     const d = await Narf.rpc('proyek_saya', { p_proyek_id: p.id })

@@ -96,6 +96,69 @@
     }
   </style>
   <link rel="stylesheet" type="text/css" href="theme.css?v=20261023">
+  <style id="gami-css">
+    /* ===== Level, badge, juara, riwayat XP ===== */
+    .gami-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .gami-panel { background: rgba(var(--card-rgb),0.04); border: 1.5px solid var(--border-color); border-radius: 18px; padding: 20px 22px; min-width: 0; }
+    .gami-judul { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(var(--fg-rgb),0.5); margin-bottom: 14px; }
+    .level-baris { display: flex; align-items: center; gap: 18px; }
+    .level-emblem { flex: none; width: 76px; height: 84px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; font-weight: 800;
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: linear-gradient(160deg, #f0a37a, #d9663a); }
+    .level-emblem.l1 { background: linear-gradient(160deg, #9aa3ad, #6d7681); }
+    .level-emblem.l2 { background: linear-gradient(160deg, #d99a6a, #b36a3c); }
+    .level-emblem.l3 { background: linear-gradient(160deg, #b9c2cc, #8691a0); }
+    .level-emblem.l4 { background: linear-gradient(160deg, #f0c764, #d69a1f); }
+    .level-emblem.l5 { background: linear-gradient(160deg, #f0a37a, #d9663a); }
+    .level-emblem.l6 { background: linear-gradient(160deg, #c79bff, #7a4be0); }
+    .level-info { flex: 1; min-width: 0; }
+    .level-nama { font-size: 22px; font-weight: 800; color: rgba(var(--highlight-rgb),0.95); line-height: 1.2; }
+    .level-sub { font-size: 13px; font-weight: 600; color: rgba(var(--fg-rgb),0.6); margin: 4px 0 10px; }
+    .level-bar { height: 9px; border-radius: 30px; background: rgba(var(--card-rgb),0.12); overflow: hidden; }
+    .level-bar > div { height: 100%; width: 0; border-radius: 30px; background: #e2895f; transition: width 1s ease; }
+    .level-angka { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: rgba(var(--fg-rgb),0.5); margin-top: 6px; }
+    .level-ringkas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .level-ringkas span { font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 20px; background: rgba(226,137,95,.12); border: 1px solid rgba(226,137,95,.3); color: #e2895f; }
+    .juara-list { display: flex; flex-direction: column; gap: 8px; }
+    .juara-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: rgba(var(--card-rgb),0.05); border: 1px solid transparent; }
+    .juara-item.saya { border-color: #e2895f; background: rgba(226,137,95,.1); }
+    .juara-medal { flex: none; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 14px; }
+    .juara-medal svg { width: 18px; height: 18px; }
+    .juara-medal.m1 { background: linear-gradient(160deg, #f4cf6a, #d49a1c); }
+    .juara-medal.m2 { background: linear-gradient(160deg, #cfd6de, #8d98a6); }
+    .juara-medal.m3 { background: linear-gradient(160deg, #dba074, #b06a3a); }
+    .juara-nama { flex: 1; min-width: 0; font-size: 14px; font-weight: 700; color: var(--fg-solid); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .juara-nama small { display: block; font-size: 11px; font-weight: 600; color: rgba(var(--fg-rgb),0.45); }
+    .juara-xp { flex: none; font-size: 13px; font-weight: 800; color: rgba(var(--highlight-rgb),0.9); }
+    .juara-catatan { font-size: 12px; font-weight: 600; line-height: 1.5; color: rgba(var(--fg-rgb),0.5); margin-top: 10px; }
+    .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+    .badge-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 16px 10px 14px; border-radius: 16px;
+      background: rgba(var(--card-rgb),0.04); border: 1.5px solid var(--border-color); }
+    .badge-item.diraih { border-color: rgba(226,137,95,.55); background: rgba(226,137,95,.07); }
+    .badge-ikon { position: relative; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff;
+      background: linear-gradient(160deg, #f0a37a, #d9663a); box-shadow: 0 4px 14px rgba(217,102,58,.35); }
+    .badge-ikon svg { width: 28px; height: 28px; }
+    .badge-item.terkunci .badge-ikon { background: rgba(var(--card-rgb),0.12); color: rgba(var(--fg-rgb),0.35); box-shadow: none; }
+    .badge-item.terkunci .badge-nama { color: rgba(var(--fg-rgb),0.5); }
+    .badge-nama { font-size: 13px; font-weight: 700; color: var(--fg-solid); line-height: 1.25; }
+    .badge-desk { font-size: 11px; font-weight: 600; line-height: 1.4; color: rgba(var(--fg-rgb),0.5); }
+    .badge-prog { width: 100%; height: 5px; border-radius: 30px; background: rgba(var(--card-rgb),0.12); overflow: hidden; margin-top: 2px; }
+    .badge-prog > div { height: 100%; background: #e2895f; border-radius: 30px; }
+    .badge-tgl { font-size: 10.5px; font-weight: 700; color: #e2895f; }
+    .xp-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .xp-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 12px; background: rgba(var(--card-rgb),0.05); }
+    .xp-ikon { flex: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(160deg, #f0a37a, #d9663a); }
+    .xp-ikon svg { width: 18px; height: 18px; }
+    .xp-ikon.t-kuis { background: linear-gradient(160deg, #e8c25a, #c9951a); }
+    .xp-ikon.t-modul { background: linear-gradient(160deg, #6dbb93, #3f8f68); }
+    .xp-ikon.t-esai { background: linear-gradient(160deg, #c79bff, #7a4be0); }
+    .xp-ikon.t-pretest { background: linear-gradient(160deg, #7fb2e8, #3f78c0); }
+    .xp-info { flex: 1; min-width: 0; }
+    .xp-nama { font-size: 14px; font-weight: 700; color: var(--fg-solid); }
+    .xp-meta { font-size: 11.5px; font-weight: 600; color: rgba(var(--fg-rgb),0.45); }
+    .xp-jumlah { flex: none; font-size: 15px; font-weight: 800; color: #6dbb93; }
+    .xp-jumlah.minus { color: #d9675c; }
+    @media (max-width: 720px) { .gami-grid { grid-template-columns: 1fr; } .level-emblem { width: 64px; height: 72px; font-size: 24px; } .badge-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
 </head>
 <body>
 
@@ -248,6 +311,31 @@
       </div>
     </div>
 
+    <div id="kartu-gami" hidden>
+      <div class="section-label">LEVEL &amp; BADGE</div>
+      <div class="gami-grid">
+        <div class="gami-panel">
+          <div class="gami-judul">Levelmu</div>
+          <div class="level-baris">
+            <div class="level-emblem l1" id="level-emblem">1</div>
+            <div class="level-info">
+              <div class="level-nama" id="level-nama">-</div>
+              <div class="level-sub" id="level-sub"></div>
+              <div class="level-bar"><div id="level-fill"></div></div>
+              <div class="level-angka"><span id="level-xp-kiri"></span><span id="level-xp-kanan"></span></div>
+            </div>
+          </div>
+          <div class="level-ringkas" id="level-ringkas"></div>
+        </div>
+        <div class="gami-panel">
+          <div class="gami-judul" id="juara-judul">Juara kelas</div>
+          <div class="juara-list" id="juara-list"></div>
+          <div class="juara-catatan" id="juara-catatan"></div>
+        </div>
+      </div>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+
     <div id="kartu-kelas">
       <div class="section-label">KELAS SAYA</div>
       <div class="posttest-card">
@@ -328,6 +416,14 @@
     <div id="kartu-feedback" hidden>
       <div class="section-label">FEEDBACK DARI GURU</div>
       <div class="daftar-feedback" id="daftar-feedback"></div>
+    </div>
+
+    <div id="kartu-riwayat-xp">
+      <div class="section-label">RIWAYAT XP</div>
+      <div class="riwayat-bar">
+        <button class="btn-lanjut" id="btn-riwayat-xp" type="button">Lihat Riwayat XP</button>
+      </div>
+      <div class="xp-list" id="xp-list"></div>
     </div>
 
     <div>
@@ -939,12 +1035,111 @@ async function pasangPreview(thumb, modulId) {
   } catch (e) { }
 }
 
+
+/* ===== Level, badge, juara, riwayat XP (SQL 19) ===== */
+const IKON_G = {
+  flag: '<path d="M4 22V4"/><path d="M4 4h13l-2 4 2 4H4"/>',
+  step: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+  book: '<path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M9 8h6"/>',
+  trophy: '<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4"/>',
+  bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  pen: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  flame: '<path d="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/>',
+  chip: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+  star: '<path d="M12 2l3 7 7 .6-5.3 4.7 1.7 7.2L12 17.8 5.6 21.5l1.7-7.2L2 9.6 9 9z"/>',
+  crown: '<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
+}
+const svgG = k => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (IKON_G[k] || IKON_G.star) + '</svg>'
+const SUMBER_XP = {
+  pretest: ['flag', 'Asesmen awal'], kuis: ['bolt', 'Kuis'], modul: ['book', 'Modul selesai'], esai: ['pen', 'Esai dinilai guru']
+}
+function tglPendek(iso) {
+  try { return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) } catch (e) { return '' }
+}
+
+async function muatGamifikasi() {
+  try {
+    const [g, p] = await Promise.all([Narf.rpc('gamifikasi_saya'), Narf.rpc('papan_juara')])
+    if (!g || !g.ada) return
+    // level
+    const lv = g.level || {}
+    $('level-emblem').textContent = lv.no
+    $('level-emblem').className = 'level-emblem l' + lv.no
+    $('level-nama').textContent = 'Level ' + lv.no + ' · ' + lv.nama
+    const xp = Number(g.xp) || 0
+    if (lv.xp_berikut) {
+      const span = lv.xp_berikut - lv.xp_awal
+      $('level-sub').textContent = (lv.xp_berikut - xp) + ' XP lagi menuju ' + lv.nama_berikut
+      $('level-xp-kiri').textContent = xp + ' XP'
+      $('level-xp-kanan').textContent = lv.xp_berikut + ' XP'
+      setTimeout(() => { $('level-fill').style.width = Math.max(4, Math.min(100, (xp - lv.xp_awal) / span * 100)) + '%' }, 250)
+    } else {
+      $('level-sub').textContent = 'Level tertinggi. Keren sekali!'
+      $('level-xp-kiri').textContent = xp + ' XP'; $('level-xp-kanan').textContent = ''
+      setTimeout(() => { $('level-fill').style.width = '100%' }, 250)
+    }
+    const dapat = (g.badge || []).filter(b => b.diraih).length
+    $('level-ringkas').innerHTML = '<span>' + dapat + ' dari ' + (g.badge || []).length + ' badge diraih</span>' +
+      (g.peringkat_kelas ? '<span>Peringkat kelas #' + esc(g.peringkat_kelas) + '</span>' : '')
+    // juara kelas
+    const jl = $('juara-list')
+    if (p && p.ada && p.top && p.top.length) {
+      $('juara-judul').textContent = 'Juara kelas · ' + p.kelas
+      jl.innerHTML = p.top.map(t => '<div class="juara-item' + (t.saya ? ' saya' : '') + '"><div class="juara-medal m' + t.peringkat + '">' +
+        (t.peringkat === 1 ? svgG('crown') : t.peringkat) + '</div><div class="juara-nama">' + esc(t.nama) + (t.saya ? ' (kamu)' : '') +
+        '<small>XP tercapai ' + esc(Narf.waktuRelatif(t.tercapai_at)) + '</small></div><div class="juara-xp">' + Number(t.xp).toLocaleString('id-ID') + ' XP</div></div>').join('')
+      const saya = p.saya
+      $('juara-catatan').textContent = (saya ? 'Peringkatmu: #' + saya.peringkat + ' dari ' + p.jumlah_berxp + ' siswa. ' : 'Kumpulkan XP untuk masuk peringkat. ') +
+        'Kalau XP sama, yang lebih dulu mencapainya ada di atas.'
+    } else {
+      jl.innerHTML = '<div class="rw-kosong">Belum ada peringkat. Jadilah yang pertama mengumpulkan XP!</div>'
+      $('juara-catatan').textContent = ''
+    }
+    // badge
+    $('badge-grid').innerHTML = (g.badge || []).map(b => {
+      const pct = Math.round(Math.min(100, (b.capaian / b.target) * 100))
+      return '<div class="badge-item ' + (b.diraih ? 'diraih' : 'terkunci') + '" title="' + esc(b.deskripsi) + '"><div class="badge-ikon">' +
+        svgG(b.diraih ? b.ikon : 'lock') + '</div><div class="badge-nama">' + esc(b.nama) + '</div><div class="badge-desk">' + esc(b.deskripsi) + '</div>' +
+        (b.diraih ? '<div class="badge-tgl">Diraih ' + esc(tglPendek(b.diraih_at)) + '</div>'
+                  : '<div class="badge-prog"><div style="width:' + pct + '%"></div></div><div class="badge-desk">' + esc(b.capaian) + ' / ' + esc(b.target) + '</div>') + '</div>'
+    }).join('')
+    $('kartu-gami').hidden = false
+    if (g.baru && g.baru.length) {
+      const nama = (g.badge || []).filter(b => g.baru.indexOf(b.kode) >= 0).map(b => b.nama)
+      if (nama.length) Narf.toast('Badge baru: ' + nama.join(', ') + '!', 'ok')
+    }
+  } catch (e) { /* SQL 19 belum dijalankan: bagian ini disembunyikan */ }
+}
+
+let xpTampil = false
+async function muatRiwayatXp() {
+  const box = $('xp-list'), btn = $('btn-riwayat-xp')
+  if (xpTampil) { box.innerHTML = ''; xpTampil = false; btn.textContent = 'Lihat Riwayat XP'; return }
+  btn.disabled = true
+  try {
+    const data = await Narf.rpc('riwayat_xp', { p_limit: 60 })
+    box.innerHTML = (data && data.length) ? data.map(r => {
+      const sm = SUMBER_XP[r.sumber] || ['star', 'Perolehan XP']
+      const minus = r.xp < 0
+      return '<div class="xp-item"><div class="xp-ikon t-' + esc(r.sumber || 'lain') + '">' + svgG(sm[0]) + '</div><div class="xp-info"><div class="xp-nama">' + esc(sm[1]) +
+        '</div><div class="xp-meta">' + (r.modul ? esc(r.modul) + ' · ' : '') + esc(Narf.waktuRelatif(r.waktu)) + '</div></div><div class="xp-jumlah' + (minus ? ' minus' : '') + '">' +
+        (minus ? '' : '+') + esc(r.xp) + ' XP</div></div>'
+    }).join('') : '<div class="rw-kosong">Belum ada perolehan XP.</div>'
+    xpTampil = true; btn.textContent = 'Sembunyikan Riwayat XP'
+  } catch (e) { Narf.toast(e.message, 'error') }
+  btn.disabled = false
+}
+$('btn-riwayat-xp').addEventListener('click', muatRiwayatXp)
+
 async function tampilDashboard(d) {
   tampilLayar('screen-dashboard')
   muatPosttest()
   muatNilai()
   muatFeedback()
   muatKelas()
+  muatGamifikasi()
   $('display-nama').textContent = String(d.nama).split(/\s+/)[0]
   $('stat-xp').textContent = d.xp_total
   $('stat-streak').textContent = d.streak
