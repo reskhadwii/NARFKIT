@@ -9,9 +9,17 @@
   <link rel="stylesheet" type="text/css" href="styleguru.css?v=20261023">
   <link rel="stylesheet" type="text/css" href="theme.css?v=20261023">
   <style>
-    .kelola-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-    .kelola-bar select { flex: 1 1 260px; min-width: 0; }
-    .btn-k { display: inline-block; background: #e2895f; color: #fff; border: 1px solid #e2895f; border-radius: 10px; padding: 10px 18px; font: 600 14px/1.2 inherit; font-family: inherit; cursor: pointer; text-decoration: none; transition: .2s; }
+    .kelola-bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+    .kelola-bar .f-course { flex: 0 1 340px; min-width: 220px; margin: 0; }
+    .kelola-bar select, .kelola-bar .btn-k { height: 42px; box-sizing: border-box; }
+    .kelola-bar select { width: 100%; cursor: pointer; text-overflow: ellipsis; appearance: none; -webkit-appearance: none; padding: 0 38px 0 14px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
+    .kelola-bar select option { background: var(--bg-primary); color: var(--fg-solid); }
+    .kelola-bar .btn-k { display: inline-flex; align-items: center; }
+    .kelola-bar .btn-k[hidden] { display: none; }
+    @media (max-width: 600px) { .kelola-bar .f-course { flex: 1 1 100%; } }
+    .btn-k { display: inline-block; background: #e2895f; color: #fff; border: 1px solid #e2895f; border-radius: 10px; padding: 10px 18px; font-weight: 600; font-size: 14px; line-height: 1.2; font-family: inherit; cursor: pointer; text-decoration: none; transition: .2s; }
     .btn-k:hover:not(:disabled) { background: #cc764e; border-color: #cc764e; }
     .btn-k:disabled { opacity: .5; cursor: not-allowed; }
     .btn-k.ghost { background: transparent; color: #e2895f; }
@@ -28,7 +36,7 @@
     #dlg::backdrop { background: rgba(0,0,0,.55); }
     #dlg h3 { margin: 0 0 16px; font-size: 18px; }
     .f-baris { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; font-size: 13px; font-weight: 600; color: rgba(var(--fg-rgb), .75); }
-    .f-baris input, .f-baris select, .f-baris textarea { background: rgba(var(--card-rgb), .06); border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 10px; padding: 10px 12px; font: 400 14px/1.4 inherit; font-family: inherit; }
+    .f-baris input, .f-baris select, .f-baris textarea { background: rgba(var(--card-rgb), .06); border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 10px; padding: 10px 12px; font-weight: 400; font-size: 14px; line-height: 1.4; font-family: inherit; }
     .f-baris input:focus, .f-baris select:focus, .f-baris textarea:focus { outline: none; border-color: #e2895f; }
     .f-catatan { font-size: 12px; font-weight: 400; color: rgba(var(--fg-rgb), .55); }
     #dlg-err { color: #d9675c; font-size: 13px; min-height: 18px; margin-bottom: 10px; }
@@ -74,7 +82,7 @@
   </div>
 
   <div class="kelola-bar">
-    <label class="f-baris" style="flex:1 1 260px;margin:0">Course
+    <label class="f-baris f-course">Course
       <select id="pilih-course"></select>
     </label>
     <button class="btn-k" id="btn-modul-baru" type="button">+ Modul</button>

@@ -60,12 +60,22 @@
 
         <hr class="pembatas">
 
-                <!-- Konten belajar -->
+        <!-- Konten belajar -->
         <div class="kelas">
           <div class="section-label">KONTEN BELAJAR</div>
-          <a class="ringkasan-card" href="kelola.html">
-            <div class="ringkasan-label">Kelola Modul, Kuis, dan Project</div>
-            <div class="ringkasan-label" style="opacity:.7">Lihat modul yang ada, buat course sendiri, tentukan kelas yang boleh melihatnya.</div>
+          <a class="konten-card" href="kelola.html">
+            <div class="konten-ikon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H19"/><path d="M9 8h6M9 12h6"/></svg>
+            </div>
+            <div class="konten-isi">
+              <div class="konten-judul">Kelola Modul, Kuis, dan Project</div>
+              <div class="konten-desk">Buat course sendiri, unggah materi, susun kuis dan project, lalu pilih kelas mana yang boleh melihatnya.</div>
+              <div class="konten-chip-baris">
+                <span class="konten-chip">Video</span><span class="konten-chip">PDF</span><span class="konten-chip">Bacaan</span><span class="konten-chip">Kuis</span><span class="konten-chip">Project</span>
+              </div>
+              <div class="konten-stat" id="konten-stat" hidden></div>
+            </div>
+            <span class="konten-tombol">Buka Kelola <span aria-hidden="true">&rarr;</span></span>
           </a>
         </div>
 
@@ -87,13 +97,13 @@
           .kode-meta { font-size: 12px; color: rgba(var(--fg-rgb), .6); margin-top: 2px; }
           .kode-aksi { display: flex; align-items: center; gap: 10px; }
           .kode-teks { font-family: ui-monospace, Consolas, monospace; font-size: 18px; font-weight: 700; letter-spacing: 3px; color: #e2895f; user-select: all; }
-          .btn-salin, .btn-kelas-baru, .btn-keluarkan { background: transparent; border: 1px solid #e2895f; color: #e2895f; border-radius: 10px; padding: 8px 16px; font: 600 13px inherit; font-family: inherit; cursor: pointer; }
+          .btn-salin, .btn-kelas-baru, .btn-keluarkan { background: transparent; border: 1px solid #e2895f; color: #e2895f; border-radius: 10px; padding: 8px 16px; font-weight: 600; font-size: 13px; font-family: inherit; cursor: pointer; }
           .btn-salin:hover, .btn-kelas-baru:hover { background: rgba(226,137,95,.12); }
           .btn-keluarkan { padding: 0 7px; margin-left: 6px; line-height: 20px; font-size: 14px; border-color: #d9675c; color: #d9675c; }
           #dlg-kelas { background: var(--bg-primary); color: var(--fg-solid); border: 1px solid var(--border-color); border-radius: 18px; padding: 24px; width: min(440px, 92vw); }
           #dlg-kelas::backdrop { background: rgba(0,0,0,.55); }
           #dlg-kelas label { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; font-size: 13px; font-weight: 600; }
-          #dlg-kelas input { background: rgba(var(--card-rgb), .06); border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 10px; padding: 10px 12px; font: 400 14px inherit; font-family: inherit; }
+          #dlg-kelas input { background: rgba(var(--card-rgb), .06); border: 1px solid var(--border-color); color: var(--fg-solid); border-radius: 10px; padding: 10px 12px; font-weight: 400; font-size: 14px; font-family: inherit; }
           #dlg-kelas-err { color: #d9675c; font-size: 13px; min-height: 18px; margin-bottom: 10px; }
         </style>
         <dialog id="dlg-kelas">
@@ -229,6 +239,7 @@ async function init() {
       return
     }
     muatKodeKelas()
+    muatStatKonten()
     const d = await Narf.rpc('guru_ringkasan')
     $('c-total').textContent = d.total_siswa
     $('c-aktif').textContent = d.aktif_minggu
@@ -241,6 +252,20 @@ async function init() {
     Narf.toast(e.message, 'error')
     ;($('kelas-grid') || $('siswa-tbody')).innerHTML = '<div class="tabel-kosong">' + esc(e.message) + '</div>'
   }
+}
+/* ---------- ringkasan konten belajar (diam bila gagal) ---------- */
+async function muatStatKonten() {
+  try {
+    const [c, m] = await Promise.all([
+      Narf.query(sb.from('course').select('id')),
+      Narf.query(sb.from('modul').select('id'))
+    ])
+    const el = $('konten-stat')
+    const nc = Array.isArray(c) ? c.length : null, nm = Array.isArray(m) ? m.length : null
+    if (nc == null || nm == null) return
+    el.textContent = nc + ' course \u00b7 ' + nm + ' modul'
+    el.hidden = false
+  } catch (e) { /* abaikan */ }
 }
 /* ---------- kelas saya + kode gabung ---------- */
 async function muatKodeKelas() {

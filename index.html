@@ -677,7 +677,7 @@
     </header>
 
     <main class="lp-body">
-      <span class="lp-chip">Platform belajar IoT untuk SMK Mekatronika</span>
+      <span class="lp-chip">Platform belajar IoT berbasis Teknopreneurship untuk SMK Rumpun Elektronika dan Teknologi</span>
       <h1 class="lp-judul">Mulai eksplorasi dunia <span class="iot">IoT</span></h1>
       <p class="lp-sub">Belajar mikrokontroler dan IoT dengan cara yang menyenangkan untuk menjadi technopreneur sejati.</p>
       <div class="lp-cta">
@@ -737,14 +737,32 @@
           <select class="input-field" id="f-kelas"><option value="">Memuat kelas...</option></select>
         </div>
         <div class="frame-16" id="grup-kode" hidden>
-          <label class="regist-email" for="f-kode">Kode Verifikasi Guru</label>
-          <input class="input-field" type="text" id="f-kode" placeholder="Kode dari admin NARFKIT" autocomplete="off">
-          <div class="info-kecil" style="text-align:left">Belum punya kode? Hubungi admin NARFKIT.</div>
+          <label class="regist-email" for="f-kode">Kode Verifikasi Guru <span style="opacity:.6;font-weight:600">(opsional)</span></label>
+          <input class="input-field" type="text" id="f-kode" placeholder="Isi kalau sudah punya kode" autocomplete="off">
+          <div class="info-kecil" style="text-align:left">Belum punya kode? Kosongkan saja dan klik SIMPAN. Admin NARFKIT akan mengirim kode untuk mengonfirmasi bahwa kamu guru.</div>
         </div>
         <div class="daftar-feedback" id="profil-feedback" role="alert"></div>
         <button class="tombol-solid" id="btn-simpan" type="button">SIMPAN</button>
       </div>
       <div class="sudah-punya-akun"><div class="link-masuk" id="btn-keluar">Keluar / ganti akun</div></div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: GURU MENUNGGU KODE VERIFIKASI -->
+  <div class="page" id="page-menunggu">
+    <div class="page-tengah">
+      <div class="regist-heading"><div class="mulai-petualangan-belajarmu">Satu Langkah Lagi, Bapak/Ibu Guru!</div></div>
+      <div class="info-kecil" id="menunggu-sapaan"></div>
+      <div class="container-regist">
+        <div class="info-kecil" style="text-align:left">Pendaftaranmu sudah kami terima. Admin NARFKIT akan mengirimkan <b>kode verifikasi</b> untuk mengonfirmasi bahwa kamu guru. Masukkan kodenya di bawah ini. Kamu boleh menutup halaman ini dan kembali lagi nanti dengan akun Google yang sama.</div>
+        <div class="frame-16">
+          <label class="regist-email" for="f-kode-verif">Kode Verifikasi Guru</label>
+          <input class="input-field" type="text" id="f-kode-verif" placeholder="Contoh: GR-A1B2C3" autocomplete="off" maxlength="40" style="text-transform:uppercase">
+        </div>
+        <div class="daftar-feedback" id="verif-feedback" role="alert"></div>
+        <button class="tombol-solid" id="btn-verif" type="button">VERIFIKASI</button>
+      </div>
+      <div class="sudah-punya-akun"><div class="link-masuk" id="btn-keluar-2">Keluar / ganti akun</div></div>
     </div>
   </div>
 
@@ -830,12 +848,19 @@
         if (!$('f-kelas').value) return fb('profil-feedback', 'Pilih kelasmu.');
       } else {
         if (nomor.length < 5) return fb('profil-feedback', 'NIP/NUPTK wajib diisi.');
-        if (!$('f-kode').value.trim()) return fb('profil-feedback', 'Kode verifikasi guru wajib diisi.');
       }
       const eb = $('f-email-belajar').value.trim().toLowerCase();
       if (eb && !/^[a-z0-9._%+-]+@belajar\.id$/.test(eb)) return fb('profil-feedback', 'Email belajar.id harus berakhiran @belajar.id.');
       const btn = $('btn-simpan'); btn.disabled = true;
       try {
+        if (peran === 'guru' && !$('f-kode').value.trim()) {
+          // guru daftar dulu tanpa kode; kode dikirim admin, dimasukkan di layar berikutnya
+          await Narf.rpc('daftar_guru_menunggu', { p_nama: nama, p_nomor: nomor, p_email_belajar: eb || null });
+          $('menunggu-sapaan').textContent = nama;
+          showPage('page-menunggu');
+          btn.disabled = false;
+          return;
+        }
         await Narf.rpc('lengkapi_profil', {
           p_email_belajar: eb || null,
           p_peran: peran, p_nama: nama, p_nomor: nomor,
@@ -850,6 +875,24 @@
       }
     });
     $('btn-keluar').addEventListener('click', () => Narf.signOut());
+    $('btn-keluar-2').addEventListener('click', () => Narf.signOut());
+
+    $('btn-verif').addEventListener('click', async () => {
+      const kode = $('f-kode-verif').value.trim();
+      if (!kode) return fb('verif-feedback', 'Masukkan kode verifikasi dari admin.');
+      const btn = $('btn-verif'); btn.disabled = true; fb('verif-feedback', '');
+      try {
+        const r = await Narf.rpc('verifikasi_guru', { p_kode: kode });
+        if (r && r.ok) {
+          fb('verif-feedback', 'Terverifikasi! Mengalihkan...', true);
+          setTimeout(() => { location.href = Narf.HOME.guru; }, 700);
+          return;
+        }
+        fb('verif-feedback', ((r && r.pesan) || 'Kode tidak valid.') + (r && r.sisa != null ? ' Sisa percobaan: ' + r.sisa + '.' : ''));
+      } catch (e) { fb('verif-feedback', e.message); }
+      btn.disabled = false;
+    });
+    $('f-kode-verif').addEventListener('keydown', e => { if (e.key === 'Enter') $('btn-verif').click(); });
 
     /* ----- start ----- */
     (async function init() {
@@ -866,6 +909,15 @@
       catch (e) { showPage('page-login'); fb('login-feedback', e.message); return; }
       if (info && info.ada_profil) { location.replace(Narf.HOME[info.role] || 'dashboardsiswa.html'); return; }
       $('profil-email').textContent = 'Masuk sebagai ' + email;
+      try {
+        const st = await Narf.rpc('status_guru_menunggu');
+        if (st && st.menunggu) {
+          $('menunggu-sapaan').textContent = st.nama || email;
+          if (st.terkunci) fb('verif-feedback', 'Terlalu banyak percobaan. Hubungi admin NARFKIT untuk membuka kembali.');
+          showPage('page-menunggu');
+          return;
+        }
+      } catch (e) { /* SQL 18 belum dijalankan: lanjut ke formulir biasa */ }
       showPage('page-profil');
       muatKelas();
     })();
