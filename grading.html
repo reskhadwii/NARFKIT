@@ -17,6 +17,7 @@
     .pesan-simpan { font-size: 13px; font-weight: 700; margin-top: 10px; min-height: 18px; }
     .pesan-simpan.ok { color: #4dda90; } .pesan-simpan.err { color: #e07070; }
     .lampiran-card.mati { opacity: .5; pointer-events: none; }
+    #p-r-alat, #p-r-panduan { color: var(--fg-solid); font-size: 13.5px; line-height: 1.6; }
     .btn-ai-saran { margin-top: 12px; background: transparent; border: 1.5px solid #fe7f42; color: #fe7f42; border-radius: 10px; padding: 8px 16px; font: 700 13px "Montserrat", sans-serif; cursor: pointer; transition: background .2s, color .2s; }
     .btn-ai-saran:hover:not(:disabled) { background: #fe7f42; color: #1a1313; }
     .btn-ai-saran:disabled { opacity: .5; cursor: wait; }
@@ -119,6 +120,13 @@
         </div>
         <div class="lampiran-section"><div class="soal-label">DATA BUSINESS MODEL CANVAS</div><div class="bmc-grid-read" id="p-bmc"></div></div>
         <div class="lampiran-section"><div class="soal-label">ANALISIS SWOT</div><div class="swot-grid-read" id="p-swot"></div></div>
+        <div class="ai-suggestion-box" id="p-ai">
+          <div class="ai-header"><span>REKOMENDASI NILAI AI (SATU KELOMPOK)</span><div class="ai-score-badge" id="p-ai-skor"></div></div>
+          <div class="ai-reasoning" id="p-ai-alasan"></div>
+          <button class="btn-ai-saran" id="btn-ai-proyek" type="button">Minta saran NARF AI</button>
+          <button class="btn-ai-saran" id="btn-ai-terapkan" type="button" hidden style="margin-left:8px">Isi nilai anggota yang masih kosong</button>
+          <div class="ai-catatan">Hanya saran dari isi rancangan, BMC, dan SWOT. AI tidak membuka tautan laporan atau video. Nilai tiap anggota tetap kamu yang menentukan.</div>
+        </div>
         <div class="manual-grading-notice">Nilai proyek diberikan per anggota. Kamu bisa memberi nilai dan catatan yang berbeda untuk tiap anggota kelompok.</div>
         <div class="soal-label" style="margin-top: 24px;">PENILAIAN INDIVIDU ANGGOTA KELOMPOK</div>
         <div class="group-grading-list" id="p-anggota"></div>
@@ -245,6 +253,41 @@ async function simpanEsai() {
   } catch (e) { pesan('e-pesan', e.message, false) } finally { b.disabled = false }
 }
 
+/* ---------- saran AI untuk proyek ---------- */
+function tampilAiProyek(it) {
+  const ada = it.skor_ai !== null && it.skor_ai !== undefined
+  $('p-ai-skor').textContent = ada ? Math.round(it.skor_ai) + ' / 100' : ''
+  $('p-ai-alasan').textContent = ada ? (it.feedback_ai || '') : 'Belum ada saran. Klik tombol di bawah untuk meminta NARF AI memeriksa rancangan, BMC, dan SWOT kelompok ini.'
+  $('btn-ai-proyek').textContent = ada ? 'Minta saran ulang' : 'Minta saran NARF AI'
+  $('btn-ai-terapkan').hidden = !ada
+}
+async function mintaSaranAiProyek() {
+  const it = proyek.find(p => p.id === terpilih)
+  if (!it) return
+  const b = $('btn-ai-proyek'); b.disabled = true; b.textContent = 'NARF AI sedang memeriksa...'
+  try {
+    const { data, error } = await sb.functions.invoke(window.NARF_FN_NILAI || 'nilai-ai', { body: { jenis: 'proyek', id: it.id } })
+    if (error || !data || data.error) throw new Error(error ? await pesanFungsi(error) : (data && data.error) || 'Gagal.')
+    it.skor_ai = data.skor_ai; it.feedback_ai = data.feedback_ai
+  } catch (e) { Narf.toast(e.message, 'error') } finally { b.disabled = false; tampilAiProyek(it) }
+}
+function terapkanSaranProyek() {
+  const it = proyek.find(p => p.id === terpilih)
+  if (!it || it.skor_ai === null || it.skor_ai === undefined) return
+  document.querySelectorAll('#p-anggota .score-input-mini').forEach(i => {
+    if (i.value.trim() === '') { i.value = Math.round(it.skor_ai); i.classList.remove('empty') }
+  })
+}
+// saran yang sudah tersimpan (butuh SQL 22; diam bila kolomnya belum ada)
+async function muatSaranProyek() {
+  if (!proyek.length) return
+  try {
+    const rows = await Narf.query(sb.from('project_submission').select('id,skor_ai,feedback_ai').in('id', proyek.map(p => p.id)))
+    const per = Object.fromEntries((rows || []).map(r => [r.id, r]))
+    proyek.forEach(p => { const r = per[p.id]; if (r) { p.skor_ai = r.skor_ai; p.feedback_ai = r.feedback_ai } })
+  } catch (e) { /* abaikan */ }
+}
+
 /* ---------- proyek ---------- */
 function setLink(id, url) {
   const a = $(id), u = Narf.safeUrl(url)
@@ -269,6 +312,7 @@ function bukaProyek(it) {
     '</div><span class="member-name">' + esc(a.nama) + '</span></div><input type="text" class="feedback-input-mini" maxlength="500" placeholder="Catatan untuk ' + esc(a.nama) + '" aria-label="Catatan ' + esc(a.nama) + '" value="' + esc(a.feedback || '') +
     '"><input type="number" class="score-input-mini' + (a.nilai === null ? ' empty' : '') + '" placeholder="0" min="0" max="100" step="1" aria-label="Nilai ' + esc(a.nama) + '" value="' + esc(a.nilai ?? '') + '"></div>').join('')
   $('p-pesan').textContent = ''
+  tampilAiProyek(it)
 }
 async function simpanProyek() {
   const it = proyek.find(p => p.id === terpilih)
@@ -297,6 +341,7 @@ async function init() {
     NarfNav.init(profil)
     const [e, p] = await Promise.all([Narf.rpc('guru_antrean_esai'), Narf.rpc('guru_antrean_proyek')])
     esai = e; proyek = p
+    await muatSaranProyek()
     const tipe = new URLSearchParams(location.search).get('tipe')
     if (tipe === 'asesmen' || tipe === 'kuis') $('filter-antrean').value = tipe
     setTab(tipe === 'proyek' ? 'proyek' : 'esai')
@@ -311,6 +356,8 @@ $('filter-antrean').addEventListener('change', () => { terpilih = null; tampilDe
 $('btn-simpan-esai').addEventListener('click', simpanEsai)
 $('btn-ai-esai').addEventListener('click', mintaSaranAi)
 $('btn-simpan-proyek').addEventListener('click', simpanProyek)
+$('btn-ai-proyek').addEventListener('click', mintaSaranAiProyek)
+$('btn-ai-terapkan').addEventListener('click', terapkanSaranProyek)
 init()
 </script>
 </body>

@@ -71,7 +71,7 @@
       <div class="panel">
         <div class="panel-header">
           Top 3 Siswa (XP)
-          <a href="monitoring.html">Semua kelas</a>
+          <a href="class.html">Semua kelas</a>
         </div>
         <div class="top-siswa-list" id="top-list"><div class="nav-kosong">Memuat...</div></div>
       </div>
@@ -150,8 +150,8 @@ async function init() {
     let top = null
     try { top = await Narf.rpc('peringkat_top3') } catch (e) { top = null }
     const MEDALI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg>'
-    if (top && top.length) tl.innerHTML = top.map(s => '<div class="top-siswa-item"><div class="rank-medal rank-' + esc(s.peringkat) + '">' +
-      (s.peringkat === 1 ? MEDALI : esc(s.peringkat)) + '</div><div class="top-siswa-info"><span class="top-siswa-nama">' + esc(s.nama) + '</span><span class="top-siswa-kelas">' +
+    if (top && top.length) tl.innerHTML = top.slice(0, 3).map((s, i) => '<div class="top-siswa-item"><div class="rank-medal rank-' + (i + 1) + '">' +
+      (i === 0 ? MEDALI : (i + 1)) + '</div><div class="top-siswa-info"><span class="top-siswa-nama">' + esc(s.nama) + '</span><span class="top-siswa-kelas">' +
       esc(s.kelas || '-') + ' · XP tercapai ' + esc(Narf.waktuRelatif(s.tercapai_at)) + '</span></div><div class="top-siswa-xp">' +
       Number(s.xp).toLocaleString('id-ID') + ' XP</div></div>').join('') +
       '<div class="top-catatan">Urutan: XP terbanyak. Kalau XP sama, yang lebih dulu mencapainya ada di atas.</div>'
